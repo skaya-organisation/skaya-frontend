@@ -1,0 +1,77 @@
+---
+title: SkayaJS Quickstart Guide 
+description: Learn how to install SkayaJS, initialize components, and use browser APIs with theming support.
+keywords:
+  - Skaya
+  - quickstart
+  - navigator
+  - react
+  - installation
+---
+
+# Quickstart | Get Started in 5 Minutes
+
+<div
+  style={{
+    display: "flex",
+    alignItems: "center",
+    borderRadius: "4px",
+    height: "20px",
+    border: "2px solid red",
+    padding: "1rem",
+  }}
+>
+  <a
+    href="https://www.npmjs.com/package/skaya"
+    target="_blank"
+    style={{
+      display: "flex",
+      alignItems: "center",
+      gap: "0.5rem",
+      color: "#cb3837",
+      textDecoration: "none",
+      fontWeight: "bold"
+    }}
+  >
+    <img
+      src="/logo/npm-logo-red.png"
+      alt="npm logo"
+      style={{ height: "12px" }}
+    />
+    <span>| Skaya v1.0.0</span>
+  </a>
+</div>
+
+
+## ✅ Prerequisites
+
+- **Node.js**: v18+  
+- **npm** or **yarn**  
+
+## Installation
+
+```bash
+npm install skayajs
+```
+
+## 🚀 Usage
+
+```tsx
+import { GeoLocation } from "skayajs";
+
+export default function App() {
+  return (
+      <GeoLocation
+        name="My GPS Tracker"
+        onChange={(coords) => console.log("User Location:", coords)}
+      />
+  );
+}
+```
+
+## 🎨 Theming
+
+- All components adapt automatically (background, text, etc.).
+
+- You can pass custom CSS classes via className on each component.
+

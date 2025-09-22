@@ -1,0 +1,63 @@
+---
+title: GeoLocation
+description: Learn how to use the GeoLocation component and its hook for real-time user position.
+---
+
+# 📍 GeoLocation Component
+
+The `GeoLocation` component wraps `navigator.geolocation` into a themed React component.  
+
+## Demo
+
+import {Location} from '../../../../src/components/Button.tsx';
+
+Here is a live, interactive React component embedded right into this documentation page:
+
+<Location />
+
+## Example
+
+```tsx
+import { GeoLocation } from "skayajs";
+
+function Page() {
+  return (
+    <GeoLocation
+      name="Location Tracker"
+      onChange={(coords) => console.log(coords)}
+    />
+  );
+}
+```
+
+## Props
+
+| Prop        | Type                               | Default       | Description                         |
+|-------------|------------------------------------|---------------|-------------------------------------|
+| `name`      | `string`                           | `"GeoLocation"` | Title of the component            |
+| `className` | `string`                           | `""`          | Custom CSS classes                  |
+| `onChange`  | `(coords: {lat: number, lng: number} \| null) => void` | `undefined` | Callback when location changes|
+
+## Hook Usage
+
+If you prefer hooks:
+
+```tsx
+import { useEffect } from "react";
+import { useGeoLocation } from "skayajs";
+
+function Page() {
+  const { location, error, getPosition } = useGeoLocation();
+
+  useEffect(() => {
+    getPosition(); // fetch position on mount
+  }, [getPosition]);
+
+  if (error) return <p>Error: {error}</p>;
+  if (!location) return <p>Loading...</p>;
+
+  return <p>Lat: {location.lat}, Lng: {location.lng}</p>;
+}
+
+```
+
