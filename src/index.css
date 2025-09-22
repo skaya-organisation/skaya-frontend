@@ -1,7 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 .navAppearance_bf893{
-    margin-top: 50px;
-    margin-bottom: 50px;
+    margin-top: 36px;
+    margin-bottom: 36px;
 }
 .rspress-home-hero-tagline{
     line-height: inherit;

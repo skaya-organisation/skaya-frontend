@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { GetLocationButton, useGeolocation } from "skaya-js";
+import { GetLocationButton, useGeolocation } from "skayajs";
 
 interface MyButtonProps {
   label: string;

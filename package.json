@@ -10,10 +10,14 @@
     "preview": "rspress preview"
   },
   "dependencies": {
+    "@tailwindcss/postcss": "^4.1.13",
     "rspress": "^1.40.2"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
-    "@types/node": "^18.11.17"
+    "@types/node": "^18.11.17",
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^3.4.17"
   }
 }

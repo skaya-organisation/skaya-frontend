@@ -145,5 +145,8 @@ export default defineConfig({
       },
     ],
   },
+  resolve: {
+  extensions: ['.ts', '.tsx', '.js', '.jsx'],
+},
  globalStyles: path.join(__dirname, 'src/index.css')
 });

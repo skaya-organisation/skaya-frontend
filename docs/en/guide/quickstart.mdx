@@ -42,7 +42,6 @@ keywords:
   </a>
 </div>
 
-
 ## ✅ Prerequisites
 
 - **Node.js**: v18+  
@@ -52,19 +51,41 @@ keywords:
 
 ```bash
 npm install skayajs
+# or
+yarn add skayajs
 ```
-
-## 🚀 Usage
+## 🚀 Basic Usage
+SkayaJS provides hooks and controlled components for browser APIs. Here’s how to use the GeoLocation hook with the GetLocationButton:
 
 ```tsx
-import { GeoLocation } from "skayajs";
+import React from "react";
+import { useGeolocation, GetLocationButton } from "skayajs";
 
 export default function App() {
+  const { location, loading, getPosition } = useGeolocation();
+
   return (
-      <GeoLocation
-        name="My GPS Tracker"
-        onChange={(coords) => console.log("User Location:", coords)}
+    <div style={{ padding: "1rem", fontFamily: "sans-serif" }}>
+      <h2>My GPS Tracker</h2>
+
+      <GetLocationButton
+        label="Get My Location"
+        loadingLabel="Locating..."
+        onGetPosition={getPosition}
+        isLoading={loading}
+        style={{ padding: "0.5rem 1rem", fontSize: "1rem" }}
       />
+
+      <div style={{ marginTop: "1rem" }}>
+        {location.error && <p style={{ color: "red" }}>{location.error}</p>}
+        {location.latitude && location.longitude && (
+          <p>
+            Latitude: {location.latitude.toFixed(5)}, Longitude: {location.longitude.toFixed(5)}
+          </p>
+        )}
+        {!location.error && !location.latitude && !loading && <p>Click the button to fetch location.</p>}
+      </div>
+    </div>
   );
 }
 ```

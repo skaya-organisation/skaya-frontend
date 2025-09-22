@@ -1,0 +1,39 @@
+---
+title: "ERC-4626: Tokenized Vaults for DeFi"
+date: "2025-09-22"
+sidebar: false
+tags:
+  - Ethereum
+  - ERC-4626
+  - DeFi
+description: "Learn what ERC-4626 standardizes tokenized vaults in Ethereum DeFi."
+---
+
+# 💎 Understanding ERC-4626: Tokenized Vaults for DeFi
+
+ERC-4626 is a standardized interface for **tokenized vaults** on Ethereum. It allows developers to create vaults that represent shares of an underlying asset with predictable deposit and withdrawal behavior.
+
+## Why ERC-4626 Matters
+
+Before ERC-4626, each vault implementation had **different interfaces**, making composability difficult for DeFi applications. With this standard:
+
+- Users can deposit and withdraw from any compliant vault in a uniform way.
+- Developers can build interoperable DeFi protocols with ease.
+- Portfolio tracking and analytics become simpler across vaults.
+
+## Core Concepts
+
+- **Assets**: The underlying token held by the vault.
+- **Shares**: ERC-20 tokens representing a claim on the vault’s assets.
+- **Deposit / Withdraw**: Standardized functions to move assets in and out of the vault.
+- **Conversion Functions**: `convertToShares`, `convertToAssets` to calculate balances.
+
+## Example Usage
+
+```solidity
+// Example: Deposit into an ERC-4626 vault
+IERC4626 vault = IERC4626(vaultAddress);
+uint256 assets = 1000 * 10**18; // amount of underlying token
+vault.deposit(assets, msg.sender);
+uint256 shares = vault.balanceOf(msg.sender);
+```
