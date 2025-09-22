@@ -1,11 +1,11 @@
 ---
-title: GeoLocation
-description: Learn how to use the GeoLocation component and its hook for real-time user position.
+title: Geolocation
+description: Learn how to use the LocationButton component and the useGeolocation hook for retrieving user location.
 ---
 
-# 📍 GeoLocation Component
+# 📍 Geolocation Component
 
-The `GeoLocation` component wraps `navigator.geolocation` into a themed React component and works seamlessly with the `useGeolocation` hook.  
+The **`LocationButton`** component is a controlled button designed to trigger the browser's `navigator.geolocation` API, working seamlessly with the **`useGeolocation`** hook.
 
 ## Demo
 
@@ -13,64 +13,70 @@ import { Location } from '../../../../src/components/Button.tsx';
 
 <Location />
 
-Here is a live, interactive React component embedded right into this documentation page.
+## Props
+
+The **`LocationButton`** leverages the standard `children` prop for its content and follows common React naming conventions for handlers and state.
+
+| Prop | Type | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `children` | `React.ReactNode` | `"Get Location"` | The content displayed on the button when it's **not** fetching. |
+| `onClick` | `() => void` | `required` | The function (e.g., `fetchLocation` from the hook) to execute on button click. |
+| `isLoading` | `boolean` | `false` | Boolean state indicating if the location request is currently in progress. |
+| `className` | `string` | `""` | Optional custom CSS classes. |
 
 ## Component Usage
 
+The **`LocationButton`** is used to encapsulate the UI logic, while the **`useGeolocation`** hook provides the data and control functions.
+
 ```tsx
-import { useGeolocation, GetLocationButton } from "skayajs";
+import { useGeolocation, LocationButton } from "skayajs";
 
 function Page() {
-  const { location, loading, getPosition } = useGeolocation();
+  const { location, isLoading, fetchLocation } = useGeolocation();
+
+  const buttonText = isLoading ? "Locating..." : "Get My Location";
+  const isLocationAvailable = location.latitude !== null && location.longitude !== null;
 
   return (
     <div>
-      <GetLocationButton
-        label="Get My Location"
-        loadingLabel="Locating..."
-        onGetPosition={getPosition}
-        isLoading={loading}
-      />
+      <LocationButton
+        onClick={fetchLocation}
+        isLoading={isLoading}
+      >
+        {/* Pass text as children, adapting it for loading state */}
+        {buttonText} 
+      </LocationButton>
 
       {location.error && <p style={{ color: "red" }}>{location.error}</p>}
-      {location.latitude && location.longitude && (
+
+      {isLocationAvailable && (
         <p>
-          Latitude: {location.latitude.toFixed(5)}, Longitude: {location.longitude.toFixed(5)}
+          Latitude: {location.latitude!.toFixed(5)}, Longitude: {location.longitude!.toFixed(5)}
         </p>
       )}
-      {!location.error && !location.latitude && !loading && <p>Click the button to fetch location.</p>}
     </div>
   );
 }
 ```
 
-## Props
+## Hooks Usage
 
-| Prop           | Type                                           | Default                     | Description                                      |
-|----------------|-----------------------------------------------|----------------------------|--------------------------------------------------|
-| `label`        | `string`                                      | `"Get Location"`           | Text displayed on the button                     |
-| `loadingLabel` | `string`                                      | `"Getting Location..."`    | Text displayed when fetching location           |
-| `onGetPosition`| `() => void`                                  | `required`                 | Function from `useGeolocation` to fetch location|
-| `isLoading`    | `boolean`                                     | `false`                    | Whether the request is in progress              |
-| `className`    | `string`                                      | `""`                        | Optional custom CSS classes                      |
-
-## Hook Usage
-
-If you prefer using the hook directly:
+If you need programmatic control or prefer to use your own UI components, the useGeolocation hook provides full access to the API status.
 
 ```tsx
 import { useEffect } from "react";
 import { useGeolocation } from "skayajs";
 
 function Page() {
-  const { location, loading, getPosition } = useGeolocation();
+  const { location, isLoading, fetchLocation } = useGeolocation();
 
   useEffect(() => {
-    getPosition(); // fetch position on mount
-  }, [getPosition]);
+    fetchLocation(); 
+  }, [fetchLocation]);
 
-  if (loading) return <p>Loading...</p>;
+  if (isLoading) return <p>Loading...</p>;
   if (location.error) return <p>Error: {location.error}</p>;
+  if (!location.latitude || !location.longitude) return <p>No location data available.</p>;
 
   return (
     <p>
@@ -79,3 +85,35 @@ function Page() {
   );
 }
 ```
+
+
+
+## Usage with MUI Button
+
+```tsx
+import { useGeolocation } from "skayajs";
+import { Button, CircularProgress } from "@mui/material";
+
+function MUIExample() {
+  const { location, isLoading, fetchLocation } = useGeolocation();
+
+  return (
+    <div>
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={fetchLocation}
+        disabled={isLoading}
+      >
+        {loading ? <CircularProgress size={20} sx={{ color: "white", mr: 1 }} /> : "Get My Location"}
+      </Button>
+
+      {location.error && <p style={{ color: "red" }}>{location.error}</p>}
+      {location.latitude && location.longitude && (
+        <p>
+          Latitude: {location.latitude.toFixed(5)}, Longitude: {location.longitude.toFixed(5)}
+        </p>
+      )}
+    </div>
+  );
+}```

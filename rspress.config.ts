@@ -55,7 +55,7 @@ export default defineConfig({
               {
                 text: "Group",
                 items: [
-                  { text: "WEB3", link: "http://blockchain.skaya.com/" },
+                  { text: "WEB3", link: "http://web3.skaya.org/" },
                   { text: "AI", link: "http://app.skaya.org/" },
                 ],
               },

@@ -11,7 +11,9 @@
   },
   "dependencies": {
     "@tailwindcss/postcss": "^4.1.13",
-    "rspress": "^1.40.2"
+    "react-globe.gl": "^2.36.0",
+    "rspress": "^1.40.2",
+    "three": "^0.180.0"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
