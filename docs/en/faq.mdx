@@ -7,6 +7,11 @@ hero:
   text: 'Frequently Asked Questions'
   tagline: 'All you need to know about using SkayaJS components, hooks, and theming.'
 
+head:
+  - - meta
+    - name: 'keywords'
+      content: 'SkayaJS, React, navigator APIs, geolocation, bluetooth, clipboard, hooks, theming, npm library, web3'
+
 faqSections:
   - title: "General FAQs"
     items:
@@ -20,30 +25,137 @@ faqSections:
             <li>Clipboard</li>
             <li>Media Devices</li>
           </ul>
-      - question: "What is SkayaJS?"
-        tags: ["General"]
+          into beautiful, themed, and developer-friendly React components and hooks.
+      - question: "How do I install SkayaJS?"
+        tags: ["General", "Installation"]
         answer: |
-          SkayaJS is a React Component Library that wraps browser Navigator APIs like:
+          Install via npm or yarn:
+          <pre><code>npm install skayajs</code></pre>
+          <pre><code>yarn add skayajs</code></pre>
+      - question: "Can I use SkayaJS with MUI or Tailwind?"
+        tags: ["General", "Styling"]
+        answer: |
+          Yes! SkayaJS components are fully compatible with MUI, Tailwind, or any CSS-in-JS library.  
+          You can pass `className` props or wrap them in your theme providers.
+
+  - title: "Components & Hooks"
+    items:
+      - question: "Which components are available?"
+        tags: ["Components"]
+        answer: |
+          Current Navigator-based components:
           <ul>
-            <li>Geolocation</li>
-            <li>Bluetooth</li>
-            <li>Clipboard</li>
-            <li>Media Devices</li>
+            <li><strong>GeoLocation</strong> – Show or track user location</li>
+            <li><strong>BluetoothConnector</strong> – Connect and manage Bluetooth devices</li>
+            <li><strong>Clipboard</strong> – Read/write system clipboard</li>
+            <li><strong>MediaDevices</strong> – Access camera/microphone streams</li>
           </ul>
-      - question: "What is SkayaJS?"
-        tags: ["General"]
+      - question: "Do components have corresponding hooks?"
+        tags: ["Hooks"]
         answer: |
-          SkayaJS is a React Component Library that wraps browser Navigator APIs like:
+          Yes. Each component has a hook, e.g.:
           <ul>
-            <li>Geolocation</li>
-            <li>Bluetooth</li>
-            <li>Clipboard</li>
-            <li>Media Devices</li>
+            <li>`useGeoLocation`</li>
+            <li>`useBluetooth`</li>
+            <li>`useClipboard`</li>
+            <li>`useMediaDevices`</li>
+          </ul>
+          Hooks provide fine-grained control if you want to handle logic separately from UI.
+
+  - title: "Theming & Styling"
+    items:
+      - question: "How do I enable dark/light mode?"
+        tags: ["Theming"]
+        answer: |
+          Wrap your app with `SkayaThemeProvider` and set `initialTheme` to `"dark"` or `"light"`:
+          ```
+          <SkayaThemeProvider initialTheme="dark">
+            <App />
+          </SkayaThemeProvider>
+          ```
+          Components automatically adapt their styles. You can override using `className` or your CSS framework.
+      - question: "Can I change the theme dynamically?"
+        tags: ["Theming"]
+        answer: |
+          Yes! Use the `useSkayaTheme` hook:
+          ```
+          const { theme, setTheme } = useSkayaTheme();
+          <button onClick={() => setTheme(theme === "light" ? "dark" : "light")}>Toggle Theme</button>
+          ```
+
+  - title: "Development & Testing"
+    items:
+      - question: "How do I test SkayaJS components?"
+        tags: ["Testing"]
+        answer: |
+          SkayaJS includes test files for each component.  
+          Install dev dependencies and run:
+          ```
+          npm test
+          ```
+          or
+          ```
+          yarn test
+          ```
+          Example: `GeoLocation` test mocks `navigator.geolocation`.
+
+      - question: "Can I develop locally before publishing?"
+        tags: ["Development"]
+        answer: |
+          Yes, use `npm link` or a local example app:
+          ```
+          cd skayajs
+          npm run build
+          npm link
+          cd ../my-app
+          npm link skayajs
+          ```
+          Or run the `example/` app:
+          ```
+          npm run example:dev
+          ```
+
+  - title: "Roadmap & Future"
+    items:
+      - question: "Which components are planned next?"
+        tags: ["Roadmap"]
+        answer: |
+          Planned components:
+          <ul>
+            <li>HID (keyboard/mouse/gamepad)</li>
+            <li>Ink & Pen input</li>
+            <li>Device posture & battery info</li>
+            <li>Media session & playback controls</li>
+          </ul>
+      - question: "Will there be more hooks and utilities?"
+        tags: ["Roadmap"]
+        answer: |
+          Yes. Future releases will include more hooks for:
+          <ul>
+            <li>Lock manager</li>
+            <li>Credentials & login status</li>
+            <li>Network information & device memory</li>
+          </ul>
+
+  - title: "Support & Resources"
+    items:
+      - question: "Where can I get help?"
+        tags: ["Support"]
+        answer: |
+          <strong>Resources:</strong>
+          <ul>
+            <li><a href="#/docs">Official Documentation</a></li>
+            <li>GitHub Issues</li>
+            <li>Community Discord</li>
+            <li>team@skaya.org</li>
+          </ul>
+      - question: "Are there example projects?"
+        tags: ["Support", "Examples"]
+        answer: |
+          Check the `example/` folder in this repo or:
+          <ul>
+            <li><a href="https://github.com/skaya-org/frontend-react">Frontend React templates</a></li>
+            <li><a href="https://github.com/skaya-org/community-templates">Community contributions</a></li>
           </ul>
 ---
 
-
-import { Faq } from '../../src/components/Faq';
-
-
-<Faq sections={frontmatter.faqSections} />

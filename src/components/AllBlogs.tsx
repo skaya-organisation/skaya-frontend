@@ -1,5 +1,5 @@
 import { usePageData } from "rspress/runtime";
-import "../index.css";
+import "./index.css";
 export default function BlogList() {
   const { siteData } = usePageData();
 
@@ -21,10 +21,8 @@ export default function BlogList() {
         {topBlogs.map((blog: any) => (
           <div
             key={blog.routePath}
-            className="p-6 rounded-2xl border border-gray-200 shadow-md hover:shadow-lg transition m-4"
-            style={{
-              marginLeft: "10px",
-            }}
+            className="p-6 m-4 rounded-2xl border border-gray-200 shadow-md hover:shadow-lg transition "
+            
           >
             <a
               href={blog.routePath}

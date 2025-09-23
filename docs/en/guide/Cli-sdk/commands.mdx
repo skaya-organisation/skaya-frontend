@@ -1,0 +1,98 @@
+---
+title: Skaya CLI Commands
+description: The complete reference guide for all Skaya CLI commands. Find detailed usage, flags, and examples for init, create, update, start, and install to manage your web3 project.
+---
+
+# Commands
+
+<div
+  style={{
+    display: "flex",
+    alignItems: "center",
+    borderRadius: "4px",
+    height: "20px",
+    border: "2px solid red",
+    padding: "1rem",
+  }}
+>
+  <a
+    href="https://www.npmjs.com/package/skaya"
+    target="_blank"
+    style={{
+      display: "flex",
+      alignItems: "center",
+      gap: "0.5rem",
+      color: "#cb3837",
+      textDecoration: "none",
+      fontWeight: "bold",
+    }}
+  >
+    <img
+      src="/logo/npm-logo-red.png"
+      alt="npm logo"
+      style={{ height: "12px" }}
+    />
+    <span>| Skaya v1.0.0</span>
+  </a>
+</div>
+
+::: tip
+Skaya is a versatile CLI toolkit designed to supercharge your full-stack web3 project setup, with comprehensive support for frontend, backend, and blockchain development.
+:::
+
+## Web3 Scaffolding Tool CLI Reference
+
+| Command       | Option Flags               | Description                                              | Example Usage                                |
+|---------------|----------------------------|----------------------------------------------------------|----------------------------------------------|
+| **`init`** | *(Checkbox prompt)* | Interactive project type selection when no type provided | `skaya init` (select project type)           |
+|               | `[type]`                   | Initialize with specified project type                   | `skaya init frontend`                        |
+|               | `-f, --folder <name>`      | Specify project folder name                              | `skaya init -f my-project`                   |
+| **`create`** | *(Checkbox prompt)* | Interactive component creation when no type provided     | `skaya create` (select component type)       |
+|               | `[type]`                   | Create specified component type                          | `skaya create component`                     |
+|               | `-p, --project <type>`     | Specify project type (`frontend`/`backend`/`blockchain`) | `skaya create -p frontend `                  |
+|               | `-f, --filename <name>`    | Set component filename (auto-capitalized)                | `skaya create -p frontend -f Button`         |
+|               | `-a, --ai`                 | Enable AI-generated component                            | `skaya create modal -a `                     |
+|               | `-d, --description <text>` | Provide context for AI generation                        | `skaya create modal -a -d "Popup dialog"`    |
+|               | `-s, --skip-import`        | Skip dependency imports                                  | `skaya create -s`                            |
+|               | `-t, --skip-target-folder` | Use default folder location                              | `skaya create -t`                            |
+| **`update`** | *(Checkbox prompt)* | Interactive component selection when no type provided    | `skaya update` (select component)            |
+|               | `[type]`                   | Update specified component type                          | `skaya update component`                     |
+|               | `-p, --project <type>`     | Specify project type to update                           | `skaya update -p backend middleware`         |
+|               | `-a, --ai`                 | Use AI for component updates                             | `skaya update -p backend middleware -a`      |
+|               | `-d, --description <text>` | New specifications for AI updates                        | `skaya update -p backend middleware -a  -d "add permission for markketing team"`  |
+|               | `-s, --skip-import`        | Skip dependency imports                                  | `skaya update -p backend middleware -a -s`   |
+| **`start`** | *(Checkbox prompt)* | Interactive service selection when no flags provided     | `skaya start` (select project)               |
+|               | `-a, --all`                | Start all project services                               | `skaya start --all`                          |
+|               | `-f, --frontend`           | Start frontend service                                   | `skaya start -f`                             |
+|               | `-b, --backend`            | Start backend service                                    | `skaya start -b`                             |
+|               | `-c, --blockchain`         | Start blockchain service                                 | `skaya start -c`                             |
+| **`install`** | *(Checkbox prompt)* | Interactive component selection when no flags provided   | `skaya install` (select project)             |
+|               | `-a, --all`                | Install dependencies for all project types               | `skaya install -a`                           |
+|               | `-f, --frontend`           | Install frontend dependencies                            | `skaya install -f`                           |
+|               | `-b, --backend`            | Install backend dependencies                             | `skaya install -b`                           |
+|               | `-c, --blockchain`         | Install blockchain dependencies                          | `skaya install -c`                           |
+|               | `-l, --legacy-peer-deps`   | Use legacy peer dependency resolution                    | `skaya install -l`                           |
+|               | `[additional_args]`        | Pass extra arguments to package manager                  | `skaya install --force`                      |
+
+## Key Features Explained
+
+1.  **Smart Defaults** - `init` auto-suggests folder names (`frontendSkayaProject`)
+    - `create` capitalizes filenames (`button` → `Button`)
+
+2.  **Context-Aware Prompts** - `create` shows only relevant component types based on project selection
+    - `update` scans existing components to prevent duplicates
+
+3.  **AI Integration** - Flags `-a` and `-d` work across `create`/`update` for:
+      ✓ Code generation
+      ✓ Component modifications
+      ✓ Documentation updates
+
+4.  **Installation Flexibility** - Supports mixed project types:
+      ```bash
+      skaya install -f -c --legacy-peer-deps
+      ```
+    - Forwards args like `--force` to npm/yarn
+
+5.  **Error Prevention** - Validates project/component types before execution
+    - Requires filenames in non-interactive mode
+    - Confirms folder changes when default exists

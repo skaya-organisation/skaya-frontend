@@ -23,7 +23,7 @@ export const Location: React.FC<LocationProps> = ({
   }, [location]);
 
   return (
-    <div className="w-full max-w-lg p-2 bg-white rounded-xl shadow-md space-y-6 text-center">
+    <div className="w-full max-w-lg p-2 rounded-xl shadow-md space-y-6 text-center">
       <div className="flex justify-center w-full">
         <Globe
           ref={globeRef}

@@ -1,0 +1,108 @@
+---
+sidebar_position: 4
+title: Configure Your Skaya API Key
+description: Learn how to set up your Gemini API key to unlock Skaya's powerful AI code generation. This guide covers obtaining and configuring your key via environment variables or .npmrc.
+keywords:
+  - Skaya API key
+  - API configuration
+  - AI features
+  - Gemini API
+  - Google AI Studio
+  - environment variable
+  - SKAYA_API_KEY
+  - .npmrc
+  - API security
+  - setup guide
+---
+
+# How to Set Up Your Skaya AI API Key (Gemini) 🔑
+
+<div
+  style={{
+    display: "flex",
+    alignItems: "center",
+    borderRadius: "4px",
+    height: "20px",
+    border: "2px solid red",
+    padding: "1rem",
+  }}
+>
+  <a
+    href="https://www.npmjs.com/package/skaya"
+    target="_blank"
+    style={{
+      display: "flex",
+      alignItems: "center",
+      gap: "0.5rem",
+      color: "#cb3837",
+      textDecoration: "none",
+      fontWeight: "bold",
+    }}
+  >
+    <img
+      src="/logo/npm-logo-red.png"
+      alt="npm logo"
+      style={{ height: "12px" }}
+    />
+    <span>| Skaya v1.0.0</span>
+  </a>
+</div>
+
+To unlock Skaya's powerful AI-powered code generation features, you need to configure a **Gemini API key**. This guide will walk you through the entire process, from obtaining your key to configuring it correctly in your development environment.
+
+In the future, we will introduce dedicated Skaya API keys, but for now, integration is seamless with Google's Gemini API.
+
+## 1. Obtaining Your API Key
+
+First, you need to get a Gemini API key. You can create one for free from either of these Google platforms:
+
+- [**Google AI Studio**](https://aistudio.google.com/app/apikey) (Recommended for quick setup)
+- [**Google Cloud Console**](https://console.cloud.google.com/apis/credentials) (For more advanced control and restrictions)
+
+## 2. Configuring Your API Key
+
+Once you have your key, you need to let Skaya know what it is. You can do this in two ways.
+
+### Option A: Environment Variable (Recommended)
+
+Using an **environment variable** is the most secure method. It keeps your key out of your source code, which is essential for security, especially in production or CI/CD environments.
+
+Set the SKAYA_API_KEY environment variable in your system.
+
+**For Linux/macOS:**
+
+```bash
+export SKAYA_API_KEY="your_gemini_api_key_here"
+```
+
+Add the line to `~/.bashrc` or `~/.zshrc` for persistence, then run `source ~/.bashrc` (or open a new terminal).
+
+**For Window CMD:**
+
+```bash
+setx SKAYA_API_KEY "your_gemini_api_key_here"
+```
+
+Then restart your terminal to apply the change.
+
+### Option B: `.npmrc File` (Project-Specific)
+
+You can also store the key in a local `.npmrc` file (in your project root):
+
+```bash
+echo 'skaya_api_key=your_gemini_api_key_here' >> .npmrc
+```
+
+⚠️ Less secure: avoid committing `.npmrc` to public repositories. Use `.gitignore` to protect it.
+
+## 3. Best Practices
+
+- **Prefer Environment Variables**: safest for production/CI/CD.
+
+- **Never Commit Keys**: exclude `.npmrc` or secrets with `.gitignore`
+
+- **Restrict API Key Usage**: If using the Google Cloud Console, apply API restrictions (e.g., by HTTP referrer or IP address) to your API key to limit its exposure.
+
+- **Rotate Keys**: Regularly rotate your API keys to minimize the impact of a potential compromise.
+
+By properly configuring your API key, you can seamlessly integrate Skaya's AI capabilities into your development workflow.

@@ -1,0 +1,87 @@
+---
+title: SkayaJS Quickstart Guide
+description: Learn how to install SkayaJS, initialize components, and use browser APIs with theming support.
+keywords:
+  - Skaya
+  - quickstart
+  - geolocation
+  - react
+  - installation
+  - hooks
+---
+
+# Examples | Try SkayaJS in Action
+
+<div
+  style={{
+    display: "flex",
+    alignItems: "center",
+    borderRadius: "4px",
+    height: "20px",
+    border: "2px solid red",
+    padding: "1rem",
+  }}
+>
+  <a
+    href="https://www.npmjs.com/package/skaya"
+    target="_blank"
+    style={{
+      display: "flex",
+      alignItems: "center",
+      gap: "0.5rem",
+      color: "#cb3837",
+      textDecoration: "none",
+      fontWeight: "bold",
+    }}
+  >
+    <img
+      src="/logo/npm-logo-red.png"
+      alt="npm logo"
+      style={{ height: "12px" }}
+    />
+    <span>| Skaya v1.0.0</span>
+  </a>
+</div>
+
+
+## Geolocation Example
+
+import { Location } from '../../../src/components/Button.tsx';
+
+import { Tab, Tabs } from 'rspress/theme';
+
+<Tabs>
+  <Tab label="Demo"><Location /></Tab>
+  <Tab label="Code">
+```tsx
+import { useGeolocation, LocationButton } from "skayajs";
+
+function Page() {
+  const { location, isLoading, fetchLocation } = useGeolocation();
+
+  const buttonText = isLoading ? "Locating..." : "Get My Location";
+  const isLocationAvailable = location.latitude !== null && location.longitude !== null;
+
+  return (
+    <div>
+      <LocationButton
+        onClick={fetchLocation}
+        isLoading={isLoading}
+      >
+        {/* Pass text as children, adapting it for loading state */}
+        {buttonText} 
+      </LocationButton>
+
+      {location.error && <p style={{ color: "red" }}>{location.error}</p>}
+
+      {isLocationAvailable && (
+        <p>
+          Latitude: {location.latitude!.toFixed(5)}, Longitude: {location.longitude!.toFixed(5)}
+        </p>
+      )}
+    </div>
+  );
+}
+```
+</Tab>
+</Tabs>

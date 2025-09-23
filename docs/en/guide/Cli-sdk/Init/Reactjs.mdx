@@ -1,0 +1,96 @@
+---
+sidebar_position: 2
+title: React.js Template 
+description: Learn how to initialize a new AI-powered Web3 project using Skaya's official Next.js template with TypeScript. This guide covers the `skaya init` command and default configurations.
+keywords:
+  - Skaya
+  - Next.js template
+  - Next.js
+  - starter kit
+  - boilerplate
+  - skaya init
+  - AI
+  - Web3
+  - TypeScript
+  - App Router
+  - frontend
+---
+
+# React.js Template
+<div
+  style={{
+    display: "flex",
+    alignItems: "center",
+    borderRadius: "4px",
+    height: "20px",
+    border: "2px solid red",
+    padding: "1rem",
+  }}
+>
+  <a
+    href="https://www.npmjs.com/package/skaya"
+    target="_blank"
+    style={{
+      display: "flex",
+      alignItems: "center",
+      gap: "0.5rem",
+      color: "#cb3837",
+      textDecoration: "none",
+      fontWeight: "bold",
+    }}
+  >
+    <img
+      src="/logo/npm-logo-red.png"
+      alt="npm logo"
+      style={{ height: "12px" }}
+    />
+    <span>| Skaya v1.0.0</span>
+  </a>
+</div>
+
+Skaya provides optimized react.js templates for AI-powered Web3 development with built-in TypeScript support and smart defaults.
+
+## Initializing a Next.js Project
+
+To create a new Next.js project with Skaya:
+
+```bash
+skaya init
+? Please select a project type: Frontend
+? Enter frontend project folder name: my-next-app
+? How would you like to create your frontend project? Use a framework (React, Next.js, Vite)
+? Select frontend framework: Next.js
+```
+
+::: tip
+- The template will automatically configure with these recommended settings:
+
+```
+TypeScript: Enabled (always true)
+ESLint: Enabled
+src/ directory: Enabled
+App Router: Enabled
+Import alias: *@/* (default always enabled)*
+Turbopack: Disabled (for better Web3 compatibility)
+```
+:::
+
+## Running Your Project
+
+After initialization, you can start your development servers:
+
+### Start Frontend Only
+
+```bash
+skaya start frontend
+```
+
+## What's Next?
+
+Continue your Skaya journey with these guides:
+
+- [Creating Frontend Component](/guide/Cli-sdk/Create/Component) - Learn how to create custom ai generated components with apis and previous components integration in your fresh frontend app.
+
+- [Creating Frontend Pages](/guide/Cli-sdk/Create/Page) - Learn how to create custom ai generated pages with apis and previous components integration in your fresh frontend app.
+
+- [Creating Frontend Apis](/guide/Cli-sdk/Create/Api) - Learn how to create custom ai generated apis.

@@ -1,0 +1,181 @@
+---
+sidebar_position: 2
+title: Skaya AI Page Updater | Refactor React Pages with AI
+description: Evolve your application's UI with Skaya's AI Page Updater. Learn to use the `skaya update page` command to refactor entire pages by adding new components and API integrations via AI prompts.
+keywords:
+  - Skaya
+  - page updater
+  - AI page refactoring
+  - modify pages
+  - update pages
+  - skaya update page
+  - React pages
+  - UI development
+  - view refactoring
+  - app pages
+  - frontend development
+---
+
+# Page
+
+<div
+  style={{
+    display: "flex",
+    alignItems: "center",
+    borderRadius: "4px",
+    height: "20px",
+    border: "2px solid red",
+    padding: "1rem",
+  }}
+>
+  <a
+    href="https://www.npmjs.com/package/skaya"
+    target="_blank"
+    style={{
+      display: "flex",
+      alignItems: "center",
+      gap: "0.5rem",
+      color: "#cb3837",
+      textDecoration: "none",
+      fontWeight: "bold"
+    }}
+  >
+    <img
+      src="/logo/npm-logo-red.png"
+      alt="npm logo"
+      style={{ height: "12px" }}
+    />
+    <span>| Skaya v1.0.0</span>
+  </a>
+</div>
+
+Skaya's AI-powered page updater accelerates UI development with smart, context-aware scaffolding. Updates production-ready components with integrated testing, styling, and documentation in seconds.
+
+
+::: tip Prerequisites
+This guide assumes knowledge of:
+- [Basic Skaya project initialization](/guide/Cli-sdk/Init/Skayajs)
+- [Basic Skaya page creation](/guide/Cli-sdk/Create/Component)
+- [Fundamental React concepts](https://react.dev/learn)
+
+:::
+
+## Key Features
+
+| Feature                | Description                                                                 |
+|------------------------|-----------------------------------------------------------------------------|
+| **🤖 AI-Powered**      | Context-aware generation with dynamic prop/state suggestions                |
+| **🌐 Language Support**| TypeScript (`tsx`) with strict typing enforcement                           |
+| **🎨 Styling Options** | `CSS` \| `SCSS` \| `styled-components` \| `Tailwind`                       |
+| **🔄 Dependency Import**| Seamlessly import existing components and APIs                              |
+
+Every component includes:
+- ✅ **Core component file** with TypeScript interface
+- ✅ **Unit tests** with sample test cases
+- ✅ **Style file** (CSS/SCSS) or CSS-in-JS setup
+
+## Updating Components
+
+### Interactive Mode
+```bash
+skaya update
+# Follow the interactive prompts
+```
+### Direct Generation
+```bash
+skaya update page --project frontend 
+```
+
+### Quick Start with npx
+```bash
+npx skaya update page -p frontend 
+```
+:::danger[Advanced Configuration]
+#### Custom Template Setup (Coming in v2.0)
+`skaya update page --template path/to/template.json`
+:::
+
+## Example Workflow with Custom imports
+
+### 1: Initiate Creation
+```bash
+skaya update page -p frontend 
+```
+
+### 2: Configuration
+```bash
+? Select page to update:
+  Profile
+  Walletbutton
+❯ LoginButton
+```
+
+```bash
+✔ Use AI to update the page? Yes
+? Select which required components you would like to import: 
+(Press <space> to select, <a> to toggle all, <i> to invert selection)
+  ◉ component
+❯ ◯ api
+```
+
+  You can select existing components or APIs to import into your page needs to be updated, allowing for seamless integration and reusability. For instance, you might want to import a `Walletbutton` component and a `Login` API into updating `Profile` page.
+
+- Learn how to create Apis in our [Api Create Guide](/guide/Cli-sdk/Create/Api).
+
+### 3. Import Custom Selection
+
+#### A. Import BuiltIn Componenet
+
+```bash
+✔ Select which required components you would like to import: component, api
+? Select component components to import:
+(Press <space> to select, <a> to toggle all, <i> to invert selection, and <enter> to proceed)
+❯◉ Walletbutton
+```
+#### B. Import BuiltIn Apis
+```bash
+✔ Select component components to import: Walletbutton
+? Select api components to import:
+❯◉ Login
+```
+### 4. Ai Prompt Specification For Component Generation
+```bash
+✔ Select component components to import: Walletbutton
+✔ Select api components to import: Login
+
+--- Dependencies to be imported ---
+
+Dependencies (component):
+- Walletbutton
+
+Dependencies (api):
+- Login
+-------------------------------------------------
+? Enter AI Prompt on how the files and code should work: Import the walletconenctbutton and use login api to create a nftcard
+```
+### 5. File Generation Output
+```bash
+✅ component file updated at myapp/src/components/Walletbutton/Walletbutton.tsx
+✅ component file updated at myapp/src/components/Walletbutton/Walletbutton.stories.tsx
+✅ component file updated at myapp/src/components/Walletbutton/Walletbutton.test.tsx
+✅ component file updated at myapp/src/components/Walletbutton/Walletbutton.css
+```
+## Key Notes
+
+### 1. When using AI generation:
+    - You can import existing components if needed, fostering a modular and reusable codebase.
+    - Provide clear, specific prompts for best results, especially when defining how imported components or APIs should interact.
+    - Generated files include tests and stories by default.
+
+### 2. Folder structure:
+    - Components are created in PascalCase
+    - Test/story files are automatically paired
+    - CSS modules are generated by default
+
+## Import Behavior
+- **Automatic Props Binding**: Imported components' props are automatically wired
+- **API Hook Generation**: Required API hooks are generated with proper typing
+- **Dependency Tracking**: All imports are tracked in the component's metadata
+
+## Updating Components
+Learn how to modify existing components in our [Component Update Guide](/guide/Cli-sdk/Update/Component).

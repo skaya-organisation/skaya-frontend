@@ -31,22 +31,21 @@ export default defineConfig({
     locales: [
       {
         lang: "en",
-        outlineTitle: "On This Page",
         nav: [
           {
-             // @ts-ignore
+            // @ts-ignore
             text: "Guide",
             link: "/guide/getting-started",
             activeMatch: "/guide/getting-started",
           },
           {
-             // @ts-ignore
+            // @ts-ignore
             text: "Blogs",
             link: "/blogs",
             activeMatch: "/blogs",
           },
           {
-             // @ts-ignore
+            // @ts-ignore
             text: "Info",
             activeMatch: "/guide/",
             items: [
@@ -64,18 +63,103 @@ export default defineConfig({
         ],
         sidebar: {
           "/guide/": [
+            { text: "What is Skaya?", link: "/guide/getting-started" },
+            { text: "UI Examples", link: "/guide/examples" },
             {
-              text: "Getting Started",
+              text: "React SDK",
+              collapsed: true,
               items: [
-                { text: "Introduction", link: "/guide/getting-started" },
-                { text: "QuickStart", link: "/guide/quickstart" },
+                {
+                  text: "Introduction",
+                  link: "/guide/React-sdk/introduction",
+                },
+                {
+                  text: "Quickstart",
+                  link: "/guide/React-sdk/quickstart",
+                },
+                {
+                  dividerType: "dashed",
+                },
+                {
+                  text: "Geolocation",
+                  link: "/guide/pwa-components/GeoLocation",
+                },
+                { text: "Bluetooth", link: "/guide/pwa-components/ComingSoon" },
+                {
+                  text: "Audio Player",
+                  link: "/guide/pwa-components/ComingSoon",
+                },
+                {
+                  text: "Contact picker",
+                  link: "/guide/pwa-components/ComingSoon",
+                },
               ],
             },
             {
-              text: "Advanced",
+              text: "Cli SDK",
+              collapsed: true,
               items: [
-                { text: "Geolocation", link: "/guide/pwa-components/GeoLocation" },
-                { text: "Bluetooth", link: "/guide/bluetooth" },
+                { text: "Introduction", link: "/guide/Cli-sdk/Introduction" },
+                { text: "QuickStart", link: "/guide/Cli-sdk/quickstart" },
+                { text: "Commands Refrence", link: "/guide/Cli-sdk/commands" },
+                { text: "Get API Key", link: "/guide/Cli-sdk/api" },
+                {
+                  dividerType: "dashed",
+                },
+                {
+                  text: "Init",
+                  collapsed: true,
+                  items: [
+                    {
+                      text: "Nextjs",
+                      link: "/guide/Cli-sdk/init/Nextjs",
+                    },
+                    {
+                      text: "Reactjs",
+                      link: "/guide/Cli-sdk/init/Reactjs",
+                    },
+                    {
+                      text: "Skayajs",
+                      link: "/guide/Cli-sdk/init/Skayajs",
+                    },
+                  ],
+                },
+                {
+                  text: "Create",
+                  collapsed: true,
+                  items: [
+                    {
+                      text: "Component",
+                      link: "/guide/Cli-sdk/Create/Component",
+                    },
+                    {
+                      text: "Pages",
+                      link: "/guide/Cli-sdk/Create/Page",
+                    },
+                    {
+                      text: "Api",
+                      link: "/guide/Cli-sdk/Create/Api",
+                    },
+                  ],
+                },
+                {
+                  text: "Update",
+                  collapsed: true,
+                  items: [
+                    {
+                      text: "Component",
+                      link: "/guide/Cli-sdk/Update/Component",
+                    },
+                    {
+                      text: "Pages",
+                      link: "/guide/Cli-sdk/Update/Page",
+                    },
+                    {
+                      text: "Api",
+                      link: "/guide/Cli-sdk/Update/Api",
+                    },
+                  ],
+                },
               ],
             },
           ],
@@ -126,27 +210,30 @@ export default defineConfig({
       //   },
       // },
     ],
-
-     socialLinks: [
+    footer: {
+      message:
+        '<p class="mt-10">This is a footer with a <a href="https://example.com">link</a> and <strong>bold text</strong></p>',
+    },
+    socialLinks: [
       {
         icon: "github",
         mode: "link",
         content: "https://github.com/web-infra-dev/rspress",
       },
       {
-        icon: "x", 
+        icon: "x",
         mode: "link",
         content: "https://twitter.com/your-profile",
       },
       {
-        icon: "discord", 
+        icon: "discord",
         mode: "link",
         content: "https://discord.gg/your-invite",
       },
     ],
   },
   resolve: {
-  extensions: ['.ts', '.tsx', '.js', '.jsx'],
-},
- globalStyles: path.join(__dirname, 'src/index.css')
+    extensions: [".ts", ".tsx", ".js", ".jsx"],
+  },
+  globalStyles: path.join(__dirname, "src/index.css"),
 });
