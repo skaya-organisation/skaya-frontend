@@ -1,3 +1,4 @@
+//rspress.config.ts
 import * as path from "node:path";
 import { defineConfig } from "rspress/config";
 
@@ -76,6 +77,10 @@ export default defineConfig({
                 {
                   text: "Quickstart",
                   link: "/guide/React-sdk/quickstart",
+                },
+                {
+                  text: "Styling",
+                  link: "/guide/React-sdk/styling",
                 },
                 {
                   dividerType: "dashed",

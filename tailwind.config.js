@@ -1,15 +1,12 @@
+// tailwind.config.js
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-content: [
-  "./docs/**/*.{md,mdx,ts,tsx,js,jsx}",
-  "./src/components/**/*.{ts,tsx,jsx,js}",
-],
-  safelist: [
-    'bg-blue-600',
-    'bg-green-600',
-    'hover:bg-blue-700',
-    'hover:bg-green-700',
+  content: [
+    "./docs/**/*.{md,mdx,ts,tsx,js,jsx}",
+    "./src/components/**/*.{ts,tsx,jsx,js}",
   ],
+  darkMode: "class",
+  safelist: [],
   theme: {
     extend: {},
   },

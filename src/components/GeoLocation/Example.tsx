@@ -1,59 +1,3 @@
----
-title: SkayaJS Quickstart Guide
-description: Learn how to install SkayaJS, initialize components, and use browser APIs with theming support.
-keywords:
-  - Skaya
-  - quickstart
-  - geolocation
-  - react
-  - installation
-  - hooks
----
-
-# Examples | Try SkayaJS in Action
-
-<div
-  style={{
-    display: "flex",
-    alignItems: "center",
-    borderRadius: "4px",
-    height: "20px",
-    border: "2px solid red",
-    padding: "1rem",
-  }}
->
-  <a
-    href="https://www.npmjs.com/package/skaya"
-    target="_blank"
-    style={{
-      display: "flex",
-      alignItems: "center",
-      gap: "0.5rem",
-      color: "#cb3837",
-      textDecoration: "none",
-      fontWeight: "bold",
-    }}
-  >
-    <img
-      src="/logo/npm-logo-red.png"
-      alt="npm logo"
-      style={{ height: "12px" }}
-    />
-    <span>| Skaya v1.0.0</span>
-  </a>
-</div>
-
-
-## Geolocation Example
-
-import LocationExample from '../../../src/components/GeoLocation/Example.tsx';
-
-import { Tab, Tabs } from 'rspress/theme';
-
-<Tabs>
-  <Tab label="Demo"><LocationExample /></Tab>
-  <Tab label="Code">
-```tsx
 import React, { useEffect, useRef } from "react";
 import { LocationButton, useGeolocation } from "skayajs";
 import Globe from "react-globe.gl";
@@ -62,7 +6,7 @@ interface LocationProps {
   label?: string;
 }
 
-export const Location: React.FC<LocationProps> = ({
+const Location: React.FC<LocationProps> = ({
   label = "Get My Location",
 }) => {
   const { location, isLoading, fetchLocation, resetLocation } = useGeolocation();
@@ -95,7 +39,7 @@ export const Location: React.FC<LocationProps> = ({
       />
 
       {/* Location Info */}
-      <div className="p-4 bg-blue-200 dark:bg-blue-800 rounded-lg">
+      <div className="p-4 w-full bg-blue-200 dark:bg-blue-800 rounded-lg ">
         {location.latitude && location.longitude ? (
           <>
             <p>
@@ -108,7 +52,7 @@ export const Location: React.FC<LocationProps> = ({
             </p>
           </>
         ) : (
-          <p className={location.error ? "text-red-500" : "text-gray-500"}>
+          <p className={location.error ? "text-red-800 dark:text-red-300" : "text-gray-500"}>
             {location.error || "Location data is not available."}
           </p>
         )}
@@ -116,7 +60,9 @@ export const Location: React.FC<LocationProps> = ({
 
       {/* Actions */}
       <div className="flex gap-2">
-        <LocationButton onClick={fetchLocation} isLoading={isLoading}
+        <LocationButton
+          onClick={fetchLocation}
+          isLoading={isLoading}
           className="px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 disabled:bg-gray-400 transition-colors"
         >
           {label}
@@ -128,10 +74,12 @@ export const Location: React.FC<LocationProps> = ({
           Reset
         </button>
       </div>
+
+      <p className="text-gray-800 dark:text-gray-200 pb-4">
+        Click the button to get your current latitude and longitude.
+      </p>
     </div>
   );
 };
 
-```
-</Tab>
-</Tabs>
+export default Location

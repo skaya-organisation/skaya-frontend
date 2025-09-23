@@ -1,0 +1,93 @@
+---
+title: SkayaJS Styling & Theming
+description: Learn how to style SkayaJS components using Tailwind, custom className props, and the cn utility.
+keywords:
+  - Skaya
+  - styling
+  - theming
+  - tailwind
+  - cn
+  - react
+---
+
+# 🎨 Styling & Theming
+
+SkayaJS components are built with **Tailwind CSS utility classes** and the `cn` helper function.  
+This ensures that you can easily **customize**, **override**, and **merge** styles without worrying about conflicts.
+
+This way, your **Styling page** explains:  
+- What `cn` is and why it’s used,  
+- How `className` overrides work,  
+- Examples for conditional styling,  
+- Dark mode + global theming. 
+
+## ✅ The `cn` Utility
+
+SkayaJS internally uses a small helper:
+
+- **clsx** - allows conditional classNames (e.g. `isActive && "bg-red-500"`).
+- **tailwind-merge** - intelligently merges Tailwind classes, resolving conflicts (e.g. `"p-2 p-4"` becomes `"p-4"`).
+
+This means your custom `className` always wins.
+
+## 🖌️ Example: LocationButton
+
+By default, the LocationButton ships with a base design:
+
+```tsx
+<LocationButton
+  onClick={fetchLocation}
+  isLoading={isLoading}
+>
+  Get My Location
+</LocationButton>
+
+```
+
+✨ Renders as a button that disables itself while loading.
+
+### 🔹 Overriding with className
+
+Pass any extra Tailwind or CSS classes:
+
+```tsx
+<LocationButton
+  onClick={fetchLocation}
+  isLoading={isLoading}
+  className="bg-green-500 hover:bg-green-600 text-white rounded-lg px-6 py-3 shadow-lg"
+>
+  Custom Styled Button
+</LocationButton>
+
+```
+
+### 🔹 Conditional Styling Example
+
+Since we use `cn`, you can also pass conditional styles:
+
+```tsx
+<LocationButton
+  onClick={fetchLocation}
+  isLoading={isLoading}
+  className={cn(
+    "px-6 py-2 rounded-md",
+    isLoading ? "bg-gray-400" : "bg-purple-600 hover:bg-purple-700 text-white"
+  )}
+>
+  {isLoading ? "Loading..." : "Track Me"}
+</LocationButton>
+
+```
+
+## 🌗 Dark Mode Support
+
+SkayaJS components also respect dark mode automatically:
+
+```tsx
+<LocationButton
+  onClick={fetchLocation}
+  isLoading={isLoading}
+  className="dark:bg-white dark:text-black bg-black text-white"
+/>
+
+```
