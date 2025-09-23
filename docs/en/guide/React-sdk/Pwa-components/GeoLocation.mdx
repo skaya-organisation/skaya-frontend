@@ -3,24 +3,43 @@ title: Geolocation
 description: Learn how to use the LocationButton component and the useGeolocation hook for retrieving user location.
 ---
 
-import LocationExample from '../../../../src/components/GeoLocation/Example.tsx';
-import HooksExample from '../../../../src/components/GeoLocation/HooksExample.tsx';
+import LocationExample from '../../../../../src/components/GeoLocation/Example.tsx';
+import HooksExample from '../../../../../src/components/GeoLocation/HooksExample.tsx';
+import MUIExample from '../../../../../src/components/GeoLocation/MUIExample.tsx';
 import { Tab, Tabs } from 'rspress/theme';
 
 # 📍 Geolocation Component
-
+<div
+  style={{
+    display: "flex",
+    alignItems: "center",
+    borderRadius: "4px",
+    height: "20px",
+    border: "2px solid red",
+    padding: "1rem",
+  }}
+>
+  <a
+    href="https://www.npmjs.com/package/skaya"
+    target="_blank"
+    style={{
+      display: "flex",
+      alignItems: "center",
+      gap: "0.5rem",
+      color: "#cb3837",
+      textDecoration: "none",
+      fontWeight: "bold"
+    }}
+  >
+    <img
+      src="/logo/npm-logo-red.png"
+      alt="npm logo"
+      style={{ height: "12px" }}
+    />
+    <span>| Skaya v1.0.0</span>
+  </a>
+</div>
 The **`LocationButton`** component is a controlled button designed to trigger the browser's `navigator.geolocation` API, working seamlessly with the **`useGeolocation`** hook.
-
-## Props
-
-The **`LocationButton`** leverages the standard `children` prop for its content and follows common React naming conventions for handlers and state.
-
-| Prop | Type | Default | Description |
-| :--- | :--- | :--- | :--- |
-| `children` | `React.ReactNode` | `"Get Location"` | The content displayed on the button when it's **not** fetching. |
-| `onClick` | `() => void` | `required` | The function (e.g., `fetchLocation` from the hook) to execute on button click. |
-| `isLoading` | `boolean` | `false` | Boolean state indicating if the location request is currently in progress. |
-| `className` | `string` | `""` | Optional custom CSS classes. |
 
 ## Component Usage
 
@@ -35,13 +54,8 @@ import React, { useEffect, useRef } from "react";
 import { LocationButton, useGeolocation } from "skayajs";
 import Globe from "react-globe.gl";
 
-interface LocationProps {
-  label?: string;
-}
 
-const Location: React.FC<LocationProps> = ({
-  label = "Get My Location",
-}) => {
+const Location = ({ label = "Track Me" }) => {
   const { location, isLoading, fetchLocation, resetLocation } = useGeolocation();
   const globeRef = useRef<any>(null);
 
@@ -55,7 +69,7 @@ const Location: React.FC<LocationProps> = ({
   }, [location]);
 
   return (
-    <div className="flex flex-col items-center rounded-xl shadow-md space-y-6 text-center">
+    <div className="flex flex-col items-center rounded-xl  space-y-6 text-center">
       {/* Globe */}
       <Globe
         ref={globeRef}
@@ -71,35 +85,28 @@ const Location: React.FC<LocationProps> = ({
         pointColor={() => "red"}
       />
 
-      {/* Location Info */}
-      <div className="p-4 w-full bg-blue-200 dark:bg-blue-800 rounded-lg ">
-        {location.latitude && location.longitude ? (
-          <>
-            <p>
-              <span className="font-semibold">Latitude:</span>{" "}
-              {location.latitude}
-            </p>
-            <p>
-              <span className="font-semibold">Longitude:</span>{" "}
-              {location.longitude}
-            </p>
-          </>
-        ) : (
-          <p className={location.error ? "text-red-800 dark:text-red-300" : "text-gray-500"}>
-            {location.error || "Location data is not available."}
-          </p>
-        )}
-      </div>
+
+      {location.latitude && location.longitude && (
+        <p className="mt-2">
+          Latitude: {location.latitude.toFixed(5)}, Longitude:{" "}
+          {location.longitude.toFixed(5)}
+        </p>
+      )}
 
       {/* Actions */}
       <div className="flex gap-2">
         <LocationButton
           onClick={fetchLocation}
           isLoading={isLoading}
-          className="px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 disabled:bg-gray-400 transition-colors"
+          className={`px-6 py-2 rounded-md ${
+            isLoading
+              ? "bg-gray-400"
+              : "bg-green-600 hover:bg-green-700 text-white"
+          }`}
         >
-          {label}
+          {isLoading ? "Loading..." : label}
         </LocationButton>
+
         <button
           onClick={resetLocation}
           className="px-4 py-2 text-white bg-red-600 rounded-lg hover:bg-red-700 transition-colors"
@@ -111,7 +118,8 @@ const Location: React.FC<LocationProps> = ({
   );
 };
 
-export default Location
+export default Location;
+
 ```
 </Tab>
 </Tabs>
@@ -124,35 +132,41 @@ If you need programmatic control or prefer to use your own UI components, the us
   <Tab label="Demo"><HooksExample /></Tab>
   <Tab label="Code">
 ```tsx
-import { useEffect } from "react";
 import { useGeolocation } from "skayajs";
 
 export default function GeoLocation() {
   const { location, isLoading, fetchLocation } = useGeolocation();
 
-  useEffect(() => {
-    fetchLocation(); 
-  }, [fetchLocation]);
-
-  if (isLoading) return <p>Loading...</p>;
-  if (location.error) return <p>Error: {location.error}</p>;
-  if (!location.latitude || !location.longitude) return <p>No location data available.</p>;
-
   return (
-    <p>
-      Latitude: {location.latitude?.toFixed(5)}, Longitude: {location.longitude?.toFixed(5)}
-    </p>
+    <div className="p-4">
+      <button
+        onClick={fetchLocation}
+        className="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700"
+        disabled={isLoading}
+      >
+        {isLoading ? "Fetching..." : "Get My Location"}
+      </button>
+
+      {location.latitude && location.longitude && (
+        <p className="mt-2">
+          Latitude: {location.latitude.toFixed(5)}, Longitude:{" "}
+          {location.longitude.toFixed(5)}
+        </p>
+      )}
+    </div>
   );
 }
+
 ```
 </Tab>
 </Tabs>
 
-
-
-
 ## Usage with MUI Button
 
+
+<Tabs>
+  <Tab label="Demo"><MUIExample /></Tab>
+  <Tab label="Code">
 ```tsx
 import { useGeolocation } from "skayajs";
 import { Button, CircularProgress } from "@mui/material";
@@ -171,7 +185,6 @@ function MUIExample() {
         {loading ? <CircularProgress size={20} sx={{ color: "white", mr: 1 }} /> : "Get My Location"}
       </Button>
 
-      {location.error && <p style={{ color: "red" }}>{location.error}</p>}
       {location.latitude && location.longitude && (
         <p>
           Latitude: {location.latitude.toFixed(5)}, Longitude: {location.longitude.toFixed(5)}
@@ -181,3 +194,16 @@ function MUIExample() {
   );
 }
 ```
+</Tab>
+</Tabs>
+
+## Props
+
+The **`LocationButton`** leverages the standard `children` prop for its content and follows common React naming conventions for handlers and state.
+
+| Prop | Type | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `children` | `React.ReactNode` | `"Get Location"` | The content displayed on the button when it's **not** fetching. |
+| `onClick` | `() => void` | `required` | The function (e.g., `fetchLocation` from the hook) to execute on button click. |
+| `isLoading` | `boolean` | `false` | Boolean state indicating if the location request is currently in progress. |
+| `className` | `string` | `""` | Optional custom CSS classes. |

@@ -56,6 +56,15 @@ npm install skayajs
 yarn add skayajs
 ```
 
+## Peer dependencies
+Please note that react and react-dom are peer dependencies, meaning you should ensure they are installed before installing Material UI.
+
+```tsx
+"peerDependencies": {
+  "react": "^17.0.0 || ^18.0.0 || ^19.0.0",
+  "react-dom": "^17.0.0 || ^18.0.0 || ^19.0.0"
+}
+```
 ## Basic Usage: Geolocation Example
 
 SkayaJS provides hooks and controlled components for common browser APIs. Here’s how to use the useGeolocation hook with the new LocationButton component.

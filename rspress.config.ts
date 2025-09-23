@@ -86,18 +86,25 @@ export default defineConfig({
                   dividerType: "dashed",
                 },
                 {
+                  text:"Pwa Components",
+                  collapsed: true,
+                  items:[
+                         {
                   text: "Geolocation",
-                  link: "/guide/pwa-components/GeoLocation",
+                  link: "/guide/React-sdk/pwa-components/GeoLocation",
                 },
-                { text: "Bluetooth", link: "/guide/pwa-components/ComingSoon" },
+                { text: "Bluetooth", link: "/guide/React-sdk/pwa-components/ComingSoon" },
                 {
                   text: "Audio Player",
-                  link: "/guide/pwa-components/ComingSoon",
+                  link: "/guide/React-sdk/pwa-components/ComingSoon",
                 },
                 {
                   text: "Contact picker",
-                  link: "/guide/pwa-components/ComingSoon",
+                  link: "/guide/React-sdk/pwa-components/ComingSoon",
                 },
+                  ]
+                }
+           
               ],
             },
             {

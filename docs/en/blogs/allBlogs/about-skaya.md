@@ -1,6 +1,7 @@
 ---
 title: About Skaya
 layout: home
+description: "Learn what SkayaJS is and why we built it."
 
 hero:
     name: What is Skaya?
