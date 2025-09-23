@@ -47,16 +47,16 @@ export default defineConfig({
           },
           {
             // @ts-ignore
-            text: "Info",
-            activeMatch: "/guide/",
+            text: "Resources",
             items: [
-              { text: "Getting Started", link: "/guide/getting-started" },
+              { text: "Team", link: "/about" },
               { text: "Support", link: "/support" },
+              { text: "Faq", link: "/Faq" },
               {
-                text: "Group",
+                text: "Our App",
                 items: [
-                  { text: "WEB3", link: "http://web3.skaya.org/" },
-                  { text: "AI", link: "http://app.skaya.org/" },
+                  { text: "WEB3", link: "https://blockchain.skaya.org/" },
+                  { text: "AI", link: "https://app.skaya.org/" },
                 ],
               },
             ],

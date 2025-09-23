@@ -1,9 +1,7 @@
 ---
-title: About Us
 layout: home
-
+sidebar: false
 hero:
-  name: 'About Skaya'
   tagline: 'Empowering developers to create decentralized applications with unprecedented speed and ease'
 
 head:
@@ -18,7 +16,6 @@ aboutData:
   header:
     subtitle: "About Us"
     title: "We're on a mission to make building Web3 applications effortless"
-    description: "Together, we are enabling developers & designers to bring stunning decentralized applications to life with unrivalled speed and ease."
 
   logoCarousel:
     - "React"
@@ -74,54 +71,16 @@ aboutData:
         role: "Founder, CEO"
         bio: "Web3 pioneer and lifelong builder."
 
-
     contributors:
       title: "Community contributors"
       description: "Special members of the community deserve a shout-out for their ever-lasting impact on Skaya's open-source projects."
       members:
         - name: "SuperexMack"
           contribution: "Skaya Frotnend, everything Open Source"
-
-    emeriti:
-      title: "Community emeriti"
-      description: "We honor some no-longer-active core team members who have made valuable contributions in the past. They advise us from time to time."
-      members:
         - name: "Himanshu Jayara"
           contribution: "Skaya Core,sdk contributer"
         - name: "Neeraj Pokhriyal"
           contribution: "Skaya Templates, v2.x co-creator"
- 
-  support:
-    title: "Support us"
-    items:
-      - icon: "📝"
-        title: "Give feedback"
-        description: "Tell us what and where we can improve or share your happy moments with us! You can also up or downvote any page on our documentation."
-        actions:
-          - "Rate documentation pages"
-          - "Submit feature requests"
-          - "Share success stories"
-          - "Participate in community surveys"
-      
-      - icon: "🤝"
-        title: "Join the community"
-        description: "Become a member of a huge community of developers supporting Skaya. You can:"
-        actions:
-          - "Add new features by submitting a pull request"
-          - "Fix bugs or improve our documentation"
-          - "Help others by reviewing and commenting on existing PRs and issues"
-          - "Help translate the documentation"
-          - "Answer questions on Stack Overflow"
-      
-      - icon: "💰"
-        title: "Support us financially"
-        description: "If you use Skaya in a commercial project and would like to support its continued development by becoming a Sponsor, or in a side or hobby project and would like to become a Backer, you can do so through Open Collective."
-        actions:
-          - "Become a GitHub Sponsor"
-          - "Support via Open Collective"
-          - "Corporate sponsorship packages"
-          - "Recognition in README and website"
-
   joinUs:
     title: "Join us"
     subtitle: "Build the next generation of tools for Web3 development"
@@ -135,3 +94,6 @@ aboutData:
         url: "https://twitter.com/skaya_org"
 ---
 
+import AboutPage from "../../src/components/About";
+
+<AboutPage />

@@ -1,7 +1,7 @@
 ---
 title: Terms of Service
 layout: home
-
+sidebar: false
 legalData:
   title: "Terms of Service"
   description: "By using our services, you agree to these terms. Please read them carefully."

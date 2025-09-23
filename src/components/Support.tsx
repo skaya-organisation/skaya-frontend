@@ -1,7 +1,6 @@
 import { usePageData } from "rspress/runtime";
 import { Mail, Phone, MessageSquare, Code, Briefcase } from "lucide-react";
 import { JSX } from "react";
-import "./index.css";
 const iconMap: Record<string, JSX.Element> = {
   Mail: <Mail className="w-5 h-5 text-blue-600" />,
   Phone: <Phone className="w-5 h-5 text-green-600" />,
@@ -18,9 +17,6 @@ export default function SupportPage() {
 
   return (
     <div className="space-y-10">
-      {/* Page Title */}
-      {pageTitle && <h1 className="text-4xl font-bold mb-6">{pageTitle}</h1>}
-
       {/* Support Options */}
       {supportOptions?.items?.length > 0 && (
         <section className="space-y-6">

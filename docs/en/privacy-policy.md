@@ -1,7 +1,7 @@
 ---
 title: Privacy Policy
 layout: home
-
+sidebar: false
 legalData:
   title: "Privacy Policy"
   description: "Your privacy is important to us. This policy explains how we collect, use, and protect your information."
