@@ -1,5 +1,5 @@
 import { usePageData } from "rspress/runtime";
-import "./index.css";
+
 export default function BlogList() {
   const { siteData } = usePageData();
 
@@ -15,25 +15,25 @@ export default function BlogList() {
 
   // Pick top 3
   const topBlogs = sortedBlogs.slice(0, 3);
+
   return (
     <div className="mt-8">
       <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {topBlogs.map((blog: any) => (
           <div
             key={blog.routePath}
-            className="p-6 m-4 rounded-2xl border border-gray-200 shadow-md hover:shadow-lg transition "
-            
+            className="p-6 m-4 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-md hover:shadow-lg transition bg-white dark:bg-gray-800"
           >
             <a
               href={blog.routePath}
-              className="text-xl font-semibold text-blue-600 hover:underline"
+              className="text-xl font-semibold text-blue-600 dark:text-blue-400 hover:underline"
             >
               {blog.frontmatter?.title || "Untitled"}
             </a>
-            <p className="text-gray-700 mt-2">
+            <p className="text-gray-700 dark:text-gray-300 mt-2">
               {blog.frontmatter?.description || "No description"}
             </p>
-            <small className="text-gray-500 mt-1 block">
+            <small className="text-gray-500 dark:text-gray-400 mt-1 block">
               {blog.frontmatter?.date || ""}
             </small>
           </div>
