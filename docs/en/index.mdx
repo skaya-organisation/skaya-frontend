@@ -1,38 +1,139 @@
 ---
-pageType: home
+pageType: custom
 footer: true
-hero:
-  name: Skaya
-  text: UI Browser APIs
-  tagline: Powerful hooks, and ready-to-use components — all in one lightweight package.
-  actions:
-    - theme: brand
-      text: Quick Start
-      link: /guide/getting-started
-    - theme: alt
-      text: Examples
-      link: /guide/examples.html
-  image:
-    src: /logo.png
-    alt: Logo
 
-features:
-  - title: Navigator-based Components
-    details: Use APIs like Geolocation, Bluetooth, Clipboard, and more directly as beautiful React components.
-    icon: ⚡
-  - title: Hooks Included
-    details: Each component comes with its corresponding React hook (e.g., `useGeoLocation`, `useClipboard`) for maximum flexibility.
-    icon: 🧩
-  - title: Tree-shakable & Universal
-    details: Import only what you need. Fully compatible with Vite, React, and Next.js.
-    icon: 🔌
-  - title: Customizable & Extendable
-    details: Extend the UI components and build process effortlessly through Skaya’s flexible extension mechanism.
-    icon: 🔥
-  - title: TypeScript Ready
-    details: Fully typed APIs and components for a seamless developer experience with IntelliSense and autocomplete support.
-    icon: 📘
-  - title: Lightweight & Performant
-    details: Optimized for speed — minimal bundle size with blazing-fast performance on modern browsers.
-    icon: 🚀
+tabs:
+  - key: buy
+    label: "Buy"
+    hero:
+      title: "Find Your Dream Home to Buy"
+      description: "Explore a wide range of properties for sale and secure your perfect home today."
+      cta:
+        - text: "Browse Listings"
+          link: "/listings"
+        - text: "Contact an Agent"
+          link: "/contact"
+      image:
+        src: "/real-estate-buy.png"
+        alt: "Buy Home"
+    listings:
+      - title: Luxury Villa in Beverly Hills
+        location: Beverly Hills, CA
+        price: "$4,500,000"
+        beds: 5
+        baths: 4
+        sqft: "4,200"
+        status: "For Sale"
+        image: "/properties/villa1.png"
+      - title: Modern Apartment in Manhattan
+        location: New York, NY
+        price: "$2,300,000"
+        beds: 3
+        baths: 2
+        sqft: "1,500"
+        status: "For Sale"
+        image: "/properties/apartment1.png"
+
+  - key: rent
+    label: "Rent"
+    hero:
+      title: "Find the Perfect Rental Home"
+      description: "Browse available rental properties to find a comfortable place to live."
+      cta:
+        - text: "Browse Rentals"
+          link: "/rentals"
+        - text: "Contact an Agent"
+          link: "/contact"
+      image:
+        src: "/real-estate-rent.png"
+        alt: "Rent Home"
+    listings:
+      - title: Cozy Apartment in San Francisco
+        location: San Francisco, CA
+        price: "$3,200 / month"
+        beds: 2
+        baths: 1
+        sqft: "950"
+        status: "For Rent"
+        image: "/properties/apartment1.png"
+
+  - key: sell
+    label: "Sell"
+    hero:
+      title: "Sell Your Home Quickly & Easily"
+      description: "List your property with us and connect with potential buyers fast."
+      cta:
+        - text: "List Your Property"
+          link: "/sell"
+        - text: "Contact an Agent"
+          link: "/contact"
+      image:
+        src: "/real-estate-sell.png"
+        alt: "Sell Home"
+    listings:
+      - title: Cozy Apartment in San Francisco
+        location: San Francisco, CA
+        price: "$2,300,000"
+        beds: 2
+        baths: 1
+        sqft: "950"
+        status: "For Rent"
+        image: "/properties/home1.png"
+
+whyChooseUs:
+  title: "Why Choose Us"
+  items:
+    - icon: "🔑"
+      title: Client-Focused
+      description: "We prioritize your needs and find the perfect home for you."
+    - icon: "🤝"
+      title: Trusted Experts
+      description: "Our team of experienced agents ensures transparency and reliability."
+    - icon: "📈"
+      title: Market Insights
+      description: "Get the most informed advice based on current market trends."
+    - icon: "🏡"
+      title: Seamless Experience
+      description: "From search to closing, enjoy a smooth, stress-free process."
+
+agents:
+  title: "Meet Our Agents"
+  items:
+    - name: Jane Doe
+      role: Lead Broker
+      bio: "Helping clients find their dream homes for over 10 years."
+      image: "/agents/jane.png"
+    - name: Alex Chen
+      role: Luxury Specialist
+      bio: "Expert in high-end properties across major cities."
+      image: "/agents/alex.png"
+    - name: Maria Rodriguez
+      role: First-Time Homebuyer Advisor
+      bio: "Guiding first-time buyers through every step."
+      image: "/agents/maria.png"
+
+testimonials:
+  title: "What Our Clients Say"
+  items:
+    - name: Sarah Johnson
+      feedback: "Buying my first home was seamless with Skaya Real Estate. They guided me through every step!"
+      image: "/clients/sarah.png"
+    - name: Michael Brown
+      feedback: "I sold my house in just 2 weeks! The team was professional and very responsive."
+      image: "/clients/michael.png"
+    - name: Priya Patel
+      feedback: "Their rental service helped me find the perfect apartment within my budget."
+      image: "/clients/priya.png"
+
+contactForm:
+  title: "Get in Touch"
+  namePlaceholder: "Your Name"
+  emailPlaceholder: "Your Email"
+  messagePlaceholder: "Your Message"
+  buttonText: "Send via WhatsApp"
 ---
+
+
+import RealEstateHomePage from "../../src/components/index";
+
+<RealEstateHomePage />

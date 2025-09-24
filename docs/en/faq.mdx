@@ -4,163 +4,117 @@ layout: home
 sidebar: false
 
 hero:
-  name: 'SkayaJS'
-  text: 'Frequently Asked Questions'
-  tagline: 'All you need to know about using SkayaJS components, hooks, and theming.'
+  name: 'Skaya Real Estate'
+  text: 'Your Questions, Answered'
+  tagline: 'Everything you need to know about buying and selling your home with us.'
 
 head:
   - - meta
     - name: 'keywords'
-      content: 'SkayaJS, React, navigator APIs, geolocation, bluetooth, clipboard, hooks, theming, npm library, web3'
+      content: 'real estate, homes, property, home buying, selling, FAQs, listings, real estate agency'
+  - - meta
+    - name: 'description'
+      content: 'Find answers to frequently asked questions about the real estate process, our services, and how Skaya Real Estate helps you achieve your property goals.'
 
 faqSections:
-  - title: "General FAQs"
+  - title: "General Real Estate FAQs"
     items:
-      - question: "What is SkayaJS?"
+      - question: "What services does Skaya Real Estate offer?"
         tags: ["General"]
         answer: |
-          SkayaJS is a React Component Library that wraps browser Navigator APIs like:
+          Skaya Real Estate is a full-service agency specializing in residential and commercial properties. We offer a comprehensive suite of services, including:
           <ul>
-            <li>Geolocation</li>
-            <li>Bluetooth</li>
-            <li>Clipboard</li>
-            <li>Media Devices</li>
+            <li>Personalized property searches for buyers</li>
+            <li>Strategic listing and marketing for sellers</li>
+            <li>Professional negotiation and transaction management</li>
+            <li>Market analysis and pricing guidance</li>
           </ul>
-          into beautiful, themed, and developer-friendly React components and hooks.
-      - question: "How do I install SkayaJS?"
-        tags: ["General", "Installation"]
+      - question: "How do I start the home buying process?"
+        tags: ["General", "Getting Started"]
         answer: |
-          Install via npm or yarn:
-          <pre><code>npm install skayajs</code></pre>
-          <pre><code>yarn add skayajs</code></pre>
-      - question: "Can I use SkayaJS with MUI or Tailwind?"
-        tags: ["General", "Styling"]
+          The first step is to connect with one of our expert agents. We'll discuss your needs and preferences, provide a detailed market overview, and help you get pre-approved for a mortgage to streamline your search.
+      - question: "How does Skaya Real Estate ensure a high-conversion process?"
+        tags: ["General", "Strategy"]
         answer: |
-          Yes! SkayaJS components are fully compatible with MUI, Tailwind, or any CSS-in-JS library.  
-          You can pass `className` props or wrap them in your theme providers.
+          We focus on data-driven strategies and personalized service. For sellers, this means professional staging, photography, and targeted digital marketing. For buyers, it means leveraging our network to find exclusive listings and negotiating the best possible terms.
 
-  - title: "Components & Hooks"
+  - title: "Buying & Selling Process"
     items:
-      - question: "Which components are available?"
-        tags: ["Components"]
+      - question: "What does the home buying process look like?"
+        tags: ["Buying"]
         answer: |
-          Current Navigator-based components:
+          The process typically includes these key steps:
           <ul>
-            <li><strong>GeoLocation</strong> – Show or track user location</li>
-            <li><strong>BluetoothConnector</strong> – Connect and manage Bluetooth devices</li>
-            <li><strong>Clipboard</strong> – Read/write system clipboard</li>
-            <li><strong>MediaDevices</strong> – Access camera/microphone streams</li>
+            <li><strong>Step 1: Consultation & Pre-approval</strong> – Define your criteria and secure financing.</li>
+            <li><strong>Step 2: Property Search</strong> – We identify and tour homes that match your needs.</li>
+            <li><strong>Step 3: Offer & Negotiation</strong> – We craft a competitive offer and handle all negotiations.</li>
+            <li><strong>Step 4: Inspection & Appraisal</strong> – We manage the due diligence period for a smooth closing.</li>
           </ul>
-      - question: "Do components have corresponding hooks?"
-        tags: ["Hooks"]
+      - question: "How does Skaya Real Estate help sellers?"
+        tags: ["Selling"]
         answer: |
-          Yes. Each component has a hook, e.g.:
+          We maximize your property's value by providing:
           <ul>
-            <li>`useGeoLocation`</li>
-            <li>`useBluetooth`</li>
-            <li>`useClipboard`</li>
-            <li>`useMediaDevices`</li>
-          </ul>
-          Hooks provide fine-grained control if you want to handle logic separately from UI.
-
-  - title: "Theming & Styling"
-    items:
-      - question: "How do I enable dark/light mode?"
-        tags: ["Theming"]
-        answer: |
-          Wrap your app with `SkayaThemeProvider` and set `initialTheme` to `"dark"` or `"light"`:
-          ```
-          <SkayaThemeProvider initialTheme="dark">
-            <App />
-          </SkayaThemeProvider>
-          ```
-          Components automatically adapt their styles. You can override using `className` or your CSS framework.
-      - question: "Can I change the theme dynamically?"
-        tags: ["Theming"]
-        answer: |
-          Yes! Use the `useSkayaTheme` hook:
-          ```
-          const { theme, setTheme } = useSkayaTheme();
-          <button onClick={() => setTheme(theme === "light" ? "dark" : "light")}>Toggle Theme</button>
-          ```
-
-  - title: "Development & Testing"
-    items:
-      - question: "How do I test SkayaJS components?"
-        tags: ["Testing"]
-        answer: |
-          SkayaJS includes test files for each component.  
-          Install dev dependencies and run:
-          ```
-          npm test
-          ```
-          or
-          ```
-          yarn test
-          ```
-          Example: `GeoLocation` test mocks `navigator.geolocation`.
-
-      - question: "Can I develop locally before publishing?"
-        tags: ["Development"]
-        answer: |
-          Yes, use `npm link` or a local example app:
-          ```
-          cd skayajs
-          npm run build
-          npm link
-          cd ../my-app
-          npm link skayajs
-          ```
-          Or run the `example/` app:
-          ```
-          npm run example:dev
-          ```
-
-  - title: "Roadmap & Future"
-    items:
-      - question: "Which components are planned next?"
-        tags: ["Roadmap"]
-        answer: |
-          Planned components:
-          <ul>
-            <li>HID (keyboard/mouse/gamepad)</li>
-            <li>Ink & Pen input</li>
-            <li>Device posture & battery info</li>
-            <li>Media session & playback controls</li>
-          </ul>
-      - question: "Will there be more hooks and utilities?"
-        tags: ["Roadmap"]
-        answer: |
-          Yes. Future releases will include more hooks for:
-          <ul>
-            <li>Lock manager</li>
-            <li>Credentials & login status</li>
-            <li>Network information & device memory</li>
+            <li><strong>Professional Photography & Virtual Tours</strong> – To make your listing stand out.</li>
+            <li><strong>Staging Consultation</strong> – To showcase your home's best features.</li>
+            <li><strong>Market Analysis</strong> – To determine the optimal listing price.</li>
+            <li><strong>Aggressive Marketing</strong> – To attract qualified buyers through multiple channels.</li>
           </ul>
 
-  - title: "Support & Resources"
+  - title: "Pricing & Fees"
     items:
-      - question: "Where can I get help?"
+      - question: "What are the fees for sellers?"
+        tags: ["Fees", "Selling"]
+        answer: |
+          Our fees are a competitive commission based on the final sale price of your home. This fee covers all services, including marketing, professional photography, open houses, and full transaction management.
+      - question: "Are there any fees for buyers?"
+        tags: ["Fees", "Buying"]
+        answer: |
+          Typically, the buyer does not pay a commission. The agent's commission is paid by the seller out of the proceeds of the sale.
+
+  - title: "Mortgage & Financing"
+    items:
+      - question: "Can Skaya Real Estate help me with financing?"
+        tags: ["Financing"]
+        answer: |
+          While we don't provide direct lending, we have strong relationships with a network of trusted mortgage lenders. We can connect you with the right professionals to help you find the best financing options for your situation.
+      - question: "What is the pre-approval process?"
+        tags: ["Financing"]
+        answer: |
+          Pre-approval is a letter from a lender stating that they are tentatively willing to lend you a specific amount of money. This process involves a review of your credit, income, and assets, and is a crucial step that shows sellers you are a serious buyer.
+
+  - title: "Our Commitment"
+    items:
+      - question: "What is Skaya's long-term commitment to clients?"
+        tags: ["Commitment"]
+        answer: |
+          We believe in building lifelong relationships. Even after your transaction is complete, we remain a trusted resource for market updates, property management advice, and all your future real estate needs.
+      - question: "How do you stay up-to-date with market trends?"
+        tags: ["Commitment"]
+        answer: |
+          Our team is constantly analyzing market data, tracking sales trends, and attending professional development courses. We leverage the latest technology to provide you with the most accurate and up-to-date information.
+
+  - title: "Contact & Resources"
+    items:
+      - question: "How can I get in touch with an agent?"
         tags: ["Support"]
         answer: |
           <strong>Resources:</strong>
           <ul>
-            <li><a href="#/docs">Official Documentation</a></li>
-            <li>GitHub Issues</li>
-            <li>Community Discord</li>
-            <li>team@skaya.org</li>
+            <li><a href="/contact">Contact an agent directly</a></li>
+            <li>Email us at team@skayarealestate.com</li>
+            <li>Visit our local office for a consultation</li>
           </ul>
-      - question: "Are there example projects?"
+      - question: "Are there helpful resources for buyers and sellers?"
         tags: ["Support", "Examples"]
         answer: |
-          Check the `example/` folder in this repo or:
+          Yes! We have a collection of helpful resources on our website, including:
           <ul>
-            <li><a href="https://github.com/skaya-org/frontend-react">Frontend React templates</a></li>
-            <li><a href="https://github.com/skaya-org/community-templates">Community contributions</a></li>
+            <li><a href="/guides">Comprehensive Buying & Selling Guides</a></li>
+            <li><a href="/blog">Our Real Estate Blog</a></li>
+            <li><a href="/webinars">Upcoming Webinars</a></li>
           </ul>
 ---
-
-
 
 import Faq from "../../src/components/Faq";
 
