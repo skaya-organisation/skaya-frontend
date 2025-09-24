@@ -58,8 +58,6 @@ Install **PM2** to keep your app running:
 sudo npm install -g pm2 
 ```
 
----
-
 ### 3️⃣ Add GitHub Actions Workflow
 
 Inside your project, create **`.github/workflows/deploy.yml`**:
