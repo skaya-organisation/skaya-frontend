@@ -3,12 +3,13 @@ title: Geolocation
 description: Learn how to use the LocationButton component and the useGeolocation hook for retrieving user location.
 ---
 
-import LocationExample from '../../../../../src/components/GeoLocation/Example.tsx';
-import HooksExample from '../../../../../src/components/GeoLocation/HooksExample.tsx';
-import MUIExample from '../../../../../src/components/GeoLocation/MUIExample.tsx';
-import { Tab, Tabs } from 'rspress/theme';
+import LocationExample from "../../../../../src/components/GeoLocation/Example.tsx";
+import HooksExample from "../../../../../src/components/GeoLocation/HooksExample.tsx";
+import MUIExample from "../../../../../src/components/GeoLocation/MUIExample.tsx";
+import { Tab, Tabs } from "rspress/theme";
 
 # 📍 Geolocation Component
+
 <div
   style={{
     display: "flex",
@@ -28,7 +29,7 @@ import { Tab, Tabs } from 'rspress/theme';
       gap: "0.5rem",
       color: "#cb3837",
       textDecoration: "none",
-      fontWeight: "bold"
+      fontWeight: "bold",
     }}
   >
     <img
@@ -39,7 +40,9 @@ import { Tab, Tabs } from 'rspress/theme';
     <span>| Skaya v1.0.0</span>
   </a>
 </div>
-The **`LocationButton`** component is a controlled button designed to trigger the browser's `navigator.geolocation` API, working seamlessly with the **`useGeolocation`** hook.
+The **`LocationButton`** component is a controlled button designed to trigger the
+browser's `navigator.geolocation` API, working seamlessly with the **`useGeolocation`**
+hook.
 
 ## Component Usage
 
@@ -47,143 +50,168 @@ The **`LocationButton`** is used to encapsulate the UI logic, while the **`useGe
 
 <Tabs>
   <Tab label="Demo"><LocationExample /></Tab>
-  <Tab label="Code">
+  <Tab label="Props">
+  ```tsx
+  {
+    
+    // Example usage:
+    
+    <LocationButton
+      onClick={fetchLocation}
+      isLoading={isLoading}
+      className="px-4 py-2 bg-green-500 text-white rounded"
+    >
+      Get Location
+    </LocationButton>
+    }
+
+interface LocationButtonProps {
+children?: React.ReactNode; // The content displayed on the button when it's NOT fetching. Default: "Get Location"
+onClick: () => void; // Function to execute on button click, typically fetchLocation from the hook. Required.
+isLoading?: boolean; // Boolean state indicating if the location request is currently in progress. Default: false
+className?: string; // Optional custom CSS classes. Default: ""
+}
+
+```
+</Tab>
+<Tab label="Demo Code">
 ```tsx
 import React, { useEffect, useRef } from "react";
 import { LocationButton, useGeolocation } from "skayajs";
 import Globe from "react-globe.gl";
 
-
 const Location = ({ label = "Track Me" }) => {
-  const { location, isLoading, fetchLocation, resetLocation } = useGeolocation();
-  const globeRef = useRef<any>(null);
+const { location, isLoading, fetchLocation, resetLocation } = useGeolocation();
+const globeRef = useRef<any>(null);
 
-  useEffect(() => {
-    if (location.latitude && location.longitude) {
-      globeRef.current?.pointOfView(
-        { lat: location.latitude, lng: location.longitude, altitude: 1.5 },
-        1500
-      );
-    }
-  }, [location]);
+useEffect(() => {
+  if (location.latitude && location.longitude) {
+    globeRef.current?.pointOfView(
+      { lat: location.latitude, lng: location.longitude, altitude: 1.5 },
+      1500
+    );
+  }
+}, [location]);
 
-  return (
-    <div className="flex flex-col items-center rounded-xl  space-y-6 text-center">
-      {/* Globe */}
-      <Globe
-        ref={globeRef}
-        width={400}
-        height={400}
-        globeImageUrl="//unpkg.com/three-globe/example/img/earth-dark.jpg"
-        pointsData={
-          location.latitude && location.longitude
-            ? [{ lat: location.latitude, lng: location.longitude, size: 1 }]
-            : []
-        }
-        pointAltitude={0.2}
-        pointColor={() => "red"}
-      />
+return (
+  <div className="flex flex-col items-center rounded-xl  space-y-6 text-center">
+    {/* Globe */}
+    <Globe
+      ref={globeRef}
+      width={400}
+      height={400}
+      globeImageUrl="//unpkg.com/three-globe/example/img/earth-dark.jpg"
+      pointsData={
+        location.latitude && location.longitude
+          ? [{ lat: location.latitude, lng: location.longitude, size: 1 }]
+          : []
+      }
+      pointAltitude={0.2}
+      pointColor={() => "red"}
+    />
 
+    {location.latitude && location.longitude && (
+      <p className="mt-2">
+        Latitude: {location.latitude.toFixed(5)}, Longitude:{location.longitude.toFixed(5)}
+      </p>
+    )}
 
-      {location.latitude && location.longitude && (
-        <p className="mt-2">
-          Latitude: {location.latitude.toFixed(5)}, Longitude:{" "}
-          {location.longitude.toFixed(5)}
-        </p>
-      )}
+    {/* Actions */}
+    <div className="flex gap-2">
+      <LocationButton
+        onClick={fetchLocation}
+        isLoading={isLoading}
+        className={`px-6 py-2 rounded-md ${
+          isLoading
+            ? "bg-gray-400"
+            : "bg-green-600 hover:bg-green-700 text-white"
+        }`}
+      >
+        {isLoading ? "Loading..." : label}
+      </LocationButton>
 
-      {/* Actions */}
-      <div className="flex gap-2">
-        <LocationButton
-          onClick={fetchLocation}
-          isLoading={isLoading}
-          className={`px-6 py-2 rounded-md ${
-            isLoading
-              ? "bg-gray-400"
-              : "bg-green-600 hover:bg-green-700 text-white"
-          }`}
-        >
-          {isLoading ? "Loading..." : label}
-        </LocationButton>
-
-        <button
-          onClick={resetLocation}
-          className="px-4 py-2 text-white bg-red-600 rounded-lg hover:bg-red-700 transition-colors"
-        >
-          Reset
-        </button>
-      </div>
+      <button
+        onClick={resetLocation}
+        className="px-4 py-2 text-white bg-red-600 rounded-lg hover:bg-red-700 transition-colors"
+      >
+        Reset
+      </button>
     </div>
-  );
+  </div>
+ );
 };
 
 export default Location;
 
 ```
+
 </Tab>
 </Tabs>
 
-## Props
-
-The **`LocationButton`** leverages the standard `children` prop for its content and follows common React naming conventions for handlers and state.
-
-| Prop | Type | Default | Description |
-| :--- | :--- | :--- | :--- |
-| `children` | `React.ReactNode` | `"Get Location"` | The content displayed on the button when it's **not** fetching. |
-| `onClick` | `() => void` | `required` | The function (e.g., `fetchLocation` from the hook) to execute on button click. |
-| `isLoading` | `boolean` | `false` | Boolean state indicating if the location request is currently in progress. |
-| `className` | `string` | `""` | Optional custom CSS classes. |
-
 ## Hooks Usage
 
-The **`useGeolocation`** hook gives you programmatic control over geolocation requests without needing a button component. It returns 4 values:
-
-- **`location`** An object containing:  
-  - `.latitude`: the user's current latitude, or `null` if not fetched.  
-  - `.longitude`: the user's current longitude, or `null` if not fetched.  
-  - `.error`: any error message if the geolocation request failed.  
-
-- **`isLoading`** `boolean` indicating whether the geolocation request is in progress.  
-
-- **`fetchLocation()`** Function to trigger a request to get the user's current location.  
-
-- **`resetLocation()`** Function to reset the location state (`latitude` and `longitude` → `null`, `error` → `null`) and stop loading.
+The `useGeolocation` hook gives you programmatic control over geolocation requests without needing a button component.
 
 <Tabs>
   <Tab label="Demo"><HooksExample /></Tab>
-  <Tab label="Code">
+  <Tab label="Hooks">
 ```tsx
-import { useGeolocation } from "skayajs";
+{
+      // Example usage:
+      const { location, isLoading, fetchLocation, resetLocation } = useGeolocation();
+    
+      console.log(location.latitude, location.longitude);
+      console.log(location.error);
 
-export default function GeoLocation() {
-  const { location, isLoading, fetchLocation } = useGeolocation();
+      interface GeolocationState {
+        location: {
+            latitude: number | null; // the user's current latitude, or null if not fetched
+            longitude: number | null; // the user's current longitude, or null if not fetched
+            error: string | null; // any error message if the geolocation request failed
+          };
+        isLoading: boolean; // whether the geolocation request is in progress
+        fetchLocation: () => void; // function to trigger a request to get the user's current location
+        resetLocation: () => void; // function to reset the location state (latitude/longitude → null, error → null)
+      }
 
-  return (
-    <div className="p-4">
-      <button
-        onClick={fetchLocation}
-        className="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700"
-        disabled={isLoading}
-      >
-        {isLoading ? "Fetching..." : "Get My Location"}
-      </button>
-
-      {location.latitude && location.longitude && (
-        <p className="mt-2">
-          Latitude: {location.latitude.toFixed(5)}, Longitude:{" "}
-          {location.longitude.toFixed(5)}
-        </p>
-      )}
-    </div>
-  );
 }
 
 ```
 </Tab>
+<Tab label="Code">
+```tsx
+import { useGeolocation } from "skayajs";
+
+export default function GeoLocation() {
+const { location, isLoading, fetchLocation } = useGeolocation();
+
+return (
+
+<div className="p-4">
+<button
+      onClick={fetchLocation}
+      className="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700"
+      disabled={isLoading}
+    >
+{isLoading ? "Fetching..." : "Get My Location"}
+</button>
+
+    {location.latitude && location.longitude && (
+      <p className="mt-2">
+        Latitude: {location.latitude.toFixed(5)}, Longitude:{location.longitude.toFixed(5)}
+      </p>
+    )}
+  </div>
+
+);
+}
+
+```
+
+</Tab>
 </Tabs>
 
 ## Usage with MUI Button
-
 
 <Tabs>
   <Tab label="Demo"><MUIExample /></Tab>
@@ -193,18 +221,19 @@ import { useGeolocation } from "skayajs";
 import { Button, CircularProgress } from "@mui/material";
 
 function MUIExample() {
-  const { location, isLoading, fetchLocation } = useGeolocation();
+const { location, isLoading, fetchLocation } = useGeolocation();
 
-  return (
-    <div>
-      <Button
+return (
+
+<div>
+<Button
         variant="contained"
         color="primary"
         onClick={fetchLocation}
         disabled={isLoading}
       >
-        {loading ? <CircularProgress size={20} sx={{ color: "white", mr: 1 }} /> : "Get My Location"}
-      </Button>
+{loading ? <CircularProgress size={20} sx={{ color: "white", mr: 1 }} /> : "Get My Location"}
+</Button>
 
       {location.latitude && location.longitude && (
         <p>
@@ -212,9 +241,12 @@ function MUIExample() {
         </p>
       )}
     </div>
-  );
+
+);
 }
+
 ```
+
 </Tab>
 </Tabs>
-
+```

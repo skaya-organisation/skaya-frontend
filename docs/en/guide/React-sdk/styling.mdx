@@ -11,6 +11,7 @@ keywords:
 ---
 
 # 🎨 Styling & Theming
+
 <div
   style={{
     display: "flex",
@@ -30,7 +31,7 @@ keywords:
       gap: "0.5rem",
       color: "#cb3837",
       textDecoration: "none",
-      fontWeight: "bold"
+      fontWeight: "bold",
     }}
   >
     <img
@@ -41,14 +42,16 @@ keywords:
     <span>| Skaya v1.0.0</span>
   </a>
 </div>
-SkayaJS components are built with **Tailwind CSS utility classes** and the `cn` helper function.  
-This ensures that you can easily **customize**, **override**, and **merge** styles without worrying about conflicts.
+SkayaJS components are built with **Tailwind CSS utility classes** and the `cn` helper
+function. This ensures that you can easily **customize**, **override**, and **merge**
+styles without worrying about conflicts.
 
-This way, your **Styling page** explains:  
-- What `cn` is and why it’s used,  
-- How `className` overrides work,  
-- Examples for conditional styling,  
-- Dark mode + global theming. 
+This way, your **Styling page** explains:
+
+- What `cn` is and why it’s used,
+- How `className` overrides work,
+- Examples for conditional styling,
+- Dark mode + global theming.
 
 ## ✅ The `cn` Utility
 
@@ -64,13 +67,9 @@ This means your custom `className` always wins.
 By default, the LocationButton ships with a base design:
 
 ```tsx
-<LocationButton
-  onClick={fetchLocation}
-  isLoading={isLoading}
->
+<LocationButton onClick={fetchLocation} isLoading={isLoading}>
   Get My Location
 </LocationButton>
-
 ```
 
 ✨ Renders as a button that disables itself while loading.
@@ -87,7 +86,6 @@ Pass any extra Tailwind or CSS classes:
 >
   Custom Styled Button
 </LocationButton>
-
 ```
 
 ### 🔹 Conditional Styling Example
@@ -98,14 +96,12 @@ Since we use `cn`, you can also pass conditional styles:
 <LocationButton
   onClick={fetchLocation}
   isLoading={isLoading}
-  className={cn(
-    "px-6 py-2 rounded-md",
-    isLoading ? "bg-gray-400" : "bg-purple-600 hover:bg-purple-700 text-white"
-  )}
+  className={`px-6 py-2 rounded-md ${
+    isLoading ? "bg-gray-400" : "bg-green-600 hover:bg-green-700 text-white"
+  }`}
 >
   {isLoading ? "Loading..." : "Track Me"}
 </LocationButton>
-
 ```
 
 ## 🌗 Dark Mode Support
@@ -118,5 +114,4 @@ SkayaJS components also respect dark mode automatically:
   isLoading={isLoading}
   className="dark:bg-white dark:text-black bg-black text-white"
 />
-
 ```

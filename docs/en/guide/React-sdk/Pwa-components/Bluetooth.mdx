@@ -42,11 +42,37 @@ import { Tab, Tabs } from "rspress/theme";
 
 The **`BluetoothButton`** component is a controlled button designed to trigger the browser's `navigator.bluetooth` API, working seamlessly with the **`useBluetooth`** hook.
 
-## Component Usage
+## Component Usage (BluetoothButton)
 
+The `BluetoothButton` leverages the standard `children` prop for its content and follows common React naming conventions for handlers and state.
 <Tabs>
   <Tab label="Demo"><BluetoothExample /></Tab>
-  <Tab label="Code">
+
+  <Tab label="Props">
+```tsx
+{
+
+  // Example usage:
+  <BluetoothButton
+    onClick={fetchBluetoothDevice}
+    isLoading={isLoading}
+    className="px-4 py-2 bg-blue-500 text-white rounded"
+  >
+    Connect Bluetooth
+  </BluetoothButton>
+
+  interface BluetoothButtonProps {
+    children?: React.ReactNode;          // The content displayed on the button when it's NOT connecting. Default: "Connect Bluetooth"
+    onClick: () => void;                 // Function to execute on button click, typically fetchBluetoothDevice from the hook. Required.
+    isLoading?: boolean;                 // Boolean state indicating if the Bluetooth request is currently in progress. Default: false
+    className?: string;                  // Optional custom CSS classes. Default: ""
+  }
+
+}
+
+```
+</Tab>
+  <Tab label="Demo Code">
 ```tsx
 import { BluetoothButton, useBluetooth } from "skayajs";
 
@@ -78,8 +104,7 @@ return (
         Reset
       </button>
     </div>
-
-);
+ );
 };
 
 export default BluetoothDemo;
@@ -88,38 +113,37 @@ export default BluetoothDemo;
 </Tab>
 </Tabs>
 
-## Props
+## Hooks Usage (useBluetooth)
 
-The **`BluetoothButton`** leverages the standard `children` prop for its content and follows common React naming conventions for handlers and state.
-
-| Prop        | Type              | Default               | Description                                                                     |
-| :---------- | :---------------- | :-------------------- | :------------------------------------------------------------------------------ |
-| `children`  | `React.ReactNode` | `"Connect Bluetooth"` | The content displayed on the button when it's **not** connecting.               |
-| `onClick`   | `() => void`      | `required`            | The function (`fetchBluetoothDevice` from the hook) to execute on button click. |
-| `isLoading` | `boolean`         | `false`               | Boolean state indicating if the Bluetooth request is currently in progress.     |
-| `className` | `string`          | `""`                  | Optional custom CSS classes.                                                    |
-
-
-## Hooks Usage
-
-The **`useBluetooth`** hook gives you programmatic control over Bluetooth connections without needing a button component.
-
-It returns four values:
-
-- **`bluetooth`** An object containing:
-  - `.device`: the connected Bluetooth device object, or `null` if not connected.
-  - `.error`: any error message if the connection failed.
-
-- **`isLoading`** `boolean` indicating whether the Bluetooth request is in progress.
-
-- **`fetchBluetoothDevice()`** Function to trigger a request to connect to a Bluetooth device.
-
-- **`resetBluetooth()`** Function to reset the state (`device` → `null`, `error` → `null`) and stop loading.
-
+The `useBluetooth` hook gives you programmatic control over Bluetooth connections without needing a button component.
 
 <Tabs>
   <Tab label="Demo"><HooksExample /></Tab>
-  <Tab label="Code">
+
+  <Tab label="Hooks">
+```tsx
+  {
+  // Example usage:
+  const { bluetooth, isLoading, fetchBluetoothDevice, resetBluetooth } = useBluetooth();
+
+  console.log(bluetooth.device);
+  console.log(bluetooth.error);
+
+  // interface
+  interface BluetoothState {
+    bluetooth: {
+      device: BluetoothDevice | null; // the connected Bluetooth device object, or `null` if not connected
+      error: string | null;           // any error message if the connection failed
+    };
+    isLoading: boolean;                // whether the Bluetooth request is in progress
+    fetchBluetoothDevice: () => void; // function to trigger a request to connect to a Bluetooth device
+    resetBluetooth: () => void;       // function to reset the state (device → null, error → null) and stop loading
+  }
+
+}
+```
+</Tab>
+  <Tab label="Demo Code">
 ```tsx
 import React from "react";
 import { useBluetooth } from "skayajs";
