@@ -2,6 +2,7 @@
   "name": "skayajs",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "build": "rspress build",
     "check": "biome check --write",
@@ -18,6 +19,7 @@
     "lucide-react": "^0.544.0",
     "react-globe.gl": "^2.36.0",
     "rspress": "^1.40.2",
+    "skayajs": "^0.1.0",
     "three": "^0.180.0"
   },
   "devDependencies": {

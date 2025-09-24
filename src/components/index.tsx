@@ -8,7 +8,7 @@ export default function HomePage() {
   const { hero, features } = fm;
 
   return (
-    <div className="space-y-16 py-12 px-4 md:px-8 max-w-7xl mx-auto">
+    <div className="space-y-16 ">
       {/* Hero Section */}
       {hero && (
         <section className="text-center space-y-6 flex flex-col-reverse md:flex-row items-center justify-between gap-8 py-12">
