@@ -123,9 +123,31 @@ export default Location;
 </Tab>
 </Tabs>
 
+## Props
+
+The **`LocationButton`** leverages the standard `children` prop for its content and follows common React naming conventions for handlers and state.
+
+| Prop | Type | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `children` | `React.ReactNode` | `"Get Location"` | The content displayed on the button when it's **not** fetching. |
+| `onClick` | `() => void` | `required` | The function (e.g., `fetchLocation` from the hook) to execute on button click. |
+| `isLoading` | `boolean` | `false` | Boolean state indicating if the location request is currently in progress. |
+| `className` | `string` | `""` | Optional custom CSS classes. |
+
 ## Hooks Usage
 
-If you need programmatic control or prefer to use your own UI components, the useGeolocation hook provides full access to the API status.
+The **`useGeolocation`** hook gives you programmatic control over geolocation requests without needing a button component. It returns 4 values:
+
+- **`location`** An object containing:  
+  - `.latitude`: the user's current latitude, or `null` if not fetched.  
+  - `.longitude`: the user's current longitude, or `null` if not fetched.  
+  - `.error`: any error message if the geolocation request failed.  
+
+- **`isLoading`** `boolean` indicating whether the geolocation request is in progress.  
+
+- **`fetchLocation()`** Function to trigger a request to get the user's current location.  
+
+- **`resetLocation()`** Function to reset the location state (`latitude` and `longitude` → `null`, `error` → `null`) and stop loading.
 
 <Tabs>
   <Tab label="Demo"><HooksExample /></Tab>
@@ -196,13 +218,3 @@ function MUIExample() {
 </Tab>
 </Tabs>
 
-## Props
-
-The **`LocationButton`** leverages the standard `children` prop for its content and follows common React naming conventions for handlers and state.
-
-| Prop | Type | Default | Description |
-| :--- | :--- | :--- | :--- |
-| `children` | `React.ReactNode` | `"Get Location"` | The content displayed on the button when it's **not** fetching. |
-| `onClick` | `() => void` | `required` | The function (e.g., `fetchLocation` from the hook) to execute on button click. |
-| `isLoading` | `boolean` | `false` | Boolean state indicating if the location request is currently in progress. |
-| `className` | `string` | `""` | Optional custom CSS classes. |

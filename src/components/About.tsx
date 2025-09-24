@@ -6,7 +6,7 @@ export default function AboutPage() {
   const { hero, aboutData } = fm;
 
   return (
-    <div className="space-y-16">
+    <div className="space-y-16  text-gray-800 dark:text-gray-200">
       {/* Hero */}
       {hero && (
         <section className="text-center space-y-4">
@@ -19,7 +19,7 @@ export default function AboutPage() {
       {/* Header */}
       {aboutData?.header && (
         <section className="max-w-3xl mx-auto text-center space-y-4">
-          <p className="text-sm uppercase tracking-wide text-blue-600">
+          <p className="text-sm uppercase tracking-wide text-blue-600 dark:text-blue-400">
             {aboutData.header.subtitle}
           </p>
           <h2 className="text-3xl font-bold">{aboutData.header.title}</h2>
@@ -51,7 +51,7 @@ export default function AboutPage() {
           {aboutData.stats.map((stat: any, i: number) => (
             <div
               key={i}
-              className="p-6 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm"
+              className="p-6 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm bg-gray-50 dark:bg-gray-800"
             >
               <p className="text-2xl font-bold">{stat.value}</p>
               <p className="text-lg font-semibold">{stat.label}</p>
@@ -67,7 +67,7 @@ export default function AboutPage() {
       {aboutData?.values && (
         <section className="space-y-6 py-24">
           <div className="text-center space-y-2">
-            <p className="text-sm uppercase tracking-wide text-blue-600">
+            <p className="text-sm uppercase tracking-wide text-blue-600 dark:text-blue-400">
               {aboutData.values.subtitle}
             </p>
             <h2 className="text-2xl font-bold">{aboutData.values.title}</h2>
@@ -79,7 +79,7 @@ export default function AboutPage() {
             {aboutData.values.items.map((val: any, i: number) => (
               <div
                 key={i}
-                className="p-6 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm flex gap-3"
+                className="p-6 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm flex gap-3 bg-gray-50 dark:bg-gray-800"
               >
                 <span className="text-2xl">{val.icon}</span>
                 <div>
@@ -98,7 +98,7 @@ export default function AboutPage() {
       {aboutData?.team && (
         <section className="space-y-6 py-24">
           <div className="text-center space-y-2">
-            <p className="text-sm uppercase tracking-wide text-blue-600">
+            <p className="text-sm uppercase tracking-wide text-blue-600 dark:text-blue-400">
               {aboutData.team.subtitle}
             </p>
             <h2 className="text-2xl font-bold">{aboutData.team.title}</h2>
@@ -112,10 +112,10 @@ export default function AboutPage() {
             {aboutData.team.coreMembers.map((member: any, i: number) => (
               <div
                 key={i}
-                className="p-6 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm"
+                className="p-6 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm bg-gray-50 dark:bg-gray-800"
               >
                 <h3 className="text-lg font-semibold">{member.name}</h3>
-                <p className="text-sm text-blue-600">{member.role}</p>
+                <p className="text-sm text-blue-600 dark:text-blue-400">{member.role}</p>
                 <p className="text-gray-600 dark:text-gray-400 mt-2">
                   {member.bio}
                 </p>
@@ -136,7 +136,7 @@ export default function AboutPage() {
                 {aboutData.team.contributors.members.map((m: any, i: number) => (
                   <div
                     key={i}
-                    className="p-4 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm"
+                    className="p-4 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm bg-gray-50 dark:bg-gray-800"
                   >
                     <h4 className="font-semibold">{m.name}</h4>
                     <p className="text-sm text-gray-600 dark:text-gray-400">
@@ -148,14 +148,13 @@ export default function AboutPage() {
             </div>
           )}
 
-          
         </section>
       )}
 
       {/* Join Us */}
       {aboutData?.joinUs && (
         <section className="text-center space-y-4 py-24">
-          <p className="text-sm uppercase tracking-wide text-blue-600">
+          <p className="text-sm uppercase tracking-wide text-blue-600 dark:text-blue-400">
             {aboutData.joinUs.subtitle}
           </p>
           <h2 className="text-2xl font-bold">{aboutData.joinUs.title}</h2>

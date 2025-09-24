@@ -86,25 +86,27 @@ export default defineConfig({
                   dividerType: "dashed",
                 },
                 {
-                  text:"Pwa Components",
+                  text: "Pwa Components",
                   collapsed: true,
-                  items:[
-                         {
-                  text: "Geolocation",
-                  link: "/guide/React-sdk/pwa-components/GeoLocation",
+                  items: [
+                    {
+                      text: "Geolocation",
+                      link: "/guide/React-sdk/pwa-components/GeoLocation",
+                    },
+                    {
+                      text: "Bluetooth",
+                      link: "/guide/React-sdk/pwa-components/Bluetooth",
+                    },
+                    {
+                      text: "Audio Player",
+                      link: "/guide/React-sdk/pwa-components/ComingSoon",
+                    },
+                    {
+                      text: "Contact picker",
+                      link: "/guide/React-sdk/pwa-components/ComingSoon",
+                    },
+                  ],
                 },
-                { text: "Bluetooth", link: "/guide/React-sdk/pwa-components/ComingSoon" },
-                {
-                  text: "Audio Player",
-                  link: "/guide/React-sdk/pwa-components/ComingSoon",
-                },
-                {
-                  text: "Contact picker",
-                  link: "/guide/React-sdk/pwa-components/ComingSoon",
-                },
-                  ]
-                }
-           
               ],
             },
             {
@@ -230,17 +232,17 @@ export default defineConfig({
       {
         icon: "github",
         mode: "link",
-        content: "https://github.com/web-infra-dev/rspress",
+        content: "https://github.com/skaya-org",
       },
       {
         icon: "x",
         mode: "link",
-        content: "https://twitter.com/your-profile",
+        content: "https://twitter.com/skaya_org",
       },
       {
         icon: "discord",
         mode: "link",
-        content: "https://discord.gg/your-invite",
+        content: "https://discord.gg/skaya-org",
       },
     ],
   },

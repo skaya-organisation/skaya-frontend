@@ -1,0 +1,168 @@
+---
+title: Bluetooth
+description: Learn how to use the BluetoothButton component and the useBluetooth hook for connecting to Bluetooth devices.
+---
+
+import HooksExample from "../../../../../src/components/Bluetooth/HooksExample.tsx";
+import BluetoothExample from "../../../../../src/components/Bluetooth/Example.tsx";
+import { Tab, Tabs } from "rspress/theme";
+
+# 📡 Bluetooth Component
+
+<div
+  style={{
+    display: "flex",
+    alignItems: "center",
+    borderRadius: "4px",
+    height: "20px",
+    border: "2px solid red",
+    padding: "1rem",
+  }}
+>
+  <a
+    href="https://www.npmjs.com/package/skaya"
+    target="_blank"
+    style={{
+      display: "flex",
+      alignItems: "center",
+      gap: "0.5rem",
+      color: "#cb3837",
+      textDecoration: "none",
+      fontWeight: "bold",
+    }}
+  >
+    <img
+      src="/logo/npm-logo-red.png"
+      alt="npm logo"
+      style={{ height: "12px" }}
+    />
+    <span>| Skaya v1.0.0</span>
+  </a>
+</div>
+
+The **`BluetoothButton`** component is a controlled button designed to trigger the browser's `navigator.bluetooth` API, working seamlessly with the **`useBluetooth`** hook.
+
+## Component Usage
+
+<Tabs>
+  <Tab label="Demo"><BluetoothExample /></Tab>
+  <Tab label="Code">
+```tsx
+import { BluetoothButton, useBluetooth } from "skayajs";
+
+export const BluetoothDemo = () => {
+  const { bluetooth, isLoading, fetchBluetoothDevice, resetBluetooth } =
+    useBluetooth();
+
+return (
+
+<div className="flex flex-col items-center rounded-xl space-y-4 text-center">
+      <BluetoothButton
+        onClick={fetchBluetoothDevice}
+        isLoading={isLoading}
+        className={`px-6 py-2 rounded-md ${
+                  isLoading
+                    ? "bg-gray-400"
+                    : "bg-green-600 hover:bg-green-700 text-white"
+                }`} >
+        Connect to Bluetooth Device
+      </BluetoothButton>
+
+      {bluetooth.device && <p>Connected to: {bluetooth.device.name}</p>}
+      {bluetooth.error && <p style={{ color: "red" }}>{bluetooth.error}</p>}
+
+      <button
+        onClick={resetBluetooth}
+        className="px-4 py-2 rounded bg-gray-600 text-white hover:bg-gray-700 transition-colors duration-200"
+      >
+        Reset
+      </button>
+    </div>
+
+);
+};
+
+export default BluetoothDemo;
+
+```
+</Tab>
+</Tabs>
+
+## Props
+
+The **`BluetoothButton`** leverages the standard `children` prop for its content and follows common React naming conventions for handlers and state.
+
+| Prop        | Type              | Default               | Description                                                                     |
+| :---------- | :---------------- | :-------------------- | :------------------------------------------------------------------------------ |
+| `children`  | `React.ReactNode` | `"Connect Bluetooth"` | The content displayed on the button when it's **not** connecting.               |
+| `onClick`   | `() => void`      | `required`            | The function (`fetchBluetoothDevice` from the hook) to execute on button click. |
+| `isLoading` | `boolean`         | `false`               | Boolean state indicating if the Bluetooth request is currently in progress.     |
+| `className` | `string`          | `""`                  | Optional custom CSS classes.                                                    |
+
+
+## Hooks Usage
+
+The **`useBluetooth`** hook gives you programmatic control over Bluetooth connections without needing a button component.
+
+It returns four values:
+
+- **`bluetooth`** An object containing:
+  - `.device`: the connected Bluetooth device object, or `null` if not connected.
+  - `.error`: any error message if the connection failed.
+
+- **`isLoading`** `boolean` indicating whether the Bluetooth request is in progress.
+
+- **`fetchBluetoothDevice()`** Function to trigger a request to connect to a Bluetooth device.
+
+- **`resetBluetooth()`** Function to reset the state (`device` → `null`, `error` → `null`) and stop loading.
+
+
+<Tabs>
+  <Tab label="Demo"><HooksExample /></Tab>
+  <Tab label="Code">
+```tsx
+import React from "react";
+import { useBluetooth } from "skayajs";
+
+const HooksExample = () => {
+  const { bluetooth, isLoading, fetchBluetoothDevice, resetBluetooth } =
+    useBluetooth();
+
+  return (
+    <div className="flex flex-col items-center rounded-xl  space-y-4 text-center">
+      <button
+        onClick={fetchBluetoothDevice}
+        disabled={isLoading}
+        className={`px-4 py-2 rounded text-white transition-colors duration-200 ${
+          isLoading
+            ? "bg-gray-400 cursor-not-allowed"
+            : "bg-blue-600 hover:bg-blue-700"
+        }`}
+      >
+        {isLoading ? "Connecting Bluetooth..." : "Connect via Hook"}
+      </button>
+
+      {bluetooth.device && (
+        <p className="text-gray-800">
+          Connected to: {bluetooth.device.name || bluetooth.device.id}
+        </p>
+      )}
+
+      {bluetooth.error && <p className="text-red-600">{bluetooth.error}</p>}
+
+      <button
+        onClick={resetBluetooth}
+        className="px-4 py-2 rounded bg-gray-600 text-white hover:bg-gray-700 transition-colors duration-200"
+      >
+        Reset
+      </button>
+    </div>
+  );
+};
+
+export default HooksExample;
+
+```
+
+</Tab>
+</Tabs>

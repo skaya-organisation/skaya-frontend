@@ -1,12 +1,13 @@
 ---
 title: About Skaya
+date: "2025-09-11"
 layout: home
+sidebar: false
 description: "Learn what SkayaJS is and why we built it."
 
 hero:
     name: What is Skaya?
     tagline: A quick introduction to Skaya — the AI-powered Web3 CLI that helps you scaffold, generate, and scale full-stack blockchain projects with ease.
-date: 2025-09-11
 author: "Shubham Kunwar"
 tags: ["React", "Frontend", "JavaScript"]
 ---

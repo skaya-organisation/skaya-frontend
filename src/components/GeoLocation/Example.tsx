@@ -2,9 +2,9 @@ import React, { useEffect, useRef } from "react";
 import { LocationButton, useGeolocation } from "skayajs";
 import Globe from "react-globe.gl";
 
-
 const Location = ({ label = "Track Me" }) => {
-  const { location, isLoading, fetchLocation, resetLocation } = useGeolocation();
+  const { location, isLoading, fetchLocation, resetLocation } =
+    useGeolocation();
   const globeRef = useRef<any>(null);
 
   useEffect(() => {
@@ -56,7 +56,7 @@ const Location = ({ label = "Track Me" }) => {
 
         <button
           onClick={resetLocation}
-          className="px-4 py-2 text-white bg-red-600 rounded-lg hover:bg-red-700 transition-colors"
+          className="px-4 py-2 rounded bg-gray-600 text-white hover:bg-gray-700 transition-colors duration-200"
         >
           Reset
         </button>
