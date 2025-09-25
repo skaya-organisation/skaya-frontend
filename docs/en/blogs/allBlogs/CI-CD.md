@@ -151,6 +151,7 @@ Adding New service:
 ```
 
 manual start:
+
 ```bash
 cd /home/ubuntu/app
 docker-compose up -d
