@@ -27,3 +27,6 @@ Preview the production build locally:
 ```bash
 npm run preview
 ```
+
+Guthub action workflow 
+deploy.yml
