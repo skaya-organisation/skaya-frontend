@@ -1,22 +1,13 @@
-# Use Node.js
-FROM node:20-alpine
-
+# ---- Build stage ----
+FROM node:20-alpine AS builder
 WORKDIR /app
-
-# Copy package files
 COPY package*.json ./
-
-# Install dependencies
 RUN npm ci
-
-# Copy source
 COPY . .
-
-# Build the app
 RUN npm run build
 
-# Expose port
-EXPOSE 4173
-
-# Start the app
-CMD ["npm", "run", "preview"]
+# ---- Runtime stage ----
+FROM nginx:alpine
+COPY --from=builder /app/doc_build /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
