@@ -37,7 +37,7 @@ jobs:
             docker build -t skaya-frontend .
 
             # Run new container
-            docker run -d -p 80:80 --name skaya-frontend skaya-frontend
+            docker run -d -p 8080:80 --name skaya-frontend skaya-frontend
 
             # Optional: clean up dangling images
             docker image prune -f
