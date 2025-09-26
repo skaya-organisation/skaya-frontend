@@ -14,3 +14,4 @@ doc_build/
 .idea
 .env
 .env.local
+skaya-ci_cd.pem

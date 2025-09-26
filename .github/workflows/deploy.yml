@@ -1,4 +1,4 @@
-name: Deploy to EC2
+name: CI/CD Deploy
 
 on:
   push:
@@ -10,25 +10,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout Code
         uses: actions/checkout@v3
 
       - name: Set up SSH
-        uses: webfactory/ssh-agent@v0.8.0
+        uses: webfactory/ssh-agent@v0.7.0
         with:
           ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
 
-      - name: Sync files to EC2
+      - name: Deploy to EC2
         run: |
-          rsync -avz --exclude '.git' --exclude 'node_modules' \
-          -e "ssh -o StrictHostKeyChecking=no" \
-          ./ ubuntu@${{ secrets.EC2_HOST }}:/home/ubuntu/skaya-frontend
-
-      - name: Deploy with Docker Compose
-        run: |
-          ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
-            cd /home/ubuntu/skaya-frontend
-            docker compose down
-            docker compose up -d --build
-            sudo systemctl restart nginx
+          ssh -o StrictHostKeyChecking=no ${{ secrets.EC2_HOST }} << 'EOF'
+            cd ~/skaya-frontend || mkdir ~/skaya-frontend && cd ~/skaya-frontend
+            # Pull latest code
+            git reset --hard
+            git pull
+            # Build Docker image
+            docker build -t skaya-frontend .
+            # Stop old container if exists
+            docker rm -f skaya-frontend || true
+            # Run new container
+            docker run -d -p 80:80 --name skaya-frontend skaya-frontend
           EOF
