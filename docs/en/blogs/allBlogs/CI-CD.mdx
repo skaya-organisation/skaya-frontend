@@ -193,7 +193,7 @@ jobs:
           ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
             cd /home/ubuntu/skaya-frontend
             git pull origin main
- echo "VITE_API_URL=${{ secrets.VITE_API_URL }}" > .env
+            echo "VITE_API_URL=${{ secrets.VITE_API_URL }}" > .env
             # Build and restart only skaya-frontend service
             docker-compose build skaya-frontend
             docker-compose up -d skaya-frontend

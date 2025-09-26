@@ -4,7 +4,7 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm ci
 COPY . .
-RUN npm run build
+RUN npm run build   # rspress build outputs to doc_build
 
 # ---- Runtime stage ----
 FROM nginx:alpine
