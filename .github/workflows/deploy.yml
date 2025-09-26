@@ -18,13 +18,18 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
 
-      - name: Deploy to EC2 via Docker Compose
+      - name: Deploy to EC2 via Docker
         run: |
           ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
             cd /home/ubuntu/skaya-frontend
             git pull origin main
 
-            # Build and restart only skaya-frontend service
-            docker-compose build skaya-frontend
-            docker-compose up -d skaya-frontend
+            # Build Docker image
+            docker build -t skaya-frontend .
+
+            # Stop and remove old container if it exists
+            docker rm -f skaya-frontend || true
+
+            # Run new container
+            docker run -d -p 80:80 --name skaya-frontend skaya-frontend
           EOF
