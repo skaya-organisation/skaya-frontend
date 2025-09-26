@@ -15,3 +15,4 @@ doc_build/
 .env
 .env.local
 skaya-ci_cd.pem
+skaya-ci_cd_hyderabad.pem
