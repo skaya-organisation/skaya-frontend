@@ -42,7 +42,7 @@ jobs:
             fi
 
             # Run new container
-            docker run -d -p 80:80 --name skaya-frontend skaya-frontend
+            docker run -d -p 8080:80 --name skaya-frontend skaya-frontend
 
             echo "Deployment successful!"
           EOF
