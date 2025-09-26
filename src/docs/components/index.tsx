@@ -13,9 +13,19 @@ export default function HomePage() {
       {hero && (
         <section className="text-center space-y-6 flex flex-col-reverse md:flex-row items-center justify-between gap-8 py-12">
           <div className="md:w-1/2 text-left">
-            {hero.name && <h1 className="text-4xl md:text-6xl font-extrabold text-gray-900 dark:text-white leading-tight">{hero.name}</h1>}
-            {hero.text && <p className="mt-4 text-xl text-gray-700 dark:text-gray-300">{hero.text}</p>}
-            {hero.tagline && <p className="mt-2 text-md text-gray-500">{hero.tagline}</p>}
+            {hero.name && (
+              <h1 className="text-4xl md:text-6xl font-extrabold text-gray-900 dark:text-white leading-tight">
+                {hero.name}
+              </h1>
+            )}
+            {hero.text && (
+              <p className="mt-4 text-xl text-gray-700 dark:text-gray-300">
+                {hero.text}
+              </p>
+            )}
+            {hero.tagline && (
+              <p className="mt-2 text-md text-gray-500">{hero.tagline}</p>
+            )}
 
             {hero.actions && hero.actions.length > 0 && (
               <div className="flex justify-start gap-4 mt-8">
@@ -38,7 +48,11 @@ export default function HomePage() {
 
           {hero.image && (
             <div className="md:w-1/2 flex justify-center">
-              <img src={hero.image.src} alt={hero.image.alt} className="w-full max-w-md h-auto animate-float" />
+              <img
+                src={hero.image.src}
+                alt={hero.image.alt}
+                className="w-full max-w-md h-auto animate-float"
+              />
             </div>
           )}
         </section>
@@ -55,8 +69,12 @@ export default function HomePage() {
               <div className="text-4xl text-blue-600 dark:text-blue-400">
                 {feature.icon}
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-white">{feature.title}</h3>
-              <p className="text-gray-600 dark:text-gray-400 text-sm">{feature.details}</p>
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
+                {feature.title}
+              </h3>
+              <p className="text-gray-600 dark:text-gray-400 text-sm">
+                {feature.details}
+              </p>
             </div>
           ))}
         </section>
