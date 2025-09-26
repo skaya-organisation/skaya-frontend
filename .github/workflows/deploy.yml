@@ -34,16 +34,20 @@ jobs:
               exit 1
             fi
 
-            # Stop old container
-            docker rm -f skaya-frontend || true
+            # Stop and remove old container if exists
+            if [ "$(docker ps -q -f name=skaya-frontend)" ]; then
+              echo "Stopping old container..."
+              docker rm -f skaya-frontend
+            fi
 
-            # Run new container
-            docker run -d -p 8080:80 --name skaya-frontend skaya-frontend:new
+            # Run new container with auto-restart
+            echo "Starting new container..."
+            docker run -d -p 8080:80 --name skaya-frontend --restart=always skaya-frontend:new
 
-            # Wait 5 seconds to ensure container is up
+            # Wait a few seconds to ensure container is up
             sleep 5
 
-            # Check if container is running
+            # Verify container is running
             if [ "$(docker inspect -f '{{.State.Running}}' skaya-frontend)" != "true" ]; then
               echo "New container failed to start!"
               docker logs skaya-frontend
