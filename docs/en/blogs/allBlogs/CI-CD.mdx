@@ -1,7 +1,6 @@
 ---
 title: CI-CD
 date: "2025-09-11"
-layout: home
 sidebar: false
 description: "Deploy your SkayaJS project to AWS EC2 with GitHub Actions CI/CD."
 
@@ -12,17 +11,17 @@ author: "Shubham Kunwar"
 tags: ["CI/CD", "AWS", "EC2", "GitHub Actions", "Deployment"]
 ---
 
-<video width="100%" height="420" controls >
-  <source src="/blogs/videos/whatIsSkaya.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+
+<div className="flex justify-center my-6">
+  <img src="/blogs/ci-cd.png" alt="ERC-4626 Vault Example" className="rounded-xl shadow-md w-2/3" />
+</div>
 
 ## 🚀 Deploying Your App to EC2 with CI/CD
 
 Let’s set up a **real-world CI/CD pipeline**:  
 Every time you push to `main`, GitHub Actions will automatically deploy your project to an **AWS EC2 instance**.
 
----
+
 
 ### 1️⃣ Launch an EC2 Instance (from AWS Console)
 
@@ -35,7 +34,7 @@ Every time you push to `main`, GitHub Actions will automatically deploy your pro
    - HTTP (80), HTTPS (443)
 6. Connect to EC2:
 
-```
+```bash
 ssh -i "your-key.pem" ubuntu@<EC2_PUBLIC_IP>
 ```
 
@@ -57,6 +56,7 @@ curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
 
 ### Create DockerFile
 
+Create a Dockerfile in your repo
 ```bash
 # ---- Build stage ----
 FROM node:20-alpine AS builder
@@ -69,15 +69,14 @@ RUN npm run build
 # ---- Runtime stage ----
 FROM nginx:alpine
 COPY --from=builder /app/doc_build /usr/share/nginx/html
-EXPOSE 80
+EXPOSE 80 
 CMD ["nginx", "-g", "daemon off;"]
-
 
 ```
 
 ### 3️⃣ Add GitHub Actions Workflow
 
-Inside your project, create **`.github/workflows/deploy.yml`**:
+Inside your repo, create **`.github/workflows/deploy.yml`**:
 
 ```yaml
 name: Auto-Deploy Skaya Frontend
@@ -150,7 +149,7 @@ Adding New service:
       - "7311:80"
 ```
 
-manual start:
+Manual start:
 
 ```bash
 cd /home/ubuntu/app
@@ -158,7 +157,7 @@ docker-compose up -d
 ```
 ---
 
-✅ Done! Now every time you push to **main**:
+✅ Done! Now every time you push or merge to **main**:
 
 - GitHub Actions will SSH into EC2
 - Pull your latest code
