@@ -12,6 +12,7 @@ export default function BlogList() {
   const sortedBlogs = allBlogs.sort((a, b: any) =>
     (b.frontmatter?.date || "").localeCompare(a.frontmatter?.date || "")
   );
+console.log(sortedBlogs);
 
   // Pick top 3
 
@@ -24,7 +25,7 @@ export default function BlogList() {
             className="p-6 m-4 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-md hover:shadow-lg transition bg-white dark:bg-gray-800"
           >
             <a
-              href={blog.routePath}
+              href={`${blog.routePath}.html`}
               className="text-xl font-semibold text-blue-600 dark:text-blue-400 hover:underline"
             >
               {blog.frontmatter?.title || "Untitled"}
