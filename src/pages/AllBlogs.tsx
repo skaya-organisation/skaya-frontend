@@ -12,7 +12,6 @@ export default function BlogList() {
   const sortedBlogs = allBlogs.sort((a, b: any) =>
     (b.frontmatter?.date || "").localeCompare(a.frontmatter?.date || "")
   );
-console.log(sortedBlogs);
 
   return (
     <div className="mt-8">

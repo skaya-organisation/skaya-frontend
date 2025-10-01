@@ -160,9 +160,6 @@ The `useGeolocation` hook gives you programmatic control over geolocation reques
       // Example usage:
       const { location, isLoading, fetchLocation, resetLocation } = useGeolocation();
     
-      console.log(location.latitude, location.longitude);
-      console.log(location.error);
-
       interface GeolocationState {
         location: {
             latitude: number | null; // the user's current latitude, or null if not fetched
