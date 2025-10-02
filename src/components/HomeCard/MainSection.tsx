@@ -1,16 +1,16 @@
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence, LayoutGroup } from 'framer-motion';
-import { MainSectionProps, ViewMode } from '../../utils/types';
-import { useTemplateFiles } from '../../hooks/useTemplateFiles';
-import { useSessionFiles } from '../../hooks/useSessionFiles';
-import LineAxisIcon from '@mui/icons-material/LineAxis';
-import PendingIcon from '@mui/icons-material/Pending';
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
+import { MainSectionProps, ViewMode } from "../../utils/types";
+import { useTemplateFiles } from "../../hooks/useTemplateFiles";
+import { useSessionFiles } from "../../hooks/useSessionFiles";
+import LineAxisIcon from "@mui/icons-material/LineAxis";
+import PendingIcon from "@mui/icons-material/Pending";
 // Components
-import EditorDetailsModal from '../EditorDetailsModal';
-import InteractiveCard from '../InteractiveCard';
-import TemplateCarousel from '../TemplateCarousel';
-import { SignIn, SignInButton } from '@clerk/clerk-react';
-import CustomAuth from '../Auth';
+import EditorDetailsModal from "../EditorDetailsModal";
+import InteractiveCard from "../InteractiveCard";
+import TemplateCarousel from "../TemplateCarousel";
+import { SignIn, SignInButton } from "@clerk/clerk-react";
+import CustomAuth from "../Auth";
 
 export default function MainSection({
   templates,
@@ -24,16 +24,16 @@ export default function MainSection({
   currentSessionId,
   currentSessionTitle,
   onSelectSession,
-  isPaid
+  isPaid,
 }: MainSectionProps & {
   currentSessionId: string | null;
   currentSessionTitle: string | null;
   onSelectSession: (sessionId: string) => void;
-  isPaid:boolean
+  isPaid: boolean;
 }) {
-  const [currentIndex, setCurrentIndex] = useState<null | number >(null);
+  const [currentIndex, setCurrentIndex] = useState<null | number>(null);
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
-  const [viewMode, setViewMode] = useState<ViewMode>('empty');
+  const [viewMode, setViewMode] = useState<ViewMode>("empty");
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [isHome, setIshome] = useState(true);
 
@@ -48,23 +48,23 @@ export default function MainSection({
 
   useEffect(() => {
     if (currentSessionId) {
-      setViewMode('live_session');
+      setViewMode("live_session");
     } else {
-      setViewMode('empty');
+      setViewMode("empty");
       setCurrentIndex(null);
     }
   }, [currentSessionId]);
 
   useEffect(() => {
-    document.body.style.overflow = isDetailsModalOpen ? 'hidden' : '';
+    document.body.style.overflow = isDetailsModalOpen ? "hidden" : "";
   }, [isDetailsModalOpen]);
 
   useEffect(() => {
     const handleFullScreenChange = () =>
       setIsFullScreen(!!document.fullscreenElement);
-    document.addEventListener('fullscreenchange', handleFullScreenChange);
+    document.addEventListener("fullscreenchange", handleFullScreenChange);
     return () =>
-      document.removeEventListener('fullscreenchange', handleFullScreenChange);
+      document.removeEventListener("fullscreenchange", handleFullScreenChange);
   }, []);
 
   const toggleFullScreen = async () => {
@@ -80,9 +80,9 @@ export default function MainSection({
     const safeIndex = currentIndex ?? 0;
     const newIndex = (safeIndex - 1 + totalItems) % totalItems;
     if (newIndex === 0 && currentSessionId) {
-      setViewMode('live_session');
+      setViewMode("live_session");
     } else {
-      setViewMode('templates');
+      setViewMode("templates");
       setCurrentIndex(newIndex);
     }
   };
@@ -91,7 +91,7 @@ export default function MainSection({
     const safeIndex = currentIndex ?? 0;
     const newIndex = (safeIndex + 1) % totalItems;
     if (currentIndex === 0 && currentSessionId) {
-      setViewMode('templates');
+      setViewMode("templates");
       setCurrentIndex(1);
     } else {
       setCurrentIndex(newIndex);
@@ -105,18 +105,21 @@ export default function MainSection({
 
   const handleResetAndRemoveMode = async () => {
     await onResetSession();
-    setViewMode('templates');
+    setViewMode("empty");
     setCurrentIndex(null);
     setIshome(true);
   };
 
   return (
     <LayoutGroup>
-      <div className="relative font-sans text-gray-900 dark:text-white selection:text-white flex flex-col items-center justify-center mt-4">
-        <main className="relative z-10 w-full mx-auto flex flex-col justify-center">
+      <div className="rounded-3xl  h-full absolute inset-0 z-0 opacity-20 group-hover:opacity-30 transition-opacity duration-500">
+        <div className="h-full absolute -inset-0 bg-[conic-gradient(from_90deg_at_50%_50%,#217eea_0%,#3521ea_25%,#f421ea_50%,#ea2121_75%,#217eea_100%)] animate-spin-slow" />
+      </div>
+      <div className="rounded-3xl  relative font-sans text-gray-900 dark:text-white selection:text-white flex flex-col items-center justify-center mt-4">
+        <main className="rounded-3xl  relative z-10 w-full mx-auto flex flex-col justify-center">
           <div
             style={{
-              minHeight: isFullScreen ? 'auto' : 'clamp(550px, 80vh, 900px)',
+              minHeight: isFullScreen ? "auto" : "clamp(550px, 80vh, 900px)",
             }}
           >
             <InteractiveCard
@@ -138,7 +141,6 @@ export default function MainSection({
               isFullScreen={isFullScreen}
               toggleFullScreen={toggleFullScreen}
             />
-       
           </div>
 
           {/* ✅ Sessions & Templates */}
@@ -151,15 +153,14 @@ export default function MainSection({
                 currentIndex={currentIndex}
                 currentSessionId={currentSessionId}
                 onSelectTemplate={(index) => {
-                  setViewMode('templates');
+                  setViewMode("templates");
                   setIshome(false);
                   setCurrentIndex(index);
-                  toggleFullScreen();
                 }}
                 onSelectSession={(sessionId) => {
                   setIshome(false);
                   onSelectSession(sessionId); // ✅ Pass only ID
-                  setViewMode('live_session');
+                  setViewMode("live_session");
                   setCurrentIndex(null);
                 }}
                 onResetSession={handleResetAndRemoveMode}
@@ -167,11 +168,12 @@ export default function MainSection({
               />
             )}
           </AnimatePresence>
+          <CustomAuth />
         </main>
 
         {/* ✅ Floating Action Button */}
         <AnimatePresence>
-          {currentSessionId && currentIndex===null && (
+          {currentSessionId && currentIndex === null && (
             <motion.button
               layoutId="create-website-button"
               onClick={() => setIsDetailsModalOpen(true)}
@@ -180,7 +182,7 @@ export default function MainSection({
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.8 }}
-              transition={{ type: 'spring', stiffness: 200, damping: 20 }}
+              transition={{ type: "spring", stiffness: 200, damping: 20 }}
             >
               {isProcessing ? (
                 <PendingIcon className="w-5 h-5 animate-spin" />
@@ -188,7 +190,7 @@ export default function MainSection({
                 <LineAxisIcon className="w-5 h-5" />
               )}
               <span>
-                {currentSessionId ? 'Update website' : 'Create your website'}
+                {currentSessionId ? "Update website" : "Create your website"}
               </span>
             </motion.button>
           )}
@@ -200,7 +202,7 @@ export default function MainSection({
           onClose={() => setIsDetailsModalOpen(false)}
           onSave={handleSaveDetails}
           initialData={{
-            title: currentSessionId || currentSessionTitle || '',
+            title: currentSessionId || currentSessionTitle || "",
           }}
           isProcessing={isProcessing}
           sessionId={currentSessionId}
@@ -210,7 +212,6 @@ export default function MainSection({
           isPaid={isPaid}
         />
       </div>
-      <CustomAuth/>
     </LayoutGroup>
   );
 }
