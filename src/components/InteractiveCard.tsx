@@ -199,7 +199,7 @@ const LoadingView = ({ message }: { message: string }) => (
 
 const HomeView = ({ onOpenDetailsModal, isProcessing, navigate }: any) => (
   <div className="w-full h-full flex items-center justify-center text-center">
-    <div className="z-10 flex flex-col items-center gap-28 md:gap-32">
+    <div className="z-10 flex flex-col items-center gap-12 md:gap-16">
       <motion.h2
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
@@ -209,6 +209,8 @@ const HomeView = ({ onOpenDetailsModal, isProcessing, navigate }: any) => (
         <LineAxisIcon className="w-8 h-8 text-indigo-500 dark:text-indigo-400" />
         Build with Skaya
       </motion.h2>
+      <img src="/logo.png" alt="Skaya Logo" className="w-32 h-32 md:w-40 md:h-40" />
+
       <motion.div
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
