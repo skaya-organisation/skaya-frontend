@@ -30,7 +30,6 @@ const TemplateCarousel: React.FC<TemplateCarouselProps> = ({
   onResetSession,
   setIsDetailsModalOpen,
 }) => {
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -40,11 +39,7 @@ const TemplateCarousel: React.FC<TemplateCarouselProps> = ({
       className="w-full px-4 mt-12"
     >
       {/* ✅ Sessions */}
-      <h3
-        className="text-lg sm:text-xl font-bold mb-4"
-      >
-        Your Website
-      </h3>
+      <h3 className="text-lg sm:text-xl font-bold mb-4">Your Website</h3>
 
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-8">
         {/* ➕ Create New Website */}
@@ -66,17 +61,16 @@ const TemplateCarousel: React.FC<TemplateCarouselProps> = ({
             title={id}
             showLiveBadge
             isActive={id === currentSessionId}
-            onClick={() => onSelectSession(id)}
+            onClick={() => {
+              onSelectSession(id)
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
           />
         ))}
       </div>
 
       {/* ✅ Templates */}
-      <h3
-        className="text-lg sm:text-xl font-bold mb-4"
-      >
-        Choose a Template
-      </h3>
+      <h3 className="text-lg sm:text-xl font-bold mb-4">Choose a Template</h3>
 
       {isLoading ? (
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
@@ -92,7 +86,10 @@ const TemplateCarousel: React.FC<TemplateCarouselProps> = ({
               title={t.title}
               description={t.description}
               isActive={viewMode === "templates" && currentIndex === i + 1}
-              onClick={() => onSelectTemplate(i + 1)}
+              onClick={() => {
+                onSelectTemplate(i + 1);
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }}
             />
           ))}
         </div>
