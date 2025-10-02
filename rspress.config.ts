@@ -250,4 +250,7 @@ export default defineConfig({
     extensions: [".ts", ".tsx", ".js", ".jsx"],
   },
   globalStyles: path.join(__dirname, "src/index.css"),
+  build: {
+    cleanUrls: true, // or 'without-extension'
+  },
 });
