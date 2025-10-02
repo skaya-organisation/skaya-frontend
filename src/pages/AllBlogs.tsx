@@ -19,7 +19,7 @@ export default function BlogList() {
         {sortedBlogs.map((blog: any) => (
           <div
             key={blog.routePath}
-            className="p-3 md:6-4 m-2 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-md hover:shadow-lg transition bg-white dark:bg-gray-800"
+            className="p-3 md:p-6 my-4 mx-1 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-md hover:shadow-lg transition bg-white dark:bg-gray-800"
           >
             <a
               href={`${blog.routePath}.html`}
