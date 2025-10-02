@@ -14,12 +14,12 @@ export default function BlogList() {
   );
 
   return (
-    <div className="mt-8">
-      <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="mt-4">
+      <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-1">
         {sortedBlogs.map((blog: any) => (
           <div
             key={blog.routePath}
-            className="p-6 m-4 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-md hover:shadow-lg transition bg-white dark:bg-gray-800"
+            className="p-3 md:6-4 m-2 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-md hover:shadow-lg transition bg-white dark:bg-gray-800"
           >
             <a
               href={`${blog.routePath}.html`}
