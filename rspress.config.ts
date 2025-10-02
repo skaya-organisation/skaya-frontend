@@ -56,7 +56,7 @@ export default defineConfig({
                 text: "Our App",
                 items: [
                   { text: "WEB3", link: "https://blockchain.skaya.org/" },
-                  { text: "AI", link: "https://app.skaya.org/" },
+                  { text: "AI", link: "https://www.npmjs.com/package/skaya/" },
                 ],
               },
             ],
