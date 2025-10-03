@@ -42,8 +42,8 @@ export default defineConfig({
           {
             // @ts-ignore
             text: "Blogs",
-            link: "/blogs",
-            activeMatch: "/blogs",
+            link: "/blogs/index",
+            activeMatch: "/blogs/index",
           },
           {
             // @ts-ignore
@@ -72,7 +72,7 @@ export default defineConfig({
               items: [
                 {
                   text: "Introduction",
-                  link: "/guide/React-sdk/introduction",
+                  link: "/guide/React-sdk/Introduction",
                 },
                 {
                   text: "Quickstart",
