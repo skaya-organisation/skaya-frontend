@@ -168,6 +168,7 @@ export default function HomeCard() {
       onSelectSession={handleSelectSession}
       isAuthenticated={isSignedIn || false}
       isPaid={isPaid}
+      gh_token={gh_token}
     />
   );
 }

@@ -1,3 +1,5 @@
+import { SandpackFiles } from "@codesandbox/sandpack-react";
+
 // src/utils/types.ts
 export interface Template {
   id: string;
@@ -18,11 +20,10 @@ export interface FolderStructureResponse {
   error?: string;
 }
 
-export type SandpackFiles = { [key: string]: { code: string; hidden?: boolean } };
 
 export interface TemplateFiles {
   files: SandpackFiles;
-  dependencies: { [key: string]: string };
+  dependencies?: { [key: string]: string };
 }
 
 export type ViewMode = "empty" | 'templates' | 'live_session';

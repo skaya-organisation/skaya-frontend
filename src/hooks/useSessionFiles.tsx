@@ -1,8 +1,8 @@
 // src/hooks/useSessionFiles.ts
 import { useState, useEffect, useCallback } from 'react';
-import { SandpackFiles } from '../utils/types';
 import { fetchAllSessionFiles } from '../services/sessionAPI';
 import { useAuth } from '@clerk/clerk-react';
+import { SandpackFiles } from '@codesandbox/sandpack-react';
 
 export const useSessionFiles = (sessionId: string | null, ) => {
   const [livePreviewFiles, setLivePreviewFiles] = useState<SandpackFiles | null>(null);

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
 import { MainSectionProps, ViewMode } from "../../utils/types";
 import { useTemplateFiles } from "../../hooks/useTemplateFiles";
@@ -9,8 +9,9 @@ import PendingIcon from "@mui/icons-material/Pending";
 import EditorDetailsModal from "../EditorDetailsModal";
 import InteractiveCard from "../InteractiveCard";
 import TemplateCarousel from "../TemplateCarousel";
-import { SignIn, SignInButton } from "@clerk/clerk-react";
+import { SignIn, SignInButton, useAuth } from "@clerk/clerk-react";
 import CustomAuth from "../Auth";
+import { useGithubSessionFiles } from "../../hooks/useGithubSessionFiles";
 
 export default function MainSection({
   templates,
@@ -25,12 +26,15 @@ export default function MainSection({
   currentSessionTitle,
   onSelectSession,
   isPaid,
+  gh_token
 }: MainSectionProps & {
   currentSessionId: string | null;
   currentSessionTitle: string | null;
   onSelectSession: (sessionId: string) => void;
   isPaid: boolean;
+  gh_token: string;
 }) {
+    const { userId } = useAuth();
   const [currentIndex, setCurrentIndex] = useState<null | number>(null);
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
   const [viewMode, setViewMode] = useState<ViewMode>("empty");
@@ -38,12 +42,29 @@ export default function MainSection({
   const [isHome, setIshome] = useState(true);
 
   const { templateFiles, isLoadingTemplates } = useTemplateFiles(templates);
-  const {
-    livePreviewFiles,
-    isFetchingSessionFiles,
-    refetch: refetchSessionFiles,
-  } = useSessionFiles(currentSessionId);
-
+  const { files: rawFiles, isFetching: isFetchingSessionFiles, refetch: refetchSessionFiles } =
+    useGithubSessionFiles(
+      "skaya-organisation",       // GitHub org
+      userId || "",      // repo = userId
+      currentSessionId || "main", // branch = currentSessionId
+      gh_token
+    );
+    
+    const livePreviewFiles = useMemo(() => {
+      if (!rawFiles || Object.keys(rawFiles).length === 0) return {};
+      
+      const transformedFiles: Record<string, { code: string; active?: boolean }> = {};
+      
+      Object.entries(rawFiles).forEach(([path, content]) => {
+        transformedFiles[path] = {
+          code: typeof content === 'string' ? content : '',
+          active: path === '/src/App.tsx' || path === '/App.tsx' // Set your entry file
+        };
+      });
+      
+      return transformedFiles;
+    }, [rawFiles]);
+    
   const totalItems = templates.length + 1;
 
   useEffect(() => {
