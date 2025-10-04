@@ -16,25 +16,39 @@ interface DeployDomainResponse {
 }
 
 const hostingAPI = {
-  async checkDomainAvailability(domainName: string,accessToken:string): Promise<DomainAvailabilityResponse> {
-    // Replace with your actual API call
-
+  async checkDomainAvailability(domainName: string, accessToken: string): Promise<DomainAvailabilityResponse> {
     const response = await fetch(`${backendServer}/check-domain`, {
-        method: 'POST',
-        body: JSON.stringify({ domainName }),
-        headers: { Authorization: `Bearer ${accessToken}` },
-      });
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${accessToken}`,
+        'Content-Type': 'application/json', // ✅ important
+      },
+      body: JSON.stringify({ domainName }),
+    });
+
+    if (!response.ok) {
+      const text = await response.text();
+      throw new Error(`Check domain failed: ${text}`);
+    }
+
     return response.json();
   },
 
-  async deployDomain(domainName: string, branchName: string,accessToken:string): Promise<DeployDomainResponse> {
-    // Replace with your actual API call
-
+  async deployDomain(domainName: string, branchName: string, accessToken: string): Promise<DeployDomainResponse> {
     const response = await fetch(`${backendServer}/deploy`, {
-        method: 'POST',
-        body: JSON.stringify({ domainName, branchName }),
-        headers: { Authorization: `Bearer ${accessToken}` },
-      });
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${accessToken}`,
+        'Content-Type': 'application/json', // ✅ important
+      },
+      body: JSON.stringify({ domainName, branchName }),
+    });
+
+    if (!response.ok) {
+      const text = await response.text();
+      throw new Error(`Deploy domain failed: ${text}`);
+    }
+
     return response.json();
   },
 };
