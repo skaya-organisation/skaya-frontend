@@ -28,7 +28,13 @@ export default function HomeCard() {
   );
 
   const { isSignedIn, getToken, isLoaded } = useAuth();
-
+  const handleSelectSession = useCallback(
+    async (sessionId: string) => {
+      setCurrentSessionId(sessionId);
+      setCurrentSessionTitle(sessionId);
+    },
+    [isLoaded, isSignedIn, getToken,currentSessionId],
+  );
   const fetchPromptsRemaining = useCallback(async () => {
     try {
       const accessToken = await getToken();
@@ -54,64 +60,78 @@ export default function HomeCard() {
     fetchPromptsRemaining();
   }, [fetchPromptsRemaining,currentSessionId]);
 
-  const handleSessionAction = useCallback(
-    async (details: { title: any; description: any; category: any; tags: any; theme: any;template:String }, files: File[] = []) => {
-      const accessToken = await getToken();
-      const { title, description, category, tags, theme, template } = details;
-      setIsProcessing(true);
+const handleSessionAction = useCallback(
+  async (
+    details: { title: any; description: any; category: any; tags: any; theme: any; template: string },
+    files: File[] = []
+  ) => {
+    const accessToken = await getToken();
+    const { title, description, category, tags, theme, template } = details;
+    setIsProcessing(true);
 
-      const tagsString = tags.join(', ');
-      const isUpdate = Boolean(currentSessionId);
-      let sessionToUse = currentSessionId;
-      let command: string;
+    const tagsString = tags.join(', ');
+    const isUpdate = Boolean(currentSessionId);
+    let sessionToUse = currentSessionId;
+    let command: string;
 
-      if (isUpdate) {
-        const updateDescription = `Update homepage: ${description}, tags: [${tagsString}], theme: ${theme}`;
-        command = `skaya update page -p frontend -f Homepage -s -a -d "${updateDescription}"`;
-        sessionToUse = currentSessionId!;
-      } else {
-        const sanitizedTitle = title
-          .trim()
-          .toLowerCase()
-          .replace(/\s+/g, '-')
-          .replace(/[^\w-]+/g, '');
-        const randomPart = Math.random().toString(36).substring(2, 8);
-        const newSessionId = `${sanitizedTitle}-${randomPart}`;
+    if (isUpdate) {
+      const updateDescription = `Update homepage: ${description}, tags: [${tagsString}], theme: ${theme}`;
+      command = `skaya update page -p frontend -f Homepage -s -a -d "${updateDescription}"`;
+      sessionToUse = currentSessionId!;
+    } else {
+      const sanitizedTitle = title
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, '-')
+        .replace(/[^\w-]+/g, '');
+      const randomPart = Math.random().toString(36).substring(2, 8);
+      const newSessionId = `${sanitizedTitle}-${randomPart}`;
+      sessionToUse = newSessionId;
+
+      // Immediately mark it active
+      setCurrentSessionId(newSessionId);
+      setCurrentSessionTitle(title);
+
+      const templateFlag = template === "react" ? "skaya-react-ts" : "skaya-nextjs";
+      const createDescription = `Create Homepage: ${title}, Category: ${category}, Tags: [${tagsString}], Description: ${description}`;
+      command = `skaya init frontend -f ${newSessionId} -c skaya-official -t ${templateFlag} && skaya update page -p frontend -f Homepage -s -a -d "skaya-create-type: ${createDescription}"`;
+    }
+
+    try {
+      const formData = new FormData();
+      formData.append('command', command);
+      formData.append('sessionId', sessionToUse);
+      files.forEach((file) => formData.append('files', file));
+
+      const response = await fetch(`${backendServer}/Skaya/run-command`, {
+        method: 'POST',
+        body: formData,
+        headers: { Authorization: `Bearer ${accessToken}` },
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        await fetchPromptsRemaining();
+
+        // ✅ Make sure session is active after creation
+        const newSessionId = data.data.newSessionId || sessionToUse;
         setCurrentSessionId(newSessionId);
-        sessionToUse = newSessionId;
-          const templateFlag =
-    template === "react"
-      ? "skaya-react-ts"
-      : "skaya-nextjs"
-        const createDescription = `Create Homepage: ${title}, Category: ${category}, Tags: [${tagsString}], Description: ${description}`;
-        command = `skaya init frontend -f ${newSessionId} -c skaya-official -t ${templateFlag} && skaya update page -p frontend -f Homepage -s -a -d "skaya-create-type: ${createDescription}"`;
+        setCurrentSessionTitle(title);
+
+        // Optional: automatically select session in carousel
+        handleSelectSession(newSessionId);
       }
 
-      try {
-        const formData = new FormData();
-        formData.append('command', command);
-        formData.append('sessionId', sessionToUse);
-        files.forEach((file) => formData.append('files', file));
+      setIsProcessing(false);
+    } catch (err) {
+      setIsProcessing(false);
+      throw err;
+    }
+  },
+  [isLoaded, isSignedIn, getToken, currentSessionId, handleSelectSession]
+);
 
-        const response = await fetch(`${backendServer}/Skaya/run-command`, {
-          method: 'POST',
-          body: formData,
-          headers: { Authorization: `Bearer ${accessToken}` },
-        });
-
-        const data = await response.json();
-
-        if (data.success) await fetchPromptsRemaining();
-        
-        setCurrentSessionId(data.data.newSessionId); 
-        setIsProcessing(false);
-      } catch (err) {
-        setIsProcessing(false);
-        throw err;
-      }
-    },
-    [isLoaded, isSignedIn, getToken, promptCount, currentSessionId],
-  );
 
   const resetSession = useCallback(() => {
     setCurrentSessionId(null);
@@ -144,14 +164,6 @@ export default function HomeCard() {
     };
     fetchTemplates();
   }, []);
-
-  const handleSelectSession = useCallback(
-    async (sessionId: string) => {
-      setCurrentSessionId(sessionId);
-      setCurrentSessionTitle(sessionId);
-    },
-    [isLoaded, isSignedIn, getToken],
-  );
 
 
   return (

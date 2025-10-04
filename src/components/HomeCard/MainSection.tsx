@@ -34,7 +34,7 @@ export default function MainSection({
   isPaid: boolean;
   gh_token: string;
 }) {
-    const { userId } = useAuth();
+  const { userId } = useAuth();
   const [currentIndex, setCurrentIndex] = useState<null | number>(null);
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
   const [viewMode, setViewMode] = useState<ViewMode>("empty");
@@ -42,30 +42,50 @@ export default function MainSection({
   const [isHome, setIshome] = useState(true);
 
   const { templateFiles, isLoadingTemplates } = useTemplateFiles(templates);
+  
+  // ✅ FIX 1: Use state to force refetch trigger
+  const [refetchTrigger, setRefetchTrigger] = useState(0);
+  
   const { files: rawFiles, isFetching: isFetchingSessionFiles, refetch: refetchSessionFiles } =
     useGithubSessionFiles(
-      "skaya-organisation",       // GitHub org
-      userId || "",      // repo = userId
-      currentSessionId || "main", // branch = currentSessionId
+      "skaya-organisation",
+      userId || "",
+      currentSessionId || "main",
       gh_token
     );
     
-    const livePreviewFiles = useMemo(() => {
-      if (!rawFiles || Object.keys(rawFiles).length === 0) return {};
-      
-      const transformedFiles: Record<string, { code: string; active?: boolean }> = {};
-      
-      Object.entries(rawFiles).forEach(([path, content]) => {
-        transformedFiles[path] = {
-          code: typeof content === 'string' ? content : '',
-          active: path === '/src/App.tsx' || path === '/App.tsx' // Set your entry file
-        };
-      });
-      
-      return transformedFiles;
-    }, [rawFiles]);
+  const livePreviewFiles = useMemo(() => {
+    if (!rawFiles || Object.keys(rawFiles).length === 0) return {};
+    
+    const transformedFiles: Record<string, { code: string; active?: boolean }> = {};
+    
+    Object.entries(rawFiles).forEach(([path, content]) => {
+      transformedFiles[path] = {
+        code: typeof content === 'string' ? content : '',
+        active: path === '/src/App.tsx' || path === '/App.tsx'
+      };
+    });
+    
+    return transformedFiles;
+  }, [rawFiles]);
     
   const totalItems = templates.length + 1;
+
+  // ✅ FIX 2: Refetch when currentSessionId changes
+  useEffect(() => {
+    if (currentSessionId && userId) {
+      console.log('🔄 Refetching session files for:', currentSessionId);
+      refetchSessionFiles();
+    }
+  }, [currentSessionId, userId, refetchSessionFiles]);
+
+  // ✅ FIX 3: Also refetch on manual trigger (for updates)
+  useEffect(() => {
+    if (refetchTrigger > 0 && currentSessionId) {
+      console.log('🔄 Manual refetch trigger:', refetchTrigger);
+      refetchSessionFiles();
+    }
+  }, [refetchTrigger, currentSessionId, refetchSessionFiles]);
 
   useEffect(() => {
     if (currentSessionId) {
@@ -119,9 +139,14 @@ export default function MainSection({
     }
   };
 
+  // ✅ FIX 4: Add delay and trigger manual refetch
   const handleSaveDetails = async (data: any) => {
     await onSessionAction(data);
-    if (currentSessionId) refetchSessionFiles();
+    
+    // Wait a bit for backend to process, then trigger refetch
+    setTimeout(() => {
+      setRefetchTrigger(prev => prev + 1);
+    }, 1000); // Adjust delay as needed
   };
 
   const handleResetAndRemoveMode = async () => {
@@ -133,11 +158,11 @@ export default function MainSection({
 
   return (
     <LayoutGroup>
-      <div className="rounded-3xl  h-full absolute inset-0 z-0 opacity-20 group-hover:opacity-30 transition-opacity duration-500">
+      <div className="rounded-3xl h-full absolute inset-0 z-0 opacity-20 group-hover:opacity-30 transition-opacity duration-500">
         <div className="h-full absolute -inset-0 bg-[conic-gradient(from_90deg_at_50%_50%,#217eea_0%,#3521ea_25%,#f421ea_50%,#ea2121_75%,#217eea_100%)] animate-spin-slow" />
       </div>
-      <div className="rounded-3xl  relative font-sans text-gray-900 dark:text-white selection:text-white flex flex-col items-center justify-center mt-4">
-        <main className="rounded-3xl  relative z-10 w-full mx-auto flex flex-col justify-center">
+      <div className="rounded-3xl relative font-sans text-gray-900 dark:text-white selection:text-white flex flex-col items-center justify-center mt-4">
+        <main className="rounded-3xl relative z-10 w-full mx-auto flex flex-col justify-center">
           <div
             style={{
               minHeight: isFullScreen ? "auto" : "clamp(550px, 80vh, 900px)",
@@ -164,7 +189,6 @@ export default function MainSection({
             />
           </div>
 
-          {/* ✅ Sessions & Templates */}
           <AnimatePresence>
             {!isFullScreen && (
               <TemplateCarousel
@@ -180,7 +204,7 @@ export default function MainSection({
                 }}
                 onSelectSession={(sessionId) => {
                   setIshome(false);
-                  onSelectSession(sessionId); // ✅ Pass only ID
+                  onSelectSession(sessionId);
                   setViewMode("live_session");
                   setCurrentIndex(null);
                 }}
@@ -192,7 +216,6 @@ export default function MainSection({
           <CustomAuth />
         </main>
 
-        {/* ✅ Floating Action Button */}
         <AnimatePresence>
           {currentSessionId && currentIndex === null && (
             <motion.button
@@ -217,7 +240,6 @@ export default function MainSection({
           )}
         </AnimatePresence>
 
-        {/* ✅ Details Modal */}
         <EditorDetailsModal
           open={isDetailsModalOpen}
           onClose={() => setIsDetailsModalOpen(false)}
