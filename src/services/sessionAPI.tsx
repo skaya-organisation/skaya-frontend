@@ -1,6 +1,7 @@
 // src/services/sessionAPI.ts
+import { SandpackFiles } from '@codesandbox/sandpack-react';
 import { backendServer } from '../components/HomeCard/Index';
-import { FileItem, FolderStructureResponse, SandpackFiles } from '../utils/types';
+import { FileItem, FolderStructureResponse } from '../utils/types';
 
 export const fetchFileContent = async (
   sessionId: string,

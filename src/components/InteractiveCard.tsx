@@ -5,7 +5,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   Template,
   TemplateFiles,
-  SandpackFiles,
   ActiveTab,
   ViewMode,
 } from "../utils/types";
@@ -21,6 +20,9 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import CodeIcon from "@mui/icons-material/Code";
 import { useNavigate } from "rspress/runtime";
+import { SandpackFiles } from "@codesandbox/sandpack-react";
+import HostWebsiteModal from "./HostWebsiteModal";
+import { CloudUploadIcon } from "lucide-react";
 // Props Interface
 interface InteractiveCardProps {
   isHome: boolean;
@@ -61,6 +63,8 @@ const InteractiveCard: React.FC<InteractiveCardProps> = ({
   toggleFullScreen,
 }) => {
   const [activeTab, setActiveTab] = useState<ActiveTab>("preview");
+  const [isHostModalOpen, setIsHostModalOpen] = useState(false);
+
   const navigate = useNavigate();
   useEffect(() => {
     if (isFullScreen) document.body.style.overflow = "hidden";
@@ -77,7 +81,7 @@ const InteractiveCard: React.FC<InteractiveCardProps> = ({
   const formattedFiles = useMemo(() => {
     if (!livePreviewFiles) return null;
     return Object.fromEntries(
-      Object.entries(livePreviewFiles).map(([path, data]) => [
+      Object.entries(livePreviewFiles).map(([path, data]:any) => [
         path.replace(/^\//, ""),
         data.code,
       ])
@@ -88,7 +92,7 @@ const InteractiveCard: React.FC<InteractiveCardProps> = ({
   const formattedTemplateFiles = useMemo(() => {
     if (!currentTemplateFiles?.files) return null;
     return Object.fromEntries(
-      Object.entries(currentTemplateFiles.files).map(([path, data]) => [
+      Object.entries(currentTemplateFiles.files).map(([path, data]:any) => [
         path.replace(/^\//, ""),
         data.code,
       ])
@@ -151,6 +155,8 @@ const InteractiveCard: React.FC<InteractiveCardProps> = ({
         showReset={viewMode === "live_session"}
         onResetSession={onResetSession}
         isHome={isHome}
+         onOpenHostModal={() => setIsHostModalOpen(true)}
+    
       />
       <AnimatePresence mode="wait">
         <motion.div
@@ -174,6 +180,7 @@ const InteractiveCard: React.FC<InteractiveCardProps> = ({
   );
 
   return (
+    <>
     <motion.div
       layout
       className={
@@ -185,6 +192,12 @@ const InteractiveCard: React.FC<InteractiveCardProps> = ({
     >
       {cardContent}
     </motion.div>
+      <HostWebsiteModal
+        isOpen={isHostModalOpen}
+        onClose={() => setIsHostModalOpen(false)}
+        defaultBranch={sessionTitle || template?.title || "main"}
+      />
+    </>
   );
 };
 
@@ -265,6 +278,8 @@ const EditorHeader = ({
   showReset,
   onResetSession,
   isHome,
+    onOpenHostModal,
+
 }: any) => (
   <header className="flex-shrink-0 flex items-center justify-between border-b border-gray-200 dark:border-white/10 px-4 py-1 h-[48px]">
     <h3
@@ -287,6 +302,12 @@ const EditorHeader = ({
             icon={<CodeIcon />}
             isActive={activeTab === "code"}
             onClick={() => setActiveTab("code")}
+          />
+                 <TabButton
+            label="Host"
+            icon={<CloudUploadIcon />}
+            isActive={false}
+            onClick={onOpenHostModal}
           />
           <TabButton
             label=""
