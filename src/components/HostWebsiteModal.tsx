@@ -19,7 +19,7 @@ const hostingAPI = {
   async checkDomainAvailability(domainName: string,accessToken:string): Promise<DomainAvailabilityResponse> {
     // Replace with your actual API call
 
-    const response = await fetch(`${backendServer}/api/hosting/check-domain`, {
+    const response = await fetch(`${backendServer}/check-domain`, {
         method: 'POST',
         body: JSON.stringify({ domainName }),
         headers: { Authorization: `Bearer ${accessToken}` },
@@ -30,7 +30,7 @@ const hostingAPI = {
   async deployDomain(domainName: string, branchName: string,accessToken:string): Promise<DeployDomainResponse> {
     // Replace with your actual API call
 
-    const response = await fetch(`${backendServer}/api/hosting/deploy`, {
+    const response = await fetch(`${backendServer}/deploy`, {
         method: 'POST',
         body: JSON.stringify({ domainName, branchName }),
         headers: { Authorization: `Bearer ${accessToken}` },
