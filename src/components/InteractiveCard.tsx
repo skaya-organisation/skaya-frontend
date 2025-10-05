@@ -315,14 +315,14 @@ const EditorHeader = ({
             isActive={activeTab === ""}
             onClick={toggleFullScreen}
           />
-          {showReset && (
+          {/* {showReset && (
             <TabButton
               label=""
               icon={<DeleteOutlineIcon />}
               isActive={activeTab === ""}
               onClick={onResetSession}
             />
-          )}
+          )} */}
         </div>
       </div>
     )}
