@@ -2,12 +2,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-import {
-  Template,
-  TemplateFiles,
-  ActiveTab,
-  ViewMode,
-} from "../utils/types";
+import { Template, TemplateFiles, ActiveTab, ViewMode } from "../utils/types";
 import CodeSandboxEditor from "./CodeSandBox";
 import TabButton from "./ui/TabButton";
 import LineAxisIcon from "@mui/icons-material/LineAxis";
@@ -64,7 +59,8 @@ const InteractiveCard: React.FC<InteractiveCardProps> = ({
 }) => {
   const [activeTab, setActiveTab] = useState<ActiveTab>("preview");
   const [isHostModalOpen, setIsHostModalOpen] = useState(false);
-
+const [selectedCommit, setSelectedCommit] = useState<string | null>(null);
+  
   const navigate = useNavigate();
   useEffect(() => {
     if (isFullScreen) document.body.style.overflow = "hidden";
@@ -81,7 +77,7 @@ const InteractiveCard: React.FC<InteractiveCardProps> = ({
   const formattedFiles = useMemo(() => {
     if (!livePreviewFiles) return null;
     return Object.fromEntries(
-      Object.entries(livePreviewFiles).map(([path, data]:any) => [
+      Object.entries(livePreviewFiles).map(([path, data]: any) => [
         path.replace(/^\//, ""),
         data.code,
       ])
@@ -92,7 +88,7 @@ const InteractiveCard: React.FC<InteractiveCardProps> = ({
   const formattedTemplateFiles = useMemo(() => {
     if (!currentTemplateFiles?.files) return null;
     return Object.fromEntries(
-      Object.entries(currentTemplateFiles.files).map(([path, data]:any) => [
+      Object.entries(currentTemplateFiles.files).map(([path, data]: any) => [
         path.replace(/^\//, ""),
         data.code,
       ])
@@ -100,6 +96,20 @@ const InteractiveCard: React.FC<InteractiveCardProps> = ({
   }, [currentTemplateFiles]);
 
   const renderContent = () => {
+      if (activeTab === "history" && viewMode === "live_session") {
+    return (
+      <HistoryView
+        commits={(window as any).commits || []}
+        isFetchingCommits={(window as any).isFetchingCommits || false}
+        onSelectCommit={(sha) => {
+          (window as any).fetchFilesForCommit(sha);
+          setSelectedCommit(sha);
+          setActiveTab("preview"); // Switch to code after loading
+        }}
+      />
+    );
+  }
+
     if (viewMode === "live_session") {
       if (isFetchingSessionFiles || !livePreviewFiles) {
         return <LoadingView message="Loading Your Live Session..." />;
@@ -141,7 +151,6 @@ const InteractiveCard: React.FC<InteractiveCardProps> = ({
 
   const cardContent = (
     <div className=" rounded-3xl overflow-hidden group">
-    
       <EditorHeader
         title={
           viewMode === "live_session"
@@ -155,8 +164,7 @@ const InteractiveCard: React.FC<InteractiveCardProps> = ({
         showReset={viewMode === "live_session"}
         onResetSession={onResetSession}
         isHome={isHome}
-         onOpenHostModal={() => setIsHostModalOpen(true)}
-    
+        onOpenHostModal={() => setIsHostModalOpen(true)}
       />
       <AnimatePresence mode="wait">
         <motion.div
@@ -181,17 +189,17 @@ const InteractiveCard: React.FC<InteractiveCardProps> = ({
 
   return (
     <>
-    <motion.div
-      layout
-      className={
-        isFullScreen
-          ? "fixed pt-[10vh] inset-0 z-[99999] bg-black/50 backdrop-blur-md"
-          : "relative w-full h-full"
-      }
-      transition={{ type: "spring", stiffness: 200, damping: 25 }}
-    >
-      {cardContent}
-    </motion.div>
+      <motion.div
+        layout
+        className={
+          isFullScreen
+            ? "fixed pt-[10vh] inset-0 z-[99999] bg-black/50 backdrop-blur-md"
+            : "relative w-full h-full"
+        }
+        transition={{ type: "spring", stiffness: 200, damping: 25 }}
+      >
+        {cardContent}
+      </motion.div>
       <HostWebsiteModal
         isOpen={isHostModalOpen}
         onClose={() => setIsHostModalOpen(false)}
@@ -210,6 +218,44 @@ const LoadingView = ({ message }: { message: string }) => (
   </div>
 );
 
+const HistoryView = ({
+  commits,
+  isFetchingCommits,
+  onSelectCommit,
+}: {
+  commits: any[];
+  isFetchingCommits: boolean;
+  onSelectCommit: (sha: string) => void;
+}) => {
+  if (isFetchingCommits)
+    return (
+      <div className="w-full h-full flex flex-col items-center justify-center gap-3">
+        <PendingIcon className="animate-spin w-8 h-8 text-indigo-500" />
+        <span>Loading commit history...</span>
+      </div>
+    );
+
+  return (
+    <div className="p-4 overflow-y-auto h-full space-y-3">
+      <h4 className="font-semibold text-lg">Commit History</h4>
+      {commits.map((c) => (
+        <div
+          key={c.sha}
+          className="p-3 bg-gray-100 dark:bg-gray-800 rounded-lg cursor-pointer hover:bg-indigo-100 dark:hover:bg-indigo-900"
+          onClick={() => onSelectCommit(c.sha)}
+        >
+          <p className="font-medium">{c.commit.message}</p>
+          <p className="text-sm text-gray-500">{c.sha.slice(0, 7)}</p>
+          <p className="text-xs text-gray-400">
+            {new Date(c.commit.author.date).toLocaleString()}
+          </p>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+
 const HomeView = ({ onOpenDetailsModal, isProcessing, navigate }: any) => (
   <div className="w-full h-full flex items-center justify-center text-center">
     <div className="z-10 flex flex-col items-center gap-12 md:gap-16">
@@ -222,7 +268,11 @@ const HomeView = ({ onOpenDetailsModal, isProcessing, navigate }: any) => (
         <LineAxisIcon className="w-8 h-8 text-indigo-500 dark:text-indigo-400" />
         Build with Skaya
       </motion.h2>
-      <img src="/logo.png" alt="Skaya Logo" className="w-32 h-32 md:w-40 md:h-40" />
+      <img
+        src="/logo.png"
+        alt="Skaya Logo"
+        className="w-32 h-32 md:w-40 md:h-40"
+      />
 
       <motion.div
         initial={{ y: 20, opacity: 0 }}
@@ -278,8 +328,7 @@ const EditorHeader = ({
   showReset,
   onResetSession,
   isHome,
-    onOpenHostModal,
-
+  onOpenHostModal,
 }: any) => (
   <header className="flex-shrink-0 flex items-center justify-between border-b border-gray-200 dark:border-white/10 px-4 py-1 h-[48px]">
     <h3
@@ -288,7 +337,7 @@ const EditorHeader = ({
     >
       {title}
     </h3>
-    {!isHome && (
+    {title && (
       <div className="flex items-center gap-2">
         <div className="flex items-center gap-2 p-1  rounded-lg">
           <TabButton
@@ -297,13 +346,13 @@ const EditorHeader = ({
             isActive={activeTab === "preview"}
             onClick={() => setActiveTab("preview")}
           />
-          <TabButton
+          {/* <TabButton
             label="Code"
             icon={<CodeIcon />}
             isActive={activeTab === "code"}
             onClick={() => setActiveTab("code")}
-          />
-                 {/* <TabButton
+          /> */}
+          {/* <TabButton
             label="Host"
             icon={<CloudUploadIcon />}
             isActive={false}
@@ -323,6 +372,12 @@ const EditorHeader = ({
               onClick={onResetSession}
             />
           )} */}
+          <TabButton
+            label="History"
+            icon={<LineAxisIcon />}
+            isActive={activeTab === "history"}
+            onClick={() => setActiveTab("history")}
+          />
         </div>
       </div>
     )}

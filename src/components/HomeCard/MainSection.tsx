@@ -46,14 +46,25 @@ export default function MainSection({
   // ✅ FIX 1: Use state to force refetch trigger
   const [refetchTrigger, setRefetchTrigger] = useState(0);
   
-  const { files: rawFiles, isFetching: isFetchingSessionFiles, refetch: refetchSessionFiles } =
-    useGithubSessionFiles(
-      "skaya-organisation",
-      userId || "",
-      currentSessionId || "main",
-      gh_token
-    );
-    
+const {
+  files: rawFiles,
+  isFetching: isFetchingSessionFiles,
+  refetch: refetchSessionFiles,
+  commits,
+  isFetchingCommits,
+  fetchFilesForCommit,
+} = useGithubSessionFiles(
+  "skaya-organisation",
+  userId || "",
+  currentSessionId || "main",
+  gh_token
+);
+    useEffect(() => {
+  (window as any).commits = commits;
+  (window as any).isFetchingCommits = isFetchingCommits;
+  (window as any).fetchFilesForCommit = fetchFilesForCommit;
+}, [commits, isFetchingCommits, fetchFilesForCommit]);
+
   const livePreviewFiles = useMemo(() => {
     if (!rawFiles || Object.keys(rawFiles).length === 0) return {};
     
@@ -186,6 +197,7 @@ export default function MainSection({
               onResetSession={handleResetAndRemoveMode}
               isFullScreen={isFullScreen}
               toggleFullScreen={toggleFullScreen}
+              
             />
           </div>
 

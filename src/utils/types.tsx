@@ -27,7 +27,7 @@ export interface TemplateFiles {
 }
 
 export type ViewMode = "empty" | 'templates' | 'live_session';
-export type ActiveTab = 'preview' | 'code';
+export type ActiveTab = 'preview' | 'code' | 'history';
 
 export interface MainSectionProps {
   templates: Template[];
