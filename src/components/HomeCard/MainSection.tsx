@@ -2,7 +2,6 @@ import { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
 import { MainSectionProps, ViewMode } from "../../utils/types";
 import { useTemplateFiles } from "../../hooks/useTemplateFiles";
-import { useSessionFiles } from "../../hooks/useSessionFiles";
 import LineAxisIcon from "@mui/icons-material/LineAxis";
 import PendingIcon from "@mui/icons-material/Pending";
 // Components

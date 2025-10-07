@@ -346,12 +346,12 @@ const EditorHeader = ({
             isActive={activeTab === "preview"}
             onClick={() => setActiveTab("preview")}
           />
-          {/* <TabButton
+          <TabButton
             label="Code"
             icon={<CodeIcon />}
             isActive={activeTab === "code"}
             onClick={() => setActiveTab("code")}
-          /> */}
+          />
           {/* <TabButton
             label="Host"
             icon={<CloudUploadIcon />}
