@@ -346,12 +346,36 @@ const EditorHeader = ({
   isHome,
   onOpenHostModal,
 }: any) => (
+  <>
   <header className="flex-shrink-0 flex items-center justify-between border-b border-gray-200 dark:border-white/10 px-4 py-1 h-[48px]">
     <h3
       className=" font-semibold items-center py-auto text-2xl truncate pr-4 "
       style={{}}
     >
       {title}
+    </h3>
+    {title && (
+      <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 p-1  rounded-lg">
+          <SignedIn>
+            <UserButton
+              afterSignOutUrl="/"
+              appearance={{
+                elements: {
+                  userButtonAvatarBox: "w-8 h-8", // width and height of avatar
+                },
+              }}
+            />
+          </SignedIn>
+        </div>
+      </div>
+    )}
+  </header>
+  <header className="flex-shrink-0 flex items-center justify-between border-b border-gray-200 dark:border-white/10 px-4 py-1 h-[48px]">
+    <h3
+      className=" font-semibold items-center py-auto text-2xl truncate pr-4 "
+      style={{}}
+    >
     </h3>
     {title && (
       <div className="flex items-center gap-2">
@@ -394,20 +418,12 @@ const EditorHeader = ({
             isActive={activeTab === "history"}
             onClick={() => setActiveTab("history")}
           />
-          <SignedIn>
-            <UserButton
-              afterSignOutUrl="/"
-              appearance={{
-                elements: {
-                  userButtonAvatarBox: "w-8 h-8", // width and height of avatar
-                },
-              }}
-            />
-          </SignedIn>
         </div>
       </div>
     )}
   </header>
+  </>
+
 );
 
 const NavButton = ({
