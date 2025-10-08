@@ -25,13 +25,18 @@ export default function MainSection({
   currentSessionTitle,
   onSelectSession,
   isPaid,
-  gh_token
+  gh_token,
+  selectedCommitId,
+  setSelectedCommitId
 }: MainSectionProps & {
   currentSessionId: string | null;
   currentSessionTitle: string | null;
   onSelectSession: (sessionId: string) => void;
   isPaid: boolean;
   gh_token: string;
+  selectedCommitId?: string | null;
+setSelectedCommitId: (commitId: string | null) => void;
+
 }) {
   const { userId } = useAuth();
   const [currentIndex, setCurrentIndex] = useState<null | number>(null);
@@ -196,7 +201,8 @@ const {
               onResetSession={handleResetAndRemoveMode}
               isFullScreen={isFullScreen}
               toggleFullScreen={toggleFullScreen}
-              
+              selectedCommitId={selectedCommitId}
+  onSelectCommit={(sha) => setSelectedCommitId(sha)}
             />
           </div>
 

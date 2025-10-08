@@ -37,6 +37,8 @@ interface InteractiveCardProps {
   onResetSession: () => void;
   isFullScreen: boolean;
   toggleFullScreen: () => void;
+  selectedCommitId?: string | null;
+  onSelectCommit: (sha: string) => void;
 }
 
 const InteractiveCard: React.FC<InteractiveCardProps> = ({
@@ -56,11 +58,12 @@ const InteractiveCard: React.FC<InteractiveCardProps> = ({
   onResetSession,
   isFullScreen,
   toggleFullScreen,
+  selectedCommitId,
+  onSelectCommit,
 }) => {
   const [activeTab, setActiveTab] = useState<ActiveTab>("preview");
   const [isHostModalOpen, setIsHostModalOpen] = useState(false);
-const [selectedCommit, setSelectedCommit] = useState<string | null>(null);
-  
+
   const navigate = useNavigate();
   useEffect(() => {
     if (isFullScreen) document.body.style.overflow = "hidden";
@@ -96,19 +99,20 @@ const [selectedCommit, setSelectedCommit] = useState<string | null>(null);
   }, [currentTemplateFiles]);
 
   const renderContent = () => {
-      if (activeTab === "history" && viewMode === "live_session") {
-    return (
-      <HistoryView
-        commits={(window as any).commits || []}
-        isFetchingCommits={(window as any).isFetchingCommits || false}
-        onSelectCommit={(sha) => {
-          (window as any).fetchFilesForCommit(sha);
-          setSelectedCommit(sha);
-          setActiveTab("preview"); // Switch to code after loading
-        }}
-      />
-    );
-  }
+    if (activeTab === "history" && viewMode === "live_session") {
+      return (
+        <HistoryView
+          commits={(window as any).commits || []}
+          selectedCommitId={selectedCommitId}
+          isFetchingCommits={(window as any).isFetchingCommits || false}
+          onSelectCommit={(sha) => {
+            onSelectCommit(sha);
+             (window as any).fetchFilesForCommit(sha);
+            setActiveTab("preview"); // Switch to code after loading
+          }}
+        />
+      );
+    }
 
     if (viewMode === "live_session") {
       if (isFetchingSessionFiles || !livePreviewFiles) {
@@ -221,10 +225,12 @@ const LoadingView = ({ message }: { message: string }) => (
 const HistoryView = ({
   commits,
   isFetchingCommits,
+  selectedCommitId,
   onSelectCommit,
 }: {
   commits: any[];
   isFetchingCommits: boolean;
+  selectedCommitId?: string | null;
   onSelectCommit: (sha: string) => void;
 }) => {
   if (isFetchingCommits)
@@ -241,7 +247,11 @@ const HistoryView = ({
       {commits.map((c) => (
         <div
           key={c.sha}
-          className="p-3 bg-gray-100 dark:bg-gray-800 rounded-lg cursor-pointer hover:bg-indigo-100 dark:hover:bg-indigo-900"
+          className={`p-3 rounded-lg cursor-pointer transition ${
+            c.sha === selectedCommitId
+              ? "bg-indigo-500 text-white"
+              : "bg-gray-100 dark:bg-gray-800 hover:bg-indigo-100 dark:hover:bg-indigo-900"
+          }`}
           onClick={() => onSelectCommit(c.sha)}
         >
           <p className="font-medium">{c.commit.message}</p>
@@ -254,7 +264,6 @@ const HistoryView = ({
     </div>
   );
 };
-
 
 const HomeView = ({ onOpenDetailsModal, isProcessing, navigate }: any) => (
   <div className="w-full h-full flex items-center justify-center text-center">
