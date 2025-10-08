@@ -41,7 +41,7 @@ const Card: React.FC<CardProps> = ({
       )}
 
       {/* Title */}
-      <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+      <h3 className="text-md font-bold text-gray-900 dark:text-white">
         {title}
       </h3>
 

@@ -27,7 +27,7 @@ export default function MainSection({
   isPaid,
   gh_token,
   selectedCommitId,
-  setSelectedCommitId
+  setSelectedCommitId,
 }: MainSectionProps & {
   currentSessionId: string | null;
   currentSessionTitle: string | null;
@@ -35,8 +35,7 @@ export default function MainSection({
   isPaid: boolean;
   gh_token: string;
   selectedCommitId?: string | null;
-setSelectedCommitId: (commitId: string | null) => void;
-
+  setSelectedCommitId: (commitId: string | null) => void;
 }) {
   const { userId } = useAuth();
   const [currentIndex, setCurrentIndex] = useState<null | number>(null);
@@ -46,50 +45,46 @@ setSelectedCommitId: (commitId: string | null) => void;
   const [isHome, setIshome] = useState(true);
 
   const { templateFiles, isLoadingTemplates } = useTemplateFiles(templates);
-  
+
   // ✅ FIX 1: Use state to force refetch trigger
   const [refetchTrigger, setRefetchTrigger] = useState(0);
-  
-const {
-  files: rawFiles,
-  isFetching: isFetchingSessionFiles,
-  refetch: refetchSessionFiles,
-  commits,
-  isFetchingCommits,
-  fetchFilesForCommit,
-} = useGithubSessionFiles(
-  "skaya-organisation",
-  userId || "",
-  currentSessionId || "main",
-  gh_token
-);
-    useEffect(() => {
-  (window as any).commits = commits;
-  (window as any).isFetchingCommits = isFetchingCommits;
-  (window as any).fetchFilesForCommit = fetchFilesForCommit;
-}, [commits, isFetchingCommits, fetchFilesForCommit]);
 
+  const {
+    files: rawFiles,
+    isFetching: isFetchingSessionFiles,
+    refetch: refetchSessionFiles,
+    commits,
+    isFetchingCommits,
+    fetchFilesForCommit,
+    refetchAll
+  } = useGithubSessionFiles(
+    "skaya-organisation",
+    userId || "",
+    currentSessionId || "main",
+    gh_token
+  );
   const livePreviewFiles = useMemo(() => {
     if (!rawFiles || Object.keys(rawFiles).length === 0) return {};
-    
-    const transformedFiles: Record<string, { code: string; active?: boolean }> = {};
-    
+
+    const transformedFiles: Record<string, { code: string; active?: boolean }> =
+      {};
+
     Object.entries(rawFiles).forEach(([path, content]) => {
       transformedFiles[path] = {
-        code: typeof content === 'string' ? content : '',
-        active: path === '/src/App.tsx' || path === '/App.tsx'
+        code: typeof content === "string" ? content : "",
+        active: path === "/src/App.tsx" || path === "/App.tsx",
       };
     });
-    
+
     return transformedFiles;
   }, [rawFiles]);
-    
+
   const totalItems = templates.length + 1;
 
   // ✅ FIX 2: Refetch when currentSessionId changes
   useEffect(() => {
     if (currentSessionId && userId) {
-      console.log('🔄 Refetching session files for:', currentSessionId);
+      console.log("🔄 Refetching session files for:", currentSessionId);
       refetchSessionFiles();
     }
   }, [currentSessionId, userId, refetchSessionFiles]);
@@ -97,7 +92,7 @@ const {
   // ✅ FIX 3: Also refetch on manual trigger (for updates)
   useEffect(() => {
     if (refetchTrigger > 0 && currentSessionId) {
-      console.log('🔄 Manual refetch trigger:', refetchTrigger);
+      console.log("🔄 Manual refetch trigger:", refetchTrigger);
       refetchSessionFiles();
     }
   }, [refetchTrigger, currentSessionId, refetchSessionFiles]);
@@ -157,11 +152,12 @@ const {
   // ✅ FIX 4: Add delay and trigger manual refetch
   const handleSaveDetails = async (data: any) => {
     await onSessionAction(data);
-    
+
     // Wait a bit for backend to process, then trigger refetch
     setTimeout(() => {
-      setRefetchTrigger(prev => prev + 1);
-    }, 1000); // Adjust delay as needed
+          setRefetchTrigger(prev => prev + 1);
+    refetchAll();
+    }, 100); 
   };
 
   const handleResetAndRemoveMode = async () => {
@@ -202,7 +198,10 @@ const {
               isFullScreen={isFullScreen}
               toggleFullScreen={toggleFullScreen}
               selectedCommitId={selectedCommitId}
-  onSelectCommit={(sha) => setSelectedCommitId(sha)}
+              onSelectCommit={(sha) => setSelectedCommitId(sha)}
+              commits={commits}
+              isFetchingCommits={isFetchingCommits}
+              fetchFilesForCommit={fetchFilesForCommit}
             />
           </div>
 

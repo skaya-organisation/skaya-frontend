@@ -23,7 +23,7 @@ export function useGithubSessionFiles(
       const resp = await fetch(url, { headers });
       if (!resp.ok) throw new Error("Failed to fetch commits");
       const data = await resp.json();
-      setCommits(data || []);
+      setCommits([...data]); // new array to trigger React re-render
     } catch (err) {
       console.error("fetchCommits:", err);
       setCommits([]);
@@ -32,7 +32,7 @@ export function useGithubSessionFiles(
     }
   }, [orgName, repo, branch, token]);
 
-  /** Recursive GitHub fetch */
+  /** Recursive file fetch */
   const fetchFilesRecursively = useCallback(
     async (ref: string, path = ""): Promise<Record<string, string>> => {
       const url = `https://api.github.com/repos/${orgName}/${repo}/contents/${path}?ref=${ref}`;
@@ -50,8 +50,7 @@ export function useGithubSessionFiles(
             );
             const fileData = await fileResp.json();
             if (fileData.content) {
-              const decoded = atob(fileData.content.replace(/\n/g, ""));
-              result[file.path] = decoded;
+              result[file.path] = atob(fileData.content.replace(/\n/g, ""));
             }
           } else if (file.type === "dir") {
             const nested = await fetchFilesRecursively(ref, file.path);
@@ -65,11 +64,7 @@ export function useGithubSessionFiles(
     [orgName, repo, token]
   );
 
-  /**
-   * Fetch files for either branch or commit.
-   * If branch files are under a subfolder = branch name,
-   * commit fetches should also look inside that subfolder.
-   */
+  /** Fetch files for branch or commit */
   const fetchFiles = useCallback(
     async (commitSha?: string) => {
       setIsFetching(true);
@@ -81,36 +76,28 @@ export function useGithubSessionFiles(
         const keys = Object.keys(allFiles);
         const hasBranchFolder = keys.some((k) => k.startsWith(branchPrefix));
 
-        // Save the structure info
         if (!commitSha) setBranchFolderDetected(hasBranchFolder);
 
-        // If fetching by branch
+        let finalFiles: Record<string, string> = {};
         if (!commitSha) {
-          if (hasBranchFolder) {
-            const filtered: Record<string, string> = {};
-            keys.forEach((k) => {
-              if (k.startsWith(branchPrefix)) {
-                filtered[k.slice(branchPrefix.length)] = allFiles[k];
-              }
-            });
-            setFiles(filtered);
-            return;
-          }
-          setFiles(allFiles);
+          finalFiles = hasBranchFolder
+            ? Object.fromEntries(
+                keys
+                  .filter((k) => k.startsWith(branchPrefix))
+                  .map((k) => [k.slice(branchPrefix.length), allFiles[k]])
+              )
+            : allFiles;
         } else {
-          // If fetching by commit
-          if (branchFolderDetected) {
-            const filtered: Record<string, string> = {};
-            keys.forEach((k) => {
-              if (k.startsWith(branchPrefix)) {
-                filtered[k.slice(branchPrefix.length)] = allFiles[k];
-              }
-            });
-            setFiles(filtered);
-          } else {
-            setFiles(allFiles);
-          }
+          finalFiles = branchFolderDetected
+            ? Object.fromEntries(
+                keys
+                  .filter((k) => k.startsWith(branchPrefix))
+                  .map((k) => [k.slice(branchPrefix.length), allFiles[k]])
+              )
+            : allFiles;
         }
+
+        setFiles(finalFiles);
       } catch (err) {
         console.error("fetchFiles:", err);
         setFiles({});
@@ -121,10 +108,15 @@ export function useGithubSessionFiles(
     [branch, fetchFilesRecursively, branchFolderDetected]
   );
 
-  useEffect(() => {
-    fetchFiles(); // branch load
+  /** Refetch both files and commits */
+  const refetchAll = useCallback(() => {
+    fetchFiles();
     fetchCommits();
   }, [fetchFiles, fetchCommits]);
+
+  useEffect(() => {
+    refetchAll();
+  }, [refetchAll]);
 
   return {
     files,
@@ -132,6 +124,8 @@ export function useGithubSessionFiles(
     refetch: fetchFiles,
     commits,
     isFetchingCommits,
-    fetchFilesForCommit: fetchFiles,
+    fetchFilesForCommit: fetchFiles, // fetch only files for a commit
+    refetchCommits: fetchCommits, // fetch only commits
+    refetchAll, // fetch both files and commits
   };
 }

@@ -18,6 +18,7 @@ import { useNavigate } from "rspress/runtime";
 import { SandpackFiles } from "@codesandbox/sandpack-react";
 import HostWebsiteModal from "./HostWebsiteModal";
 import { CloudUploadIcon } from "lucide-react";
+import { SignedIn, UserButton } from "@clerk/clerk-react";
 // Props Interface
 interface InteractiveCardProps {
   isHome: boolean;
@@ -39,6 +40,9 @@ interface InteractiveCardProps {
   toggleFullScreen: () => void;
   selectedCommitId?: string | null;
   onSelectCommit: (sha: string) => void;
+  commits: any[];
+  isFetchingCommits: boolean;
+  fetchFilesForCommit: (sha: string) => void;
 }
 
 const InteractiveCard: React.FC<InteractiveCardProps> = ({
@@ -60,6 +64,9 @@ const InteractiveCard: React.FC<InteractiveCardProps> = ({
   toggleFullScreen,
   selectedCommitId,
   onSelectCommit,
+  commits,
+  isFetchingCommits,
+  fetchFilesForCommit,
 }) => {
   const [activeTab, setActiveTab] = useState<ActiveTab>("preview");
   const [isHostModalOpen, setIsHostModalOpen] = useState(false);
@@ -102,13 +109,13 @@ const InteractiveCard: React.FC<InteractiveCardProps> = ({
     if (activeTab === "history" && viewMode === "live_session") {
       return (
         <HistoryView
-          commits={(window as any).commits || []}
+          commits={commits}
           selectedCommitId={selectedCommitId}
-          isFetchingCommits={(window as any).isFetchingCommits || false}
+          isFetchingCommits={isFetchingCommits}
           onSelectCommit={(sha) => {
             onSelectCommit(sha);
-             (window as any).fetchFilesForCommit(sha);
-            setActiveTab("preview"); // Switch to code after loading
+            fetchFilesForCommit(sha);
+            setActiveTab("preview");
           }}
         />
       );
@@ -387,6 +394,16 @@ const EditorHeader = ({
             isActive={activeTab === "history"}
             onClick={() => setActiveTab("history")}
           />
+          <SignedIn>
+            <UserButton
+              afterSignOutUrl="/"
+              appearance={{
+                elements: {
+                  userButtonAvatarBox: "w-8 h-8", // width and height of avatar
+                },
+              }}
+            />
+          </SignedIn>
         </div>
       </div>
     )}
