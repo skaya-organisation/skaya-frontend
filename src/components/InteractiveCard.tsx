@@ -387,12 +387,12 @@ const EditorHeader = ({
             isActive={activeTab === "code"}
             onClick={() => setActiveTab("code")}
           />
-          {/* <TabButton
+          <TabButton
             label="Host"
             icon={<CloudUploadIcon />}
             isActive={false}
             onClick={onOpenHostModal}
-          /> */}
+          />
           <TabButton
             label=""
             icon={isFullScreen ? <FullscreenExitIcon /> : <FullscreenIcon />}
