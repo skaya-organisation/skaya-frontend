@@ -104,6 +104,7 @@ export const HostWebsiteModal: React.FC<HostWebsiteModalProps> = ({
   const [checkTimeout, setCheckTimeout] = useState<NodeJS.Timeout | null>(null);
   const { isSignedIn, getToken, isLoaded } = useAuth();
 
+
   useEffect(() => {
     if (!isOpen) {
       setDomainName("");
@@ -113,6 +114,15 @@ export const HostWebsiteModal: React.FC<HostWebsiteModalProps> = ({
       setError(null);
     }
   }, [isOpen, defaultBranch]);
+useEffect(() => {
+  if (hostingDomain) {
+    // Remove protocol if present
+    let cleanDomain = hostingDomain.replace(/^https?:\/\//, "");
+    // Remove the .skaya.org part (and any trailing slash)
+    cleanDomain = cleanDomain.replace(/\.skaya\.org\/?$/, "");
+    setDomainName(cleanDomain);
+  }
+}, [hostingDomain]);
 
   // Debounced domain check
   useEffect(() => {
@@ -309,23 +319,29 @@ export const HostWebsiteModal: React.FC<HostWebsiteModalProps> = ({
               )
             )}
 
-            {hostingDomain && (
-              <p className="mt-2 text-sm text-indigo-600 dark:text-indigo-400">
-                🌐 Currently hosted at:{" "}
-                <span className="font-medium">{hostingDomain}</span>
-              </p>
-            )}
 
             {/* ✅ Keep your helper text */}
             <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
               Use lowercase letters, numbers, and hyphens only
             </p>
-            {hostingDomain && (
-              <p className="mt-2 text-sm text-indigo-600 dark:text-indigo-400">
-                🌐 Currently hosted at:{" "}
-                <span className="font-medium">{hostingDomain}</span>
-              </p>
-            )}
+          {hostingDomain && (
+  <p className="mt-2 text-sm text-indigo-600 dark:text-indigo-400">
+    🌐 Currently hosted at:{" "}
+    <a
+      href={
+        hostingDomain.startsWith("http")
+          ? hostingDomain
+          : `https://${hostingDomain}`
+      }
+      target="_blank"
+      rel="noopener noreferrer"
+      className="font-medium underline hover:text-indigo-800 dark:hover:text-indigo-300 transition-colors"
+    >
+      {hostingDomain}
+    </a>
+  </p>
+)}
+
           </div>
 
           {/* Branch Name Input */}
