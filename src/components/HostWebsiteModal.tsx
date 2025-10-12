@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { X, Check, AlertCircle, Loader2, Globe, Rocket } from 'lucide-react';
-import { useAuth } from '@clerk/clerk-react';
-import { backendServer } from '../utils/constants';
+import React, { useState, useEffect } from "react";
+import { X, Check, AlertCircle, Loader2, Globe, Rocket } from "lucide-react";
+import { useAuth } from "@clerk/clerk-react";
+import { backendServer } from "../utils/constants";
 
 interface DomainAvailabilityResponse {
   available: boolean;
@@ -15,12 +15,15 @@ interface DeployDomainResponse {
 }
 
 const hostingAPI = {
-  async checkDomainAvailability(domainName: string, accessToken: string): Promise<DomainAvailabilityResponse> {
+  async checkDomainAvailability(
+    domainName: string,
+    accessToken: string
+  ): Promise<DomainAvailabilityResponse> {
     const response = await fetch(`${backendServer}/check-domain`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Authorization': `Bearer ${accessToken}`,
-        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ domainName }),
     });
@@ -29,12 +32,17 @@ const hostingAPI = {
     return response.json();
   },
 
-  async deployDomain(domainName: string, branchName: string, accessToken: string, sessionId: string): Promise<DeployDomainResponse> {
+  async deployDomain(
+    domainName: string,
+    branchName: string,
+    accessToken: string,
+    sessionId: string
+  ): Promise<DeployDomainResponse> {
     const response = await fetch(`${backendServer}/deploy`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Authorization': `Bearer ${accessToken}`,
-        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ domainName, branchName, sessionId }),
     });
@@ -43,15 +51,23 @@ const hostingAPI = {
     return response.json();
   },
 
-  async updateSessionHosting(sessionId: string, isHosted: boolean, hostingDomain: string, accessToken: string) {
-    const response = await fetch(`${backendServer}/Skaya/update-session-hosting`, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${accessToken}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ sessionId, isHosted, hostingDomain }),
-    });
+  async updateSessionHosting(
+    sessionId: string,
+    isHosted: boolean,
+    hostingDomain: string,
+    accessToken: string
+  ) {
+    const response = await fetch(
+      `${backendServer}/Skaya/update-session-hosting`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ sessionId, isHosted, hostingDomain }),
+      }
+    );
 
     if (!response.ok) throw new Error(await response.text());
     return response.json();
@@ -61,6 +77,7 @@ const hostingAPI = {
 interface HostWebsiteModalProps {
   isOpen: boolean;
   onClose: () => void;
+  hostingDomain: string;
   defaultBranch?: string;
   currentSessionId?: string | null; // 👈 added to track current session
 }
@@ -68,22 +85,28 @@ interface HostWebsiteModalProps {
 export const HostWebsiteModal: React.FC<HostWebsiteModalProps> = ({
   isOpen,
   onClose,
-  defaultBranch = 'main',
+  hostingDomain,
+  defaultBranch = "main",
   currentSessionId,
 }) => {
-  const [domainName, setDomainName] = useState('');
+  const [domainName, setDomainName] = useState("");
   const [branchName, setBranchName] = useState(defaultBranch);
   const [isCheckingDomain, setIsCheckingDomain] = useState(false);
   const [isDeploying, setIsDeploying] = useState(false);
-  const [domainStatus, setDomainStatus] = useState<{ available?: boolean; message?: string } | null>(null);
-  const [deployResult, setDeployResult] = useState<DeployDomainResponse | null>(null);
+  const [domainStatus, setDomainStatus] = useState<{
+    available?: boolean;
+    message?: string;
+  } | null>(null);
+  const [deployResult, setDeployResult] = useState<DeployDomainResponse | null>(
+    null
+  );
   const [error, setError] = useState<string | null>(null);
   const [checkTimeout, setCheckTimeout] = useState<NodeJS.Timeout | null>(null);
   const { isSignedIn, getToken, isLoaded } = useAuth();
 
   useEffect(() => {
     if (!isOpen) {
-      setDomainName('');
+      setDomainName("");
       setBranchName(defaultBranch);
       setDomainStatus(null);
       setDeployResult(null);
@@ -110,11 +133,14 @@ export const HostWebsiteModal: React.FC<HostWebsiteModalProps> = ({
     setError(null);
     try {
       const accessToken = await getToken();
-      if (!accessToken || !isLoaded) throw new Error('User not authenticated');
-      const result = await hostingAPI.checkDomainAvailability(domainName, accessToken);
+      if (!accessToken || !isLoaded) throw new Error("User not authenticated");
+      const result = await hostingAPI.checkDomainAvailability(
+        domainName,
+        accessToken
+      );
       setDomainStatus(result);
     } catch (err: any) {
-      setError(err.message || 'Failed to check domain availability');
+      setError(err.message || "Failed to check domain availability");
       setDomainStatus(null);
     } finally {
       setIsCheckingDomain(false);
@@ -123,11 +149,11 @@ export const HostWebsiteModal: React.FC<HostWebsiteModalProps> = ({
 
   const handleDeploy = async () => {
     if (!domainStatus?.available) {
-      setError('Please choose an available domain name');
+      setError("Please choose an available domain name");
       return;
     }
     if (!domainName || !branchName) {
-      setError('Please fill in all fields');
+      setError("Please fill in all fields");
       return;
     }
 
@@ -136,17 +162,27 @@ export const HostWebsiteModal: React.FC<HostWebsiteModalProps> = ({
 
     try {
       const accessToken = await getToken();
-      if (!accessToken || !isLoaded) throw new Error('User not authenticated');
+      if (!accessToken || !isLoaded) throw new Error("User not authenticated");
 
-      const result = await hostingAPI.deployDomain(domainName, branchName, accessToken, currentSessionId || '');
+      const result = await hostingAPI.deployDomain(
+        domainName,
+        branchName,
+        accessToken,
+        currentSessionId || ""
+      );
       setDeployResult(result);
 
       if (result.success && currentSessionId) {
         // ✅ Update session to mark as hosted
-        await hostingAPI.updateSessionHosting(currentSessionId, true, result.url, accessToken);
+        await hostingAPI.updateSessionHosting(
+          currentSessionId,
+          true,
+          result.url,
+          accessToken
+        );
       }
     } catch (err: any) {
-      setError(err.message || 'Deployment failed');
+      setError(err.message || "Deployment failed");
     } finally {
       setIsDeploying(false);
     }
@@ -163,7 +199,9 @@ export const HostWebsiteModal: React.FC<HostWebsiteModalProps> = ({
             <div className="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center">
               <Check className="w-8 h-8 text-green-600 dark:text-green-400" />
             </div>
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">🎉 Deployment Successful!</h2>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+              🎉 Deployment Successful!
+            </h2>
             <p className="text-gray-600 dark:text-gray-300">
               Your website has been deployed successfully
             </p>
@@ -197,7 +235,10 @@ export const HostWebsiteModal: React.FC<HostWebsiteModalProps> = ({
             <Rocket className="w-6 h-6 text-white" />
             <h2 className="text-xl font-bold text-white">Host Your Website</h2>
           </div>
-          <button onClick={onClose} className="text-white/80 hover:text-white transition-colors">
+          <button
+            onClick={onClose}
+            className="text-white/80 hover:text-white transition-colors"
+          >
             <X className="w-6 h-6" />
           </button>
         </div>
@@ -213,13 +254,22 @@ export const HostWebsiteModal: React.FC<HostWebsiteModalProps> = ({
             <div className="relative">
               <input
                 type="text"
-                value={domainName}
+                value={hostingDomain || domainName}
                 onChange={(e) =>
-                  setDomainName(e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, ''))
+                  !hostingDomain &&
+                  setDomainName(
+                    e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, "")
+                  )
                 }
+                disabled={!!hostingDomain}
                 placeholder="my-awesome-site"
-                className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition-all"
+                className={`w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg ${
+                  hostingDomain
+                    ? "bg-gray-100 dark:bg-gray-800 cursor-not-allowed text-gray-600 dark:text-gray-400"
+                    : "bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                } outline-none transition-all`}
               />
+
               {isCheckingDomain && (
                 <div className="absolute right-3 top-1/2 -translate-y-1/2">
                   <Loader2 className="w-5 h-5 text-indigo-500 animate-spin" />
@@ -232,8 +282,8 @@ export const HostWebsiteModal: React.FC<HostWebsiteModalProps> = ({
               <div
                 className={`mt-2 flex items-center gap-2 text-sm ${
                   domainStatus.available
-                    ? 'text-green-600 dark:text-green-400'
-                    : 'text-red-600 dark:text-red-400'
+                    ? "text-green-600 dark:text-green-400"
+                    : "text-red-600 dark:text-red-400"
                 }`}
               >
                 {domainStatus.available ? (
@@ -244,7 +294,7 @@ export const HostWebsiteModal: React.FC<HostWebsiteModalProps> = ({
                 ) : (
                   <>
                     <AlertCircle className="w-4 h-4" />
-                    <span>{domainStatus.message || 'Domain taken'}</span>
+                    <span>{domainStatus.message || "Domain taken"}</span>
                   </>
                 )}
               </div>
@@ -254,6 +304,12 @@ export const HostWebsiteModal: React.FC<HostWebsiteModalProps> = ({
             <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
               Use lowercase letters, numbers, and hyphens only
             </p>
+            {hostingDomain && (
+              <p className="mt-2 text-sm text-indigo-600 dark:text-indigo-400">
+                🌐 Currently hosted at:{" "}
+                <span className="font-medium">{hostingDomain}</span>
+              </p>
+            )}
           </div>
 
           {/* Branch Name Input */}
@@ -283,7 +339,8 @@ export const HostWebsiteModal: React.FC<HostWebsiteModalProps> = ({
 
           <div className="bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-200 dark:border-indigo-800 rounded-lg p-3">
             <p className="text-xs text-indigo-700 dark:text-indigo-300">
-              💡 Your website will be built and deployed automatically. This may take a few minutes.
+              💡 Your website will be built and deployed automatically. This may
+              take a few minutes.
             </p>
           </div>
 
@@ -297,7 +354,9 @@ export const HostWebsiteModal: React.FC<HostWebsiteModalProps> = ({
             </button>
             <button
               onClick={handleDeploy}
-              disabled={!domainStatus?.available || isDeploying || isCheckingDomain}
+              disabled={
+                !domainStatus?.available || isDeploying || isCheckingDomain
+              }
               className="flex-1 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 transform hover:scale-105 active:scale-95 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-2"
             >
               {isDeploying ? (

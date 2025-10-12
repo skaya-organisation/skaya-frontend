@@ -220,6 +220,7 @@ const InteractiveCard: React.FC<InteractiveCardProps> = ({
       <HostWebsiteModal
         isOpen={isHostModalOpen}
         onClose={() => setIsHostModalOpen(false)}
+        hostingDomain={hostingDomain}
         defaultBranch={sessionTitle || template?.title || "main"}
       />
     </>
@@ -431,22 +432,7 @@ const EditorHeader = ({
           </div>
         </div>
 
-        {/* 👇 Show deployed domain if already hosted */}
-        {isHosted && (
-          <div className="flex flex-col text-right text-sm text-gray-600 dark:text-gray-300">
-            <span>
-              <strong>Deployed at:</strong>{" "}
-              <a
-                href={`https://${hostingDomain}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-indigo-500 hover:underline"
-              >
-                {hostingDomain}
-              </a>
-            </span>
-          </div>
-        )}
+
       </header>
     )}
   </>
