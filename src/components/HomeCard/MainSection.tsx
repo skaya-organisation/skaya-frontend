@@ -11,6 +11,7 @@ import TemplateCarousel from "../TemplateCarousel";
 import { SignIn, SignInButton, useAuth } from "@clerk/clerk-react";
 import CustomAuth from "../Auth";
 import { useGithubSessionFiles } from "../../hooks/useGithubSessionFiles";
+import { USERS_GITHUB_ORGANISATION } from "../../utils/constants";
 
 export default function MainSection({
   templates,
@@ -28,6 +29,8 @@ export default function MainSection({
   gh_token,
   selectedCommitId,
   setSelectedCommitId,
+  isHosted,
+  hostingDomain
 }: MainSectionProps & {
   currentSessionId: string | null;
   currentSessionTitle: string | null;
@@ -36,6 +39,8 @@ export default function MainSection({
   gh_token: string;
   selectedCommitId?: string | null;
   setSelectedCommitId: (commitId: string | null) => void;
+  isHosted: boolean;
+  hostingDomain:string
 }) {
   const { userId } = useAuth();
   const [currentIndex, setCurrentIndex] = useState<null | number>(null);
@@ -58,7 +63,7 @@ export default function MainSection({
     fetchFilesForCommit,
     refetchAll
   } = useGithubSessionFiles(
-    "skaya-organisation",
+    USERS_GITHUB_ORGANISATION,
     userId || "",
     currentSessionId || "main",
     gh_token
@@ -156,7 +161,7 @@ export default function MainSection({
     // Wait a bit for backend to process, then trigger refetch
     setTimeout(() => {
           setRefetchTrigger(prev => prev + 1);
-    refetchAll();
+          refetchAll();
     }, 100); 
   };
 
@@ -202,6 +207,8 @@ export default function MainSection({
               commits={commits}
               isFetchingCommits={isFetchingCommits}
               fetchFilesForCommit={fetchFilesForCommit}
+              isHosted={isHosted}
+              hostingDomain={hostingDomain}
             />
           </div>
 

@@ -43,7 +43,7 @@ export interface MainSectionProps {
     files?: File[],
   ) => Promise<void>;
   isProcessing: boolean;
-  sessions: string[];
+  sessions: any;
   onResetSession: () => void;
   promptCount: number;
   maxPrompts: number;

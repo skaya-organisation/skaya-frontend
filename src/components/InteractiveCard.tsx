@@ -43,6 +43,8 @@ interface InteractiveCardProps {
   commits: any[];
   isFetchingCommits: boolean;
   fetchFilesForCommit: (sha: string) => void;
+  isHosted: boolean;
+  hostingDomain: string;
 }
 
 const InteractiveCard: React.FC<InteractiveCardProps> = ({
@@ -50,6 +52,7 @@ const InteractiveCard: React.FC<InteractiveCardProps> = ({
   onOpenDetailsModal,
   isProcessing,
   currentIndex,
+  sessionId,
   templates,
   goPrev,
   goNext,
@@ -67,6 +70,8 @@ const InteractiveCard: React.FC<InteractiveCardProps> = ({
   commits,
   isFetchingCommits,
   fetchFilesForCommit,
+  isHosted,
+  hostingDomain,
 }) => {
   const [activeTab, setActiveTab] = useState<ActiveTab>("preview");
   const [isHostModalOpen, setIsHostModalOpen] = useState(false);
@@ -162,21 +167,22 @@ const InteractiveCard: React.FC<InteractiveCardProps> = ({
 
   const cardContent = (
     <div className=" rounded-3xl overflow-hidden group">
-      <EditorHeader
-        title={
-          viewMode === "live_session"
-            ? sessionTitle || "Live Session"
-            : template?.title || ""
-        }
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
-        toggleFullScreen={toggleFullScreen}
-        isFullScreen={isFullScreen}
-        showReset={viewMode === "live_session"}
-        onResetSession={onResetSession}
-        isHome={isHome}
-        onOpenHostModal={() => setIsHostModalOpen(true)}
-      />
+<EditorHeader
+  sessionId={sessionId}
+  title={viewMode === "live_session" ? sessionTitle || "Live Session" : template?.title || ""}
+  activeTab={activeTab}
+  setActiveTab={setActiveTab}
+  toggleFullScreen={toggleFullScreen}
+  isFullScreen={isFullScreen}
+  showReset={viewMode === "live_session"}
+  onResetSession={onResetSession}
+  isHome={isHome}
+  onOpenHostModal={() => setIsHostModalOpen(true)}
+  isHosted={isHosted}
+  hostingDomain={hostingDomain}
+  currentTemplateFiles={currentTemplateFiles}
+/>
+
       <AnimatePresence mode="wait">
         <motion.div
           key={viewMode === "live_session" ? "live-session" : currentIndex}
@@ -336,6 +342,7 @@ const HomeView = ({ onOpenDetailsModal, isProcessing, navigate }: any) => (
 );
 
 const EditorHeader = ({
+  sessionId,
   title,
   activeTab,
   setActiveTab,
@@ -345,81 +352,105 @@ const EditorHeader = ({
   onResetSession,
   isHome,
   onOpenHostModal,
+  isHosted,
+  hostingDomain,
+  currentTemplateFiles
 }: any) => (
   <>
-  <header className="flex-shrink-0 flex items-center justify-between border-b border-gray-200 dark:border-white/10 px-4 py-1 h-[48px]">
-    <h3
-      className=" font-semibold items-center py-auto text-2xl truncate pr-4 "
-      style={{}}
-    >
-      {title}
-    </h3>
-    {title && (
-      <div className="flex items-center gap-2">
-        <div className="flex items-center gap-2 p-1  rounded-lg">
-          <SignedIn>
-            <UserButton
-              afterSignOutUrl="/"
-              appearance={{
-                elements: {
-                  userButtonAvatarBox: "w-8 h-8", // width and height of avatar
-                },
-              }}
-            />
-          </SignedIn>
+    <header className="flex-shrink-0 flex items-center justify-between border-b border-gray-200 dark:border-white/10 px-4 py-1 h-[48px]">
+      <h3 className="font-semibold text-2xl truncate pr-4">{title}</h3>
+      {title && (
+        <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 p-1 rounded-lg">
+            <SignedIn>
+              <UserButton
+                afterSignOutUrl="/"
+                appearance={{
+                  elements: {
+                    userButtonAvatarBox: "w-8 h-8",
+                  },
+                }}
+              />
+            </SignedIn>
+          </div>
         </div>
-      </div>
-    )}
-  </header>
+      )}
+    </header>
+
     {title && (
-  <header className="flex-shrink-0 flex items-center justify-between border-b border-gray-200 dark:border-white/10 px-4 py-1 h-[48px]">
-      <div className="flex items-center gap-2">
-        <div className="flex items-center gap-2 p-1  rounded-lg">
-          <TabButton
-            label="Preview"
-            icon={<VisibilityIcon />}
-            isActive={activeTab === "preview"}
-            onClick={() => setActiveTab("preview")}
-          />
-          <TabButton
-            label="Code"
-            icon={<CodeIcon />}
-            isActive={activeTab === "code"}
-            onClick={() => setActiveTab("code")}
-          />
-          <TabButton
-            label="Host"
-            icon={<CloudUploadIcon />}
-            isActive={false}
-            onClick={onOpenHostModal}
-          />
-          <TabButton
-            label=""
-            icon={isFullScreen ? <FullscreenExitIcon /> : <FullscreenIcon />}
-            isActive={activeTab === ""}
-            onClick={toggleFullScreen}
-          />
-          {/* {showReset && (
+      <header className="flex-shrink-0 flex items-center justify-between border-b border-gray-200 dark:border-white/10 px-4 py-1 h-[48px]">
+        <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 p-1 rounded-lg">
+            <TabButton
+              label="Preview"
+              icon={<VisibilityIcon />}
+              isActive={activeTab === "preview"}
+              onClick={() => setActiveTab("preview")}
+            />
+            <TabButton
+              label="Code"
+              icon={<CodeIcon />}
+              isActive={activeTab === "code"}
+              onClick={() => setActiveTab("code")}
+            />
+
+
+            {/* 👇 Conditional Host / Redeploy Button */}
+          {sessionId && !currentTemplateFiles &&
+          <>
+            {isHosted ? (
+              <TabButton
+                label="Redeploy"
+                icon={<CloudUploadIcon />}
+                isActive={false}
+                onClick={onOpenHostModal}
+              />
+            ) : (
+              <TabButton
+                label="Host"
+                icon={<CloudUploadIcon />}
+                isActive={false}
+                onClick={onOpenHostModal}
+              />
+            )}
+          </>
+}
             <TabButton
               label=""
-              icon={<DeleteOutlineIcon />}
+              icon={isFullScreen ? <FullscreenExitIcon /> : <FullscreenIcon />}
               isActive={activeTab === ""}
-              onClick={onResetSession}
+              onClick={toggleFullScreen}
             />
-          )} */}
-          <TabButton
-            label="History"
-            icon={<LineAxisIcon />}
-            isActive={activeTab === "history"}
-            onClick={() => setActiveTab("history")}
-          />
+            <TabButton
+              label="History"
+              icon={<LineAxisIcon />}
+              isActive={activeTab === "history"}
+              onClick={() => setActiveTab("history")}
+            />
+          </div>
         </div>
-      </div>
-  </header>
+
+        {/* 👇 Show deployed domain if already hosted */}
+        {isHosted && (
+          <div className="flex flex-col text-right text-sm text-gray-600 dark:text-gray-300">
+            <span>
+              <strong>Deployed at:</strong>{" "}
+              <a
+                href={`https://${hostingDomain}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-indigo-500 hover:underline"
+              >
+                {hostingDomain}
+              </a>
+            </span>
+          </div>
+        )}
+      </header>
     )}
   </>
-
 );
+
 
 const NavButton = ({
   direction,

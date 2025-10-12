@@ -6,8 +6,8 @@ import "./index.css";
 import { useThemeState } from "rspress/theme";
 import { useDark } from 'rspress/runtime';
 import { dark } from "@clerk/themes"; 
+import { PUBLISHABLE_KEY } from "../utils/constants";
 
-const PUBLISHABLE_KEY =process.env.REACT_APP_CLERK_PUBLISHABLE_KEY || "";
 
 if (!PUBLISHABLE_KEY) {
   throw new Error("Add your Clerk Publishable Key to the .env file");

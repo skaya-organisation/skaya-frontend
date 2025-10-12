@@ -5,9 +5,13 @@ import Card from "./Cards/HomeTemplatesCard";
 import AddToQueueIcon from "@mui/icons-material/AddToQueue";
 import TemplateSkeletonCard from "./ui/TemplateSkeletonCard";
 
+interface SessionDetails {
+  isHosted: boolean;
+  hostingDomain: string;
+}
 interface TemplateCarouselProps {
   templates: Template[];
-  sessions: string[];
+  sessions: Record<string, string | SessionDetails>;
   viewMode: ViewMode;
   currentIndex: number | null;
   currentSessionId: string | null;
@@ -30,6 +34,15 @@ const TemplateCarousel: React.FC<TemplateCarouselProps> = ({
   onResetSession,
   setIsDetailsModalOpen,
 }) => {
+  const sessionIds = Object.keys(sessions).filter((key) => key !== "0");
+
+  const sessionData = sessionIds.map((id) => ({
+    id,
+    ...(typeof sessions[id] === "object"
+      ? sessions[id]
+      : { isHosted: false, hostingDomain: "" }),
+  }));
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -54,15 +67,19 @@ const TemplateCarousel: React.FC<TemplateCarouselProps> = ({
           }}
         />
 
-        {/* 🟢 Existing Sessions */}
-        {sessions.map((id) => (
+        {sessionData.map(({ id, isHosted, hostingDomain }) => (
           <Card
             key={id}
             title={id}
-            showLiveBadge
+            description={
+              isHosted
+                ? `Hosted on ${hostingDomain || "Unknown Domain"}`
+                : "Not hosted yet"
+            }
+            showLiveBadge={isHosted}
             isActive={id === currentSessionId}
             onClick={() => {
-              onSelectSession(id)
+              onSelectSession(id);
               window.scrollTo({ top: 0, behavior: "smooth" });
             }}
           />

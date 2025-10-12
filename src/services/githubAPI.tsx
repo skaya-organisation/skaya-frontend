@@ -1,6 +1,5 @@
 // src/services/githubAPI.ts
-import { gh_token } from '../components/HomeCard/Index';
-import { GITHUB_REPO } from '../utils/constants';
+import { gh_token, GITHUB_REPO } from '../utils/constants';
 import { Template } from '../utils/types';
 
 export const fetchAllTemplateFiles = async (templates: Template[]): Promise<{ [key: string]: any }> => {

@@ -1,14 +1,12 @@
 import { useState, useEffect, useCallback } from 'react';
 import MainSection from './MainSection';
 import { useAuth } from '@clerk/clerk-react';
-
-// --- CONFIGURATION & CONSTANTS ---
-const GITHUB_REPO = 'skaya-org/frontend-react-template';
-
-export const backendServer =process.env.REACT_APP_BACKEND_SERVER;
-export const gh_token =process.env.REACT_APP_GITHUB_TOKEN
-
-const MAX_PROMPTS = 5;
+import {
+  backendServer,
+  gh_token,
+  GITHUB_REPO,
+  MAX_PROMPTS,
+} from '../../utils/constants';
 
 interface Template {
   id: string;
@@ -16,9 +14,14 @@ interface Template {
   description: string;
 }
 
+interface SessionDetails {
+  isHosted: boolean;
+  hostingDomain: string;
+}
+
 export default function HomeCard() {
   const [templates, setTemplates] = useState<Template[]>([]);
-  const [sessions, setSessions] = useState<string[]>([]);
+  const [sessions, setSessions] = useState<Record<string, string | SessionDetails>>({});
   const [promptCount, setPromptCount] = useState(0);
   const [isPaid, setIsPaid] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -26,13 +29,36 @@ export default function HomeCard() {
   const [currentSessionTitle, setCurrentSessionTitle] = useState<string | null>(null);
   const [selectedCommitId, setSelectedCommitId] = useState<string | null>(null);
 
+  // new states for hosted info
+  const [isHosted, setIsHosted] = useState<boolean>(false);
+  const [hostingDomain, setHostingDomain] = useState<string>('');
+
   const { isSignedIn, getToken, isLoaded } = useAuth();
 
-  const handleSelectSession = useCallback((sessionId: string) => {
-    setCurrentSessionId(sessionId);
-    setCurrentSessionTitle(sessionId);
-  }, []);
+  /**
+   * 🟢 Select session and update hosted info
+   */
+  const handleSelectSession = useCallback(
+    (sessionId: string) => {
+      setCurrentSessionId(sessionId);
+      setCurrentSessionTitle(sessionId);
 
+      // fetch details from sessions object
+      const details = sessions[sessionId];
+      if (typeof details === 'object') {
+        setIsHosted(details.isHosted);
+        setHostingDomain(details.hostingDomain);
+      } else {
+        setIsHosted(false);
+        setHostingDomain('');
+      }
+    },
+    [sessions]
+  );
+
+  /**
+   * 🧠 Fetch user info and sessions from backend
+   */
   const fetchPromptsRemaining = useCallback(async () => {
     try {
       const accessToken = await getToken();
@@ -40,8 +66,9 @@ export default function HomeCard() {
         headers: { Authorization: `Bearer ${accessToken}` },
       });
       const data = await response.json();
+
       if (data.success) {
-        setSessions(data.user.sessions || []);
+        setSessions(data.user.sessions || {});
         setPromptCount(MAX_PROMPTS - data.user.promptCount);
         setIsPaid(data.user.isPaid);
       }
@@ -55,7 +82,7 @@ export default function HomeCard() {
   }, [fetchPromptsRemaining]);
 
   /**
-   * 🔧 Handle Create / Update (Backend handles logic)
+   * 🔧 Create / Update website session
    */
   const handleSessionAction = useCallback(
     async (details: any, files: File[] = []) => {
@@ -77,8 +104,15 @@ export default function HomeCard() {
         const data = await res.json();
         if (data.success) {
           await fetchPromptsRemaining();
-          setCurrentSessionId(data.data.newSessionId);
+          const newId = data.data.newSessionId;
+          setCurrentSessionId(newId);
           setCurrentSessionTitle(details.title);
+
+          // update current session info if backend returns hosted info
+          if (data.data.isHosted !== undefined) {
+            setIsHosted(data.data.isHosted);
+            setHostingDomain(data.data.hostingDomain || '');
+          }
         } else {
           console.error('Error from backend:', data.error);
         }
@@ -94,8 +128,13 @@ export default function HomeCard() {
   const resetSession = useCallback(() => {
     setCurrentSessionId(null);
     setCurrentSessionTitle(null);
+    setIsHosted(false);
+    setHostingDomain('');
   }, []);
 
+  /**
+   * 📦 Fetch available templates from GitHub
+   */
   useEffect(() => {
     const fetchTemplates = async () => {
       try {
@@ -123,7 +162,9 @@ export default function HomeCard() {
     fetchTemplates();
   }, []);
 
-
+  /**
+   * 🧩 Pass all props to MainSection
+   */
   return (
     <MainSection
       templates={templates}
@@ -141,6 +182,8 @@ export default function HomeCard() {
       gh_token={gh_token}
       selectedCommitId={selectedCommitId}
       setSelectedCommitId={setSelectedCommitId}
+      isHosted={isHosted}
+      hostingDomain={hostingDomain}
     />
   );
 }
