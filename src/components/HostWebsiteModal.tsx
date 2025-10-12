@@ -278,26 +278,42 @@ export const HostWebsiteModal: React.FC<HostWebsiteModalProps> = ({
             </div>
 
             {/* Domain Status */}
-            {domainStatus && !isCheckingDomain && (
-              <div
-                className={`mt-2 flex items-center gap-2 text-sm ${
-                  domainStatus.available
-                    ? "text-green-600 dark:text-green-400"
-                    : "text-red-600 dark:text-red-400"
-                }`}
-              >
-                {domainStatus.available ? (
-                  <>
-                    <Check className="w-4 h-4" />
-                    <span>Domain available!</span>
-                  </>
-                ) : (
-                  <>
-                    <AlertCircle className="w-4 h-4" />
-                    <span>{domainStatus.message || "Domain taken"}</span>
-                  </>
-                )}
+            {/* Domain Status */}
+            {hostingDomain ? (
+              <div className="mt-2 flex items-center gap-2 text-sm text-green-600 dark:text-green-400">
+                <Check className="w-4 h-4" />
+                <span>Active and hosted</span>
               </div>
+            ) : (
+              domainStatus &&
+              !isCheckingDomain && (
+                <div
+                  className={`mt-2 flex items-center gap-2 text-sm ${
+                    domainStatus.available
+                      ? "text-green-600 dark:text-green-400"
+                      : "text-red-600 dark:text-red-400"
+                  }`}
+                >
+                  {domainStatus.available ? (
+                    <>
+                      <Check className="w-4 h-4" />
+                      <span>Domain available!</span>
+                    </>
+                  ) : (
+                    <>
+                      <AlertCircle className="w-4 h-4" />
+                      <span>{domainStatus.message || "Domain taken"}</span>
+                    </>
+                  )}
+                </div>
+              )
+            )}
+
+            {hostingDomain && (
+              <p className="mt-2 text-sm text-indigo-600 dark:text-indigo-400">
+                🌐 Currently hosted at:{" "}
+                <span className="font-medium">{hostingDomain}</span>
+              </p>
             )}
 
             {/* ✅ Keep your helper text */}
@@ -345,6 +361,7 @@ export const HostWebsiteModal: React.FC<HostWebsiteModalProps> = ({
           </div>
 
           {/* Actions */}
+          {/* Actions */}
           <div className="flex gap-3 pt-2">
             <button
               onClick={onClose}
@@ -352,22 +369,25 @@ export const HostWebsiteModal: React.FC<HostWebsiteModalProps> = ({
             >
               Cancel
             </button>
+
             <button
               onClick={handleDeploy}
-              disabled={
-                !domainStatus?.available || isDeploying || isCheckingDomain
-              }
-              className="flex-1 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 transform hover:scale-105 active:scale-95 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-2"
+              disabled={isDeploying || isCheckingDomain}
+              className={`flex-1 ${
+                hostingDomain
+                  ? "bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500"
+                  : "bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500"
+              } text-white font-semibold py-3 px-6 rounded-lg transition-all duration-200 transform hover:scale-105 active:scale-95 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-2`}
             >
               {isDeploying ? (
                 <>
                   <Loader2 className="w-5 h-5 animate-spin" />
-                  Deploying...
+                  {hostingDomain ? "Redeploying..." : "Deploying..."}
                 </>
               ) : (
                 <>
                   <Rocket className="w-5 h-5" />
-                  Deploy
+                  {hostingDomain ? "Redeploy" : "Deploy"}
                 </>
               )}
             </button>
