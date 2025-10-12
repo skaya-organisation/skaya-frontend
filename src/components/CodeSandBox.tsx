@@ -39,7 +39,7 @@ const CodeSandboxEditor: React.FC<CodeSandboxEditorProps> = ({
       // The 'react-ts' template is a modern equivalent to 'create-react-app'
       files={allFiles}
       options={{
-        activeFile: 'src/App.jsx', // Default file to open in the editor
+        activeFile: 'src/main.jsx', // Default file to open in the editor
         autorun: true,
         externalResources: ['https://cdn.tailwindcss.com'],
       }}
