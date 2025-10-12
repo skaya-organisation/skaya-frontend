@@ -106,7 +106,7 @@ export default function HomeCard() {
           await fetchPromptsRemaining();
           const newId = data.data.newSessionId;
           setCurrentSessionId(newId);
-          setCurrentSessionTitle(details.title);
+          setCurrentSessionTitle(newId);
 
           // update current session info if backend returns hosted info
           if (data.data.isHosted !== undefined) {
