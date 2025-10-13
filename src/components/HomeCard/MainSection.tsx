@@ -30,7 +30,7 @@ export default function MainSection({
   selectedCommitId,
   setSelectedCommitId,
   isHosted,
-  hostingDomain
+  hostingDomain,
 }: MainSectionProps & {
   currentSessionId: string | null;
   currentSessionTitle: string | null;
@@ -40,7 +40,7 @@ export default function MainSection({
   selectedCommitId?: string | null;
   setSelectedCommitId: (commitId: string | null) => void;
   isHosted: boolean;
-  hostingDomain:string
+  hostingDomain: string;
 }) {
   const { userId } = useAuth();
   const [currentIndex, setCurrentIndex] = useState<null | number>(null);
@@ -61,7 +61,7 @@ export default function MainSection({
     commits,
     isFetchingCommits,
     fetchFilesForCommit,
-    refetchAll
+    refetchAll,
   } = useGithubSessionFiles(
     USERS_GITHUB_ORGANISATION,
     userId || "",
@@ -160,9 +160,9 @@ export default function MainSection({
 
     // Wait a bit for backend to process, then trigger refetch
     setTimeout(() => {
-          setRefetchTrigger(prev => prev + 1);
-          refetchAll();
-    }, 100); 
+      setRefetchTrigger((prev) => prev + 1);
+      refetchAll();
+    }, 100);
   };
 
   const handleResetAndRemoveMode = async () => {
@@ -240,11 +240,10 @@ export default function MainSection({
         </main>
 
         <AnimatePresence>
-          {currentSessionId && currentIndex === null && (
+          {(currentSessionId || isProcessing) && (
             <motion.button
               layoutId="create-website-button"
               onClick={() => setIsDetailsModalOpen(true)}
-              disabled={isProcessing}
               className="fixed z-50 bottom-6 right-6 sm:bottom-8 sm:right-8 flex items-center justify-center gap-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-semibold py-3 px-5 rounded-xl transition-all duration-200 transform hover:scale-105 active:scale-95 shadow-lg shadow-indigo-600/40 disabled:opacity-60 disabled:cursor-not-allowed"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -252,13 +251,24 @@ export default function MainSection({
               transition={{ type: "spring", stiffness: 200, damping: 20 }}
             >
               {isProcessing ? (
-                <PendingIcon className="w-5 h-5 animate-spin" />
+                <>
+                  <PendingIcon className="w-5 h-5 animate-spin" />
+                  <span>
+                    {currentSessionId
+                      ? "Updating website..."
+                      : "Creating website..."}
+                  </span>
+                </>
               ) : (
-                <LineAxisIcon className="w-5 h-5" />
+                <>
+                  <LineAxisIcon className="w-5 h-5" />
+                  <span>
+                    {currentSessionId
+                      ? "Update website"
+                      : "Create your website"}
+                  </span>
+                </>
               )}
-              <span>
-                {currentSessionId ? "Update website" : "Create your website"}
-              </span>
             </motion.button>
           )}
         </AnimatePresence>

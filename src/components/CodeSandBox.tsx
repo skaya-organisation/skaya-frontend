@@ -7,7 +7,6 @@ import {
   SandpackFileExplorer,
 } from '@codesandbox/sandpack-react';
 
-// Interface for the component's props, matching the previous StackBlitz component
 interface CodeSandboxEditorProps {
   files: { [path: string]: string };
   dependencies?: { [name: string]: string };
@@ -17,49 +16,98 @@ interface CodeSandboxEditorProps {
   view?: 'preview' | 'editor';
 }
 
-/**
- * A React component that embeds a CodeSandbox Sandpack editor.
- * It's designed as a replacement for the StackBlitz SDK embed.
- *
- * @param {CodeSandboxEditorProps} props The component props.
- * @returns {JSX.Element} The rendered Sandpack editor component.
- */
 const CodeSandboxEditor: React.FC<CodeSandboxEditorProps> = ({
   files,
-  height ,
+  height = '100vh',
   view = 'editor',
 }) => {
-  // Combine the user-provided files with our generated package.json
-  const allFiles = {
-    ...files,
-  };
+  const allFiles = { ...files };
 
   return (
-    <SandpackProvider
-      // The 'react-ts' template is a modern equivalent to 'create-react-app'
-      files={allFiles}
-      options={{
-        activeFile: 'src/main.jsx', // Default file to open in the editor
-        autorun: true,
-        externalResources: ['https://cdn.tailwindcss.com'],
+    <div
+      style={{
+        width: '100%',
+        height, // ensure outer div has height
+        borderRadius: '8px',
+        overflow: 'hidden',
+        display: 'flex',
+        flexDirection: 'column',
       }}
-      theme="auto"
     >
-      <SandpackLayout
-        style={{ height, width: '100%', border: 'none', borderRadius: '8px' }}
+      <SandpackProvider
+        files={allFiles}
+        options={{
+          activeFile: 'src/main.jsx',
+          externalResources: ['https://cdn.tailwindcss.com'],
+        }}
+        theme="auto"
       >
-        {/* Conditionally show the file explorer for the 'editor' view */}
-        {view === 'editor' && <SandpackFileExplorer style={{ height }} />}
+        <SandpackLayout
+          style={{
+            height: height, // full height inside container
+            width: '100%',
+            border: 'none',
+            borderRadius: '8px',
+            display: 'flex',
+            flexDirection: 'row',
+          }}
+          className="sandpack-layout"
+        >
+          {view === 'editor' && (
+            <SandpackFileExplorer
+            style={{
+              minWidth: 180,
+              height: '100%',
+            }}
+            />
+          )}
 
-        {/* Conditionally show the code editor for the 'editor' view */}
-        {view === 'editor' && (
-          <SandpackCodeEditor closableTabs showTabs style={{ height }} />
-        )}
 
-        {/* The preview is always visible */}
-        <SandpackPreview showNavigator={true} style={{ height }} />
-      </SandpackLayout>
-    </SandpackProvider>
+          {view === 'editor' && (
+            <SandpackCodeEditor
+              showLineNumbers
+              showInlineErrors
+              wrapContent
+              closableTabs
+              showTabs
+              style={{ flex: 1, height: '100%' }}
+            />
+          )}
+
+          <SandpackPreview showNavigator={true} style={{ height: '100%' }} />
+
+        </SandpackLayout>
+      </SandpackProvider>
+
+      {/* CSS overrides for mobile responsiveness */}
+      <style>
+        {`
+          .sandpack-layout,
+          .sp-code-editor,
+          .sp-preview {
+            height: ${height} !important;
+          }
+
+          @media (max-width: 768px) {
+            .sandpack-layout {
+              flex-direction: column-reverse !important;
+            }
+
+            .sp-code-editor {
+              height: 20vh !important;
+            }
+
+            .sp-file-explorer {
+              height: 20vh !important;
+            }
+
+            .sp-preview {
+              height: 60vh !important;
+            }
+          }
+        `}
+      </style>
+    </div>
   );
 };
 
