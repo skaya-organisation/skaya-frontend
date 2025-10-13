@@ -157,46 +157,49 @@ useEffect(() => {
     }
   };
 
-  const handleDeploy = async () => {
-    if (!domainStatus?.available) {
-      setError("Please choose an available domain name");
-      return;
-    }
-    if (!domainName || !branchName) {
-      setError("Please fill in all fields");
-      return;
-    }
+const handleDeploy = async () => {
+  // ⚙️ Skip domain availability check if hostingDomain exists (redeploy)
+  if (!hostingDomain && !domainStatus?.available) {
+    setError("Please choose an available domain name");
+    return;
+  }
 
-    setIsDeploying(true);
-    setError(null);
+  if (!domainName || !branchName) {
+    setError("Please fill in all fields");
+    return;
+  }
 
-    try {
-      const accessToken = await getToken();
-      if (!accessToken || !isLoaded) throw new Error("User not authenticated");
+  setIsDeploying(true);
+  setError(null);
 
-      const result = await hostingAPI.deployDomain(
-        domainName,
-        branchName,
-        accessToken,
-        currentSessionId || ""
+  try {
+    const accessToken = await getToken();
+    if (!accessToken || !isLoaded) throw new Error("User not authenticated");
+
+    const result = await hostingAPI.deployDomain(
+      domainName,
+      branchName,
+      accessToken,
+      currentSessionId || ""
+    );
+    setDeployResult(result);
+
+    if (result.success && currentSessionId) {
+      // ✅ Update session to mark as hosted
+      await hostingAPI.updateSessionHosting(
+        currentSessionId,
+        true,
+        result.url,
+        accessToken
       );
-      setDeployResult(result);
-
-      if (result.success && currentSessionId) {
-        // ✅ Update session to mark as hosted
-        await hostingAPI.updateSessionHosting(
-          currentSessionId,
-          true,
-          result.url,
-          accessToken
-        );
-      }
-    } catch (err: any) {
-      setError(err.message || "Deployment failed");
-    } finally {
-      setIsDeploying(false);
     }
-  };
+  } catch (err: any) {
+    setError(err.message || "Deployment failed");
+  } finally {
+    setIsDeploying(false);
+  }
+};
+
 
   if (!isOpen) return null;
 
