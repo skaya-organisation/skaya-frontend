@@ -321,7 +321,7 @@ const HomeView = ({ onOpenDetailsModal, isProcessing, navigate }: any) => (
               rounded-xl transition-all duration-200 transform hover:scale-105 active:scale-95 
               shadow-lg shadow-indigo-600/40 disabled:opacity-60 disabled:cursor-not-allowed text-lg"
           >
-            🚀 Create Your Website
+            🚀 Start Development
           </motion.button>
 
           {/* Secondary Button - Read Docs */}

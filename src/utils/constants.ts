@@ -1,11 +1,22 @@
 // src/utils/constants.ts
-export const USERS_GITHUB_ORGANISATION="skaya-organisation"
-export const GITHUB_REPO = `skaya-org/frontend-react-template`;
 
-export const backendServer = "http://localhost:5001/V1";
-export const gh_token = "";
-export const MAX_PROMPTS = 5;
-export const PUBLISHABLE_KEY = "";
+export const USERS_GITHUB_ORGANISATION =
+  process.env.PUBLIC_USERS_GITHUB_ORGANISATION || "";
+
+export const GITHUB_REPO =
+  process.env.PUBLIC_GITHUB_REPO || "";
+
+export const backendServer =
+  process.env.PUBLIC_BACKEND_SERVER || "";
+
+export const gh_token =
+  process.env.PUBLIC_GH_TOKEN || "";
+
+export const MAX_PROMPTS =
+  Number(process.env.PUBLIC_MAX_PROMPTS ?? 5);
+
+export const PUBLISHABLE_KEY =
+  process.env.PUBLIC_PUBLISHABLE_KEY || "";
 
 export const CATEGORY_OPTIONS = [
   'Portfolio',

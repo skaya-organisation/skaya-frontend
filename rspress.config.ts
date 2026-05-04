@@ -2,16 +2,43 @@
 import * as path from "node:path";
 import { defineConfig } from "rspress/config";
 
+import { loadEnv } from '@rsbuild/core';
+
+const { publicVars } = loadEnv();
+
 export default defineConfig({
+  // Load .env variables
+
   root: path.join(__dirname, "docs"),
   title: "SKAYA",
+  description: "Build modern web applications with SKAYA - A powerful SDK for React, Next.js, and more",
   icon: "/logo.png",
   lang: "en",
   logo: {
     light: "/logo/light.png",
     dark: "/logo/dark.png",
   },
-
+  head: [
+    // Open Graph meta tags for social media sharing
+    ['meta', { property: 'og:title', content: 'SKAYA - Modern Web Development SDK' }],
+    ['meta', { property: 'og:description', content: 'Build modern web applications with SKAYA - A powerful SDK for React, Next.js, and more' }],
+    ['meta', { property: 'og:image', content: 'https://skaya.org/logo.png' }],
+    ['meta', { property: 'og:type', content: 'website' }],
+    ['meta', { property: 'og:url', content: 'https://skaya.org' }],
+    // Twitter Card meta tags
+    ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
+    ['meta', { name: 'twitter:title', content: 'SKAYA - Modern Web Development SDK' }],
+    ['meta', { name: 'twitter:description', content: 'Build modern web applications with SKAYA - A powerful SDK for React, Next.js, and more' }],
+    ['meta', { name: 'twitter:image', content: 'https://skaya.org/logo.png' }],
+    // Additional meta tags
+    ['meta', { name: 'description', content: 'Build modern web applications with SKAYA - A powerful SDK for React, Next.js, and more' }],
+    ['link', { rel: 'canonical', href: 'https://skaya.org' }],
+  ],
+  builderConfig: {
+    source: {
+      define: publicVars,
+    },
+  },
   locales: [
     {
       lang: "en",
@@ -51,7 +78,7 @@ export default defineConfig({
             items: [
               { text: "Team", link: "/about" },
               { text: "Support", link: "/support" },
-              { text: "Faq", link: "/Faq" },
+              { text: "Faq", link: "/faq" },
               {
                 text: "Our App",
                 items: [
@@ -226,7 +253,7 @@ export default defineConfig({
     ],
     footer: {
       message:
-        '<p class="mt-10">This is a footer with a <a href="https://example.com">link</a> and <strong>bold text</strong></p>',
+        '<div class="rspress-footer-custom"><p style="text-align: center; margin: 0; padding: 20px;">© 2026 Skaya. All rights reserved. Built with ❤️ by SKAYA</p><p style="text-align: center; margin: 10px 0 0 0; font-size: 14px;"><a href="#" style="margin: 0 15px; text-decoration: none;">Privacy Policy</a><a href="#" style="margin: 0 15px; text-decoration: none;">Terms of Service</a></p></div>',
     },
     socialLinks: [
       {
@@ -253,4 +280,5 @@ export default defineConfig({
   build: {
     cleanUrls: true, // or 'without-extension'
   },
-});
+},
+);

@@ -51,11 +51,11 @@ const TemplateCarousel: React.FC<TemplateCarouselProps> = ({
       transition={{ duration: 0.5, delay: 0.2 }}
       className="w-full px-4 mt-12"
     >
-      {/* ✅ Sessions */}
+      {/* ✅ Sessions - COMMENTED OUT */}
+      {/* 
       <h3 className="text-lg sm:text-xl font-bold mb-4">Your Website</h3>
 
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-8">
-        {/* ➕ Create New Website */}
         <Card
           title="Create New Website"
           description="Start from scratch and bring your ideas to life"
@@ -85,8 +85,10 @@ const TemplateCarousel: React.FC<TemplateCarouselProps> = ({
           />
         ))}
       </div>
+      */}
 
-      {/* ✅ Templates */}
+      {/* ✅ Templates - COMMENTED OUT */}
+      {/* 
       <h3 className="text-lg sm:text-xl font-bold mb-4">Choose a Template</h3>
 
       {isLoading ? (
@@ -111,6 +113,7 @@ const TemplateCarousel: React.FC<TemplateCarouselProps> = ({
           ))}
         </div>
       )}
+      */}
     </motion.div>
   );
 };

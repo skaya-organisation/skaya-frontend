@@ -8,7 +8,8 @@ import PendingIcon from "@mui/icons-material/Pending";
 import EditorDetailsModal from "../EditorDetailsModal";
 import InteractiveCard from "../InteractiveCard";
 import TemplateCarousel from "../TemplateCarousel";
-import { SignIn, SignInButton, useAuth } from "@clerk/clerk-react";
+import PortfolioShowcase from "../PortfolioShowcase/PortfolioShowcase";
+import { useAuth } from "@clerk/clerk-react";
 import CustomAuth from "../Auth";
 import { useGithubSessionFiles } from "../../hooks/useGithubSessionFiles";
 import { USERS_GITHUB_ORGANISATION } from "../../utils/constants";
@@ -214,26 +215,29 @@ export default function MainSection({
 
           <AnimatePresence>
             {!isFullScreen && (
-              <TemplateCarousel
-                templates={templates}
-                sessions={sessions}
-                viewMode={viewMode}
-                currentIndex={currentIndex}
-                currentSessionId={currentSessionId}
-                onSelectTemplate={(index) => {
-                  setViewMode("templates");
-                  setIshome(false);
-                  setCurrentIndex(index);
-                }}
-                onSelectSession={(sessionId) => {
-                  setIshome(false);
-                  onSelectSession(sessionId);
-                  setViewMode("live_session");
-                  setCurrentIndex(null);
-                }}
-                onResetSession={handleResetAndRemoveMode}
-                setIsDetailsModalOpen={setIsDetailsModalOpen}
-              />
+              <>
+                <TemplateCarousel
+                  templates={templates}
+                  sessions={sessions}
+                  viewMode={viewMode}
+                  currentIndex={currentIndex}
+                  currentSessionId={currentSessionId}
+                  onSelectTemplate={(index) => {
+                    setViewMode("templates");
+                    setIshome(false);
+                    setCurrentIndex(index);
+                  }}
+                  onSelectSession={(sessionId) => {
+                    setIshome(false);
+                    onSelectSession(sessionId);
+                    setViewMode("live_session");
+                    setCurrentIndex(null);
+                  }}
+                  onResetSession={handleResetAndRemoveMode}
+                  setIsDetailsModalOpen={setIsDetailsModalOpen}
+                />
+                <PortfolioShowcase />
+              </>
             )}
           </AnimatePresence>
           <CustomAuth />

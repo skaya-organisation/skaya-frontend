@@ -33,4 +33,4 @@ deploy.yml
 
 edit clerk error:
 
-sed -i 's/setPackageName({packageName})}/setPackageName({packageName:"@clerk\/clerk-react"})}/' doc_build/static/js/async/799.37d8b129.js
+sed -i 's/setPackageName({packageName})}/setPackageName({packageName:"@clerk\/clerk-react"})}/' doc_build/static/js/async/143.e5792e2c.js
