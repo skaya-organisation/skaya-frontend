@@ -64,13 +64,13 @@ const Features = memo(function Features({ darkMode = true }: FeaturesProps) {
         {/* Header */}
         <SectionHeader
           number="01"
-          title="Comprehensive solutions for every need"
+          title="Solutions for every need"
           description="From web solutions to blockchain and enterprise infrastructure"
           darkMode={darkMode}
         />
 
         {/* Features Grid */}
-        <div className={`py-24 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3`}>
+        <div className={`py-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-8 items-center`}>
           {features.map((feature, idx) => {
             const Icon = feature.icon;
 
@@ -156,7 +156,7 @@ const Features = memo(function Features({ darkMode = true }: FeaturesProps) {
         </div>
 
       </div>
-      <div className="w-full bottom-0 left-0 right-0 h-6 z-10 group/scales-bottom">
+      <div className="w-[100vw]] bottom-0 left-0 right-0 h-6 z-10 group/scales-bottom">
         <div className="h-full w-full pointer-events-auto">
           <Scales size={6} darkMode={darkMode} orientation="diagonal" />
         </div>

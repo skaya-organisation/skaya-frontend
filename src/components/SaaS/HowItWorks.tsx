@@ -126,89 +126,86 @@ export default function HowItWorks({ darkMode = true }: HowItWorksProps) {
         />
 
         {/* Carousel Container */}
-        <div className="py-24 grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
-          {/* Left - Step Cards */}
-          <div className="space-y-4">
-            {steps.map((step, index) => {
-              const StepIcon = step.icon;
-              const isActive = index === currentStep;
+        <div className="py-12 grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
+          {steps.map((step, index) => {
+            const StepIcon = step.icon;
+            const isActive = index === currentStep;
 
-              return (
-                <motion.button
-                  key={index}
-                  onClick={() => {
-                    setCurrentStep(index);
-                    // Reset auto-play timer
-                    if (autoPlayRef.current) {
-                      clearInterval(autoPlayRef.current);
-                    }
-                    autoPlayRef.current = setInterval(() => {
-                      setCurrentStep((prev) => (prev + 1) % steps.length);
-                    }, 3000);
-                  }}
-                  whileHover={{ x: 4 }}
-                  whileTap={{ scale: 0.98 }}
-                  className={`w-full text-left p-6 rounded-lg border transition-all duration-300 cursor-pointer ${isActive
-                    ? darkMode
-                      ? 'bg-slate-900/50 border-slate-700'
-                      : 'bg-slate-50 border-slate-300'
-                    : darkMode
-                      ? 'bg-slate-900/30 border-slate-800 hover:border-slate-700'
-                      : 'bg-white border-slate-200 hover:border-slate-300'
-                    }`}
-                >
-                  <div className="flex items-start gap-4">
-                    <div
-                      className={`p-3 rounded-lg flex-shrink-0 transition-all ${isActive
-                        ? darkMode
-                          ? 'bg-gradient-to-br from-blue-600 to-purple-600'
-                          : 'bg-gradient-to-br from-blue-500 to-purple-500'
+            return (
+              <motion.button
+                key={index}
+                onClick={() => {
+                  setCurrentStep(index);
+                  // Reset auto-play timer
+                  if (autoPlayRef.current) {
+                    clearInterval(autoPlayRef.current);
+                  }
+                  autoPlayRef.current = setInterval(() => {
+                    setCurrentStep((prev) => (prev + 1) % steps.length);
+                  }, 3000);
+                }}
+                whileHover={{ x: 4 }}
+                whileTap={{ scale: 0.98 }}
+                className={`w-full text-left p-6 rounded-lg border transition-all duration-300 cursor-pointer ${isActive
+                  ? darkMode
+                    ? 'bg-slate-900/50 border-slate-700'
+                    : 'bg-slate-50 border-slate-300'
+                  : darkMode
+                    ? 'bg-slate-900/30 border-slate-800 hover:border-slate-700'
+                    : 'bg-white border-slate-200 hover:border-slate-300'
+                  }`}
+              >
+                <div className="flex items-start gap-4">
+                  <div
+                    className={`p-3 rounded-lg flex-shrink-0 transition-all ${isActive
+                      ? darkMode
+                        ? 'bg-gradient-to-br from-blue-600 to-purple-600'
+                        : 'bg-gradient-to-br from-blue-500 to-purple-500'
+                      : darkMode
+                        ? 'bg-slate-800'
+                        : 'bg-slate-200'
+                      }`}
+                  >
+                    <StepIcon
+                      className={`w-6 h-6 ${isActive
+                        ? 'text-white'
                         : darkMode
-                          ? 'bg-slate-800'
-                          : 'bg-slate-200'
+                          ? 'text-slate-500'
+                          : 'text-slate-600'
+                        }`}
+                    />
+                  </div>
+                  <div className="flex-1">
+                    <h3
+                      className={`font-semibold mb-1 ${isActive
+                        ? darkMode
+                          ? 'text-white'
+                          : 'text-slate-900'
+                        : darkMode
+                          ? 'text-white/70'
+                          : 'text-slate-700'
                         }`}
                     >
-                      <StepIcon
-                        className={`w-6 h-6 ${isActive
-                          ? 'text-white'
-                          : darkMode
-                            ? 'text-slate-500'
-                            : 'text-slate-600'
-                          }`}
-                      />
-                    </div>
-                    <div className="flex-1">
-                      <h3
-                        className={`font-semibold mb-1 ${isActive
-                          ? darkMode
-                            ? 'text-white'
-                            : 'text-slate-900'
-                          : darkMode
-                            ? 'text-white/70'
-                            : 'text-slate-700'
-                          }`}
-                      >
-                        {step.title}
-                      </h3>
-                      <p
-                        className={`text-xs ${isActive
-                          ? darkMode
-                            ? 'text-slate-400'
-                            : 'text-slate-600'
-                          : darkMode
-                            ? 'text-slate-500'
-                            : 'text-slate-500'
-                          }`}
-                      >
-                        Step {index + 1}
-                      </p>
-                    </div>
+                      {step.title}
+                    </h3>
+                    <p
+                      className={`text-xs ${isActive
+                        ? darkMode
+                          ? 'text-slate-400'
+                          : 'text-slate-600'
+                        : darkMode
+                          ? 'text-slate-500'
+                          : 'text-slate-500'
+                        }`}
+                    >
+                      Step {index + 1}
+                    </p>
                   </div>
+                </div>
 
-                </motion.button>
-              );
-            })}
-          </div>
+              </motion.button>
+            );
+          })}
 
           {/* Right - Main Content */}
           <div className="lg:col-span-2">

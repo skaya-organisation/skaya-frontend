@@ -57,15 +57,15 @@ export default function FAQ({ darkMode = true }: FAQProps) {
   // Filter FAQs by category if selected
   const filteredFaqs = selectedCategory
     ? faqs.filter((faq) => {
-        if (selectedCategory === 'AI & ML') return faq.icon === '🤖';
-        if (selectedCategory === 'Development') return ['⚙️', '📈'].includes(faq.icon);
-        if (selectedCategory === 'Support') return ['💰', '⏱️', '🛡️'].includes(faq.icon);
-        return true;
-      })
+      if (selectedCategory === 'AI & ML') return faq.icon === '🤖';
+      if (selectedCategory === 'Development') return ['⚙️', '📈'].includes(faq.icon);
+      if (selectedCategory === 'Support') return ['💰', '⏱️', '🛡️'].includes(faq.icon);
+      return true;
+    })
     : faqs;
 
   return (
-    <section className={`relative py-24 sm:py-32 px-4 sm:px-6 lg:px-6 overflow-hidden`}>
+    <section className={`relative py-24 sm:py-32 px-6 sm:px-6 lg:px-6 overflow-hidden`}>
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <motion.div
@@ -99,7 +99,7 @@ export default function FAQ({ darkMode = true }: FAQProps) {
               <div className="grid grid-cols-3 lg:flex lg:flex-col gap-3 mb-6 lg:mb-0">
                 {categories.map((category, idx) => {
                   const isActive = selectedCategory === category.name;
-                  
+
                   return (
                     <motion.button
                       key={idx}
@@ -110,13 +110,12 @@ export default function FAQ({ darkMode = true }: FAQProps) {
                       onClick={() => setSelectedCategory(isActive ? null : category.name)}
                       whileHover={{ scale: 1.02, y: -2 }}
                       whileTap={{ scale: 0.98 }}
-                      className={`relative w-full p-4 lg:p-5 rounded-2xl border-2 transition-all duration-300 text-center lg:text-left group overflow-hidden ${
-                        isActive
+                      className={`relative w-full p-4 lg:p-5 rounded-2xl border-2 transition-all duration-300 text-center lg:text-left group overflow-hidden ${isActive
                           ? 'border-transparent shadow-2xl'
                           : darkMode
-                          ? 'border-slate-700 hover:border-slate-600 bg-slate-900/40 backdrop-blur-md'
-                          : 'border-slate-300 hover:border-slate-400 bg-white/60 backdrop-blur-md'
-                      }`}
+                            ? 'border-slate-700 hover:border-slate-600 bg-slate-900/40 backdrop-blur-md'
+                            : 'border-slate-300 hover:border-slate-400 bg-white/60 backdrop-blur-md'
+                        }`}
                     >
                       {/* Animated gradient background for active state */}
                       {isActive && (
@@ -143,37 +142,35 @@ export default function FAQ({ darkMode = true }: FAQProps) {
                       <div className="relative z-10 flex flex-col lg:flex-row items-center gap-3 lg:gap-4">
                         {/* Icon with gradient background when active */}
                         <motion.div
-                          animate={{ 
+                          animate={{
                             scale: isActive ? 1.1 : 1,
                             rotate: isActive ? [0, -5, 5, 0] : 0
                           }}
                           transition={{ duration: 0.5 }}
-                          className={`w-12 h-12 lg:w-14 lg:h-14 rounded-xl flex items-center justify-center text-2xl lg:text-3xl transition-all duration-300 shadow-lg ${
-                            isActive
+                          className={`w-12 h-12 lg:w-14 lg:h-14 rounded-xl flex items-center justify-center text-2xl lg:text-3xl transition-all duration-300 shadow-lg ${isActive
                               ? `bg-gradient-to-br ${category.gradient}`
                               : darkMode
-                              ? 'bg-slate-800'
-                              : 'bg-slate-100'
-                          }`}
+                                ? 'bg-slate-800'
+                                : 'bg-slate-100'
+                            }`}
                         >
                           {category.icon}
                         </motion.div>
-                        
+
                         <div className="flex-1">
-                          <h3 className={`font-bold text-xs lg:text-base mb-0.5 transition-all duration-300 ${
-                            isActive ? `bg-gradient-to-r ${category.gradient} bg-clip-text text-transparent` : textColor
-                          }`}>
+                          <h3 className={`font-bold text-xs lg:text-base mb-0.5 transition-all duration-300 ${isActive ? `bg-gradient-to-r ${category.gradient} bg-clip-text text-transparent` : textColor
+                            }`}>
                             {category.name}
                           </h3>
                           <p className={`text-[9px] lg:text-xs ${mutedColor}`}>
                             {category.count} questions
                           </p>
                         </div>
-                        
+
                         {/* Checkmark for active state on desktop */}
                         <motion.div
                           initial={{ scale: 0, opacity: 0 }}
-                          animate={{ 
+                          animate={{
                             scale: isActive ? 1 : 0,
                             opacity: isActive ? 1 : 0
                           }}

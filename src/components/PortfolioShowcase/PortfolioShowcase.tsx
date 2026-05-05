@@ -120,11 +120,10 @@ const PortfolioCard = ({
         className="w-full h-full object-cover scale-100 group-hover:scale-105 transition-transform duration-700 ease-out"
       />
       {/* Dark gradient overlay on hover */}
-      <div className={`absolute inset-0 transition-opacity duration-300 opacity-0 group-hover:opacity-100 ${
-        darkMode
-          ? 'bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent'
-          : 'bg-gradient-to-t from-slate-900/50 via-slate-900/10 to-transparent'
-      }`} />
+      <div className={`absolute inset-0 transition-opacity duration-300 opacity-0 group-hover:opacity-100 ${darkMode
+        ? 'bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent'
+        : 'bg-gradient-to-t from-slate-900/50 via-slate-900/10 to-transparent'
+        }`} />
 
       {/* Action buttons — slide up from bottom on hover */}
       <div className="absolute inset-x-0 bottom-0 flex gap-2 p-2 sm:p-4 translate-y-0 sm:translate-y-full sm:group-hover:translate-y-0 transition-transform duration-300 ease-out">
@@ -151,9 +150,8 @@ const PortfolioCard = ({
     <div className="p-3 sm:p-5">
       <div className="flex items-start justify-between gap-3 mb-2">
         <div>
-          <p className={`text-[10px] font-mono tracking-widest uppercase mb-1 ${
-            darkMode ? 'text-slate-500' : 'text-slate-400'
-          }`}>
+          <p className={`text-[10px] font-mono tracking-widest uppercase mb-1 ${darkMode ? 'text-slate-500' : 'text-slate-400'
+            }`}>
             {portfolio.category}
           </p>
           <h3 className={`text-xs sm:text-sm font-semibold ${darkMode ? 'text-white' : 'text-slate-900'}`}>
@@ -161,9 +159,8 @@ const PortfolioCard = ({
           </h3>
         </div>
         <ArrowOutwardIcon
-          className={`flex-shrink-0 mt-0.5 transition-all duration-300 opacity-0 group-hover:opacity-100 -translate-y-1 group-hover:translate-y-0 ${
-            darkMode ? 'text-slate-400' : 'text-slate-500'
-          }`}
+          className={`flex-shrink-0 mt-0.5 transition-all duration-300 opacity-0 group-hover:opacity-100 -translate-y-1 group-hover:translate-y-0 ${darkMode ? 'text-slate-400' : 'text-slate-500'
+            }`}
           style={{ fontSize: 16 }}
         />
       </div>
@@ -206,18 +203,15 @@ const PreviewModal = ({
       exit={{ opacity: 0, y: 8, scale: 0.97 }}
       transition={{ duration: 0.25 }}
       onClick={(e) => e.stopPropagation()}
-      className={`relative w-full h-[88vh] max-w-6xl flex flex-col rounded-xl overflow-hidden border ${
-        darkMode ? 'bg-slate-950 border-slate-800' : 'bg-white border-slate-200'
-      }`}
+      className={`relative w-full h-[88vh] max-w-6xl flex flex-col rounded-xl overflow-hidden border ${darkMode ? 'bg-slate-950 border-slate-800' : 'bg-white border-slate-200'
+        }`}
     >
       {/* Header */}
-      <div className={`flex items-center justify-between px-5 py-4 border-b flex-shrink-0 ${
-        darkMode ? 'border-slate-800' : 'border-slate-200'
-      }`}>
+      <div className={`flex items-center justify-between px-5 py-4 border-b flex-shrink-0 ${darkMode ? 'border-slate-800' : 'border-slate-200'
+        }`}>
         <div>
-          <p className={`text-[10px] font-mono tracking-widest uppercase mb-0.5 ${
-            darkMode ? 'text-slate-500' : 'text-slate-400'
-          }`}>
+          <p className={`text-[10px] font-mono tracking-widest uppercase mb-0.5 ${darkMode ? 'text-slate-500' : 'text-slate-400'
+            }`}>
             {portfolio.category}
           </p>
           <h3 className={`text-base font-semibold ${darkMode ? 'text-white' : 'text-slate-900'}`}>
@@ -229,22 +223,20 @@ const PreviewModal = ({
             href={portfolio.url}
             target="_blank"
             rel="noopener noreferrer"
-            className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg border transition-colors ${
-              darkMode
-                ? 'border-slate-700 text-slate-300 hover:border-slate-500 hover:text-white'
-                : 'border-slate-200 text-slate-600 hover:border-slate-300 hover:text-slate-900'
-            }`}
+            className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg border transition-colors ${darkMode
+              ? 'border-slate-700 text-slate-300 hover:border-slate-500 hover:text-white'
+              : 'border-slate-200 text-slate-600 hover:border-slate-300 hover:text-slate-900'
+              }`}
           >
             <ArrowOutwardIcon style={{ fontSize: 13 }} />
             Open live
           </a>
           <button
             onClick={onClose}
-            className={`p-1.5 rounded-lg transition-colors ${
-              darkMode
-                ? 'hover:bg-slate-800 text-slate-400 hover:text-white'
-                : 'hover:bg-slate-100 text-slate-500 hover:text-slate-900'
-            }`}
+            className={`p-1.5 rounded-lg transition-colors ${darkMode
+              ? 'hover:bg-slate-800 text-slate-400 hover:text-white'
+              : 'hover:bg-slate-100 text-slate-500 hover:text-slate-900'
+              }`}
           >
             <CloseIcon style={{ fontSize: 18 }} />
           </button>
@@ -262,9 +254,8 @@ const PreviewModal = ({
       </div>
 
       {/* Footer */}
-      <div className={`flex items-center justify-between px-5 py-3 border-t flex-shrink-0 ${
-        darkMode ? 'border-slate-800' : 'border-slate-200'
-      }`}>
+      <div className={`flex items-center justify-between px-5 py-3 border-t flex-shrink-0 ${darkMode ? 'border-slate-800' : 'border-slate-200'
+        }`}>
         <p className={`text-xs ${darkMode ? 'text-slate-600' : 'text-slate-400'}`}>
           Preview may have limited functionality
         </p>
@@ -310,7 +301,8 @@ const PortfolioShowcase = memo(function PortfolioShowcase({ darkMode = true }: P
   }, []);
 
   return (
-    <section id="portfolio" className="relative py-24 sm:py-32 px-6 sm:px-6 lg:px-6">
+    <section id="portfolio" className={`relative py-24 sm:py-32 px-6 sm:px-6 lg:px-6 `}
+    >
       <div className="max-w-7xl mx-auto">
 
         {/* ── Header ── */}
@@ -343,7 +335,7 @@ const PortfolioShowcase = memo(function PortfolioShowcase({ darkMode = true }: P
 
           {/* Grid with outer border — flush against the bands above/below */}
           <div
-            className="py-24 grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 border-l border-r border-solid"
+            className="py-12 grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-8 items-center"
             style={{ borderColor }}
           >
             {portfolios.map((portfolio, idx) => (
@@ -359,7 +351,6 @@ const PortfolioShowcase = memo(function PortfolioShowcase({ darkMode = true }: P
           </div>
 
           {/* BOTTOM band */}
-          <ScalesBand darkMode={darkMode} />
         </div>
 
       </div>
@@ -374,6 +365,12 @@ const PortfolioShowcase = memo(function PortfolioShowcase({ darkMode = true }: P
           />
         )}
       </AnimatePresence>
+      <div className="w-[100vw]] bottom-0 left-0 right-0 h-6 z-10 group/scales-bottom">
+        <div className="h-full w-full pointer-events-auto">
+          <Scales size={6} darkMode={darkMode} orientation="diagonal" />
+        </div>
+      </div>
+
     </section>
   );
 });
