@@ -1,6 +1,7 @@
 //rspress.config.ts
 import * as path from "node:path";
 import { defineConfig } from "rspress/config";
+import { pluginGoogleAnalytics } from "rsbuild-plugin-google-analytics";
 
 import { loadEnv } from '@rsbuild/core';
 
@@ -10,8 +11,8 @@ export default defineConfig({
   // Load .env variables
 
   root: path.join(__dirname, "docs"),
-  title: "SKAYA",
-  description: "Build modern web applications with SKAYA - A powerful SDK for React, Next.js, and more",
+  title: "SKAYA - Best Software & Web Development Company | Custom Web Solutions",
+  description: "Leading software development company specializing in custom web development, mobile apps, AI/ML solutions, SaaS platforms, and Web3 blockchain development. Expert full-stack developers delivering scalable enterprise solutions.",
   icon: "/logo.png",
   lang: "en",
   logo: {
@@ -19,32 +20,73 @@ export default defineConfig({
     dark: "/logo/dark.png",
   },
   head: [
-    // Open Graph meta tags for social media sharing
-    ['meta', { property: 'og:title', content: 'SKAYA - Modern Web Development SDK' }],
-    ['meta', { property: 'og:description', content: 'Build modern web applications with SKAYA - A powerful SDK for React, Next.js, and more' }],
-    ['meta', { property: 'og:image', content: 'https://skaya.org/logo.png' }],
+    // Primary SEO Meta Tags
+    ['meta', { name: 'description', content: 'Leading software development company specializing in custom web development, mobile apps, AI/ML solutions, SaaS platforms, and Web3 blockchain development. Expert full-stack developers delivering scalable enterprise solutions.' }],
+    ['meta', { name: 'keywords', content: 'software development company, web development company, custom software development, mobile app development, AI development, machine learning solutions, SaaS development, Web3 development, blockchain development, full-stack development, React development, Next.js development, enterprise software solutions, custom web applications, progressive web apps, API development, cloud solutions, DevOps services, UI/UX design, frontend development, backend development, database design, microservices architecture, scalable web solutions, agile development, software consulting, digital transformation, e-commerce development, CMS development, web application development, mobile-first design, responsive web design, cross-platform development, software engineering services, technology consulting, startup development, MVP development, product development, software outsourcing, offshore development' }],
+    ['meta', { name: 'author', content: 'SKAYA' }],
+    ['meta', { name: 'robots', content: 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' }],
+    ['meta', { name: 'language', content: 'English' }],
+    ['meta', { name: 'revisit-after', content: '7 days' }],
+    ['meta', { name: 'distribution', content: 'global' }],
+    ['meta', { name: 'rating', content: 'general' }],
+    
+    // Open Graph / Facebook
     ['meta', { property: 'og:type', content: 'website' }],
     ['meta', { property: 'og:url', content: 'https://skaya.org' }],
-    // Twitter Card meta tags
+    ['meta', { property: 'og:site_name', content: 'SKAYA' }],
+    ['meta', { property: 'og:title', content: 'SKAYA - Best Software & Web Development Company | Custom Solutions' }],
+    ['meta', { property: 'og:description', content: 'Leading software development company specializing in custom web development, mobile apps, AI/ML solutions, SaaS platforms, and Web3 blockchain development. Expert full-stack developers delivering scalable enterprise solutions.' }],
+    ['meta', { property: 'og:image', content: 'https://skaya.org/logo.png' }],
+    ['meta', { property: 'og:image:width', content: '1200' }],
+    ['meta', { property: 'og:image:height', content: '630' }],
+    ['meta', { property: 'og:locale', content: 'en_US' }],
+    
+    // Twitter Card
     ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
-    ['meta', { name: 'twitter:title', content: 'SKAYA - Modern Web Development SDK' }],
-    ['meta', { name: 'twitter:description', content: 'Build modern web applications with SKAYA - A powerful SDK for React, Next.js, and more' }],
+    ['meta', { name: 'twitter:url', content: 'https://skaya.org' }],
+    ['meta', { name: 'twitter:title', content: 'SKAYA - Best Software & Web Development Company' }],
+    ['meta', { name: 'twitter:description', content: 'Leading software development company specializing in custom web development, mobile apps, AI/ML solutions, SaaS platforms, and Web3 blockchain development.' }],
     ['meta', { name: 'twitter:image', content: 'https://skaya.org/logo.png' }],
-    // Additional meta tags
-    ['meta', { name: 'description', content: 'Build modern web applications with SKAYA - A powerful SDK for React, Next.js, and more' }],
+    ['meta', { name: 'twitter:creator', content: '@skaya_org' }],
+    ['meta', { name: 'twitter:site', content: '@skaya_org' }],
+    
+    // Geo Tags
+    ['meta', { name: 'geo.region', content: 'US' }],
+    ['meta', { name: 'geo.placename', content: 'United States' }],
+    
+    // Business/Organization
+    ['meta', { property: 'business:contact_data:street_address', content: '' }],
+    ['meta', { property: 'business:contact_data:locality', content: '' }],
+    ['meta', { property: 'business:contact_data:region', content: '' }],
+    ['meta', { property: 'business:contact_data:postal_code', content: '' }],
+    ['meta', { property: 'business:contact_data:country_name', content: 'United States' }],
+    
+    // Additional SEO
     ['link', { rel: 'canonical', href: 'https://skaya.org' }],
+    ['link', { rel: 'sitemap', type: 'application/xml', href: '/sitemap.xml' }],
+    ['meta', { name: 'theme-color', content: '#000000' }],
+    ['meta', { name: 'apple-mobile-web-app-capable', content: 'yes' }],
+    ['meta', { name: 'apple-mobile-web-app-status-bar-style', content: 'black-translucent' }],
+    
+    // Structured Data
+    ['script', { src: '/seo-structured-data.js', defer: '' }],
   ],
   builderConfig: {
     source: {
       define: publicVars,
     },
+    plugins: [
+      pluginGoogleAnalytics({
+        id: 'G-K63YSJ39VC',
+      }),
+    ],
   },
   locales: [
     {
       lang: "en",
       label: "English",
       title: "SKAYA",
-      description: "Static Site Generator",
+      description: "Dynamic Site Generator",
     },
     // {
     //   lang: "zh",
