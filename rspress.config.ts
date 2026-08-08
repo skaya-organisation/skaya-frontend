@@ -3,7 +3,7 @@ import * as path from "node:path";
 import { defineConfig } from "rspress/config";
 import { pluginGoogleAnalytics } from "rsbuild-plugin-google-analytics";
 
-import { loadEnv } from '@rsbuild/core';
+import { loadEnv, rspack } from '@rsbuild/core';
 
 const { publicVars } = loadEnv();
 
@@ -80,6 +80,16 @@ export default defineConfig({
         id: 'G-K63YSJ39VC',
       }),
     ],
+    tools: {
+      rspack(config) {
+        config.plugins?.push(
+          new rspack.ProvidePlugin({
+            process: "process/browser",
+          })
+        );
+        return config;
+      },
+    },
   },
   locales: [
     {
